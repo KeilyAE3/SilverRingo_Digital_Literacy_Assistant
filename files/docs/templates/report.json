@@ -1,0 +1,12 @@
+{
+  "owner": "github-login",
+  "task": "short-task-id",
+  "summary": "What changed and why",
+  "approach": "Key implementation choices and rationale; no private reasoning transcript",
+  "files": ["README.md"],
+  "contracts": [],
+  "interface_changes": "none; or describe changed inputs, outputs, compatibility and migration",
+  "verification": "Commands actually run, outcomes, and unverified items",
+  "blocked_by": [],
+  "next_steps": ["Next actionable step, or none"]
+}

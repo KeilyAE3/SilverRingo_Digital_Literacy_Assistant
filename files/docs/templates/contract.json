@@ -1,0 +1,10 @@
+{
+  "id": "replace-with-interface-id",
+  "version": "0.1.0",
+  "provider": "providing-module",
+  "consumers": ["consuming-module"],
+  "inputs": "Describe types, required fields and examples",
+  "outputs": "Describe types, required fields and examples",
+  "errors": "Describe failure conditions and error format",
+  "compatibility": "Describe backwards compatibility and migration requirements"
+}

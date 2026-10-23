@@ -1,0 +1,12 @@
+{
+  "owner": "KeilyAEEmbuth",
+  "task": "automation-bootstrap",
+  "summary": "Discord 중심·직접 push 방식의 협업 자동화 기반 추가",
+  "approach": "스택을 추측하지 않고 표준 Python 검사와 명시적 앱 검사 설정을 분리. PR 승인과 업무 관리 도구 입력 의무 없음.",
+  "files": ["automation/check.py", "automation/config.json", "automation/schedule.json", ".github/workflows/team-sync.yml", ".github/workflows/discord-notify.yml", "AGENTS.md", "docs/COLLABORATION.md"],
+  "contracts": [],
+  "interface_changes": "앱 인터페이스 없음. 협업 보고서와 계약 JSON 형식 도입.",
+  "verification": "자동화 단위 테스트 11개와 로컬 협업 검사 통과. workflow YAML 파싱과 내장 Python 알림 스크립트 문법 검사 완료. 앱 테스트는 미설정. GitHub 연결의 tree 쓰기가 403으로 거절되어 원격 반영·Actions 실행·Discord 전송은 미검증.",
+  "blocked_by": ["GitHub 연결의 원격 쓰기 403: 원격 설치 미완료", "앱 모듈·스택 미결정: 빌드·계약·통합 테스트 등록 대기", "Discord webhook Secret 등록 전 알림 SKIP"],
+  "next_steps": ["쓰기 가능한 GitHub 연결 또는 로컬 Git으로 변경 묶음 적용", "실제 앱 모듈과 검사 명령 등록", "Discord 채널 webhook Secret 등록", "실제 팀 일정 입력"]
+}
