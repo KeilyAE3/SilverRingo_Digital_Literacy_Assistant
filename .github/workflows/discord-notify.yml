@@ -1,0 +1,47 @@
+name: Discord Sync Notification
+
+on:
+  workflow_run:
+    workflows: ['Team Sync']
+    types: [completed]
+
+permissions: {}
+
+jobs:
+  notify:
+    if: >-
+      github.event.workflow_run.event == 'push' &&
+      (github.event.workflow_run.conclusion == 'failure' ||
+       (github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Notify Discord if configured
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RUN_URL: ${{ github.event.workflow_run.html_url }}
+          RESULT: ${{ github.event.workflow_run.conclusion }}
+          BRANCH: ${{ github.event.workflow_run.head_branch }}
+          SHA: ${{ github.event.workflow_run.head_sha }}
+        shell: python
+        run: |
+          import json, os, urllib.request
+          from urllib.parse import urlparse
+          url = os.environ.get('DISCORD_WEBHOOK_URL', '')
+          if not url:
+              print('SKIP: DISCORD_WEBHOOK_URL is not configured.')
+              raise SystemExit(0)
+          parsed = urlparse(url)
+          if parsed.scheme != 'https' or parsed.hostname != 'discord.com' or not parsed.path.startswith('/api/webhooks/'):
+              raise SystemExit('Invalid Discord webhook endpoint; configure an https://discord.com/api/webhooks/ URL.')
+          message = ('SilverRingo | ' + os.environ['RESULT'] + '\n'
+                     + 'branch: ' + os.environ['BRANCH'][:180] + '\n'
+                     + 'commit: ' + os.environ['SHA'][:12] + '\n'
+                     + os.environ['RUN_URL'])
+          data = json.dumps({'content': message, 'allowed_mentions': {'parse': []}}).encode()
+          request = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json', 'User-Agent': 'SilverRingo-Team-Sync/1.0'}, method='POST')
+          try:
+              with urllib.request.urlopen(request, timeout=20) as response:
+                  print('Discord notification delivered:', response.status)
+          except Exception:
+              raise SystemExit('Discord delivery failed. Check webhook validity and rerun this job; the webhook URL is not logged.') from None
