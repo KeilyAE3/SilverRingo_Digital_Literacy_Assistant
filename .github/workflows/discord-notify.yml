@@ -44,5 +44,5 @@ jobs:
           SYNC_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
           SYNC_RUN_URL: ${{ github.event.workflow_run.html_url }}
           SYNC_RESULTS: ${{ runner.temp }}/team-sync-results/results.json
-        shell: python
+        shell: bash
         run: python Tester/automation/notify.py
