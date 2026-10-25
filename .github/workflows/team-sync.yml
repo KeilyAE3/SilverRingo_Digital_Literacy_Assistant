@@ -1,41 +1,28 @@
 name: Team Sync
-
 on:
   push:
-    branches: ['**']
   workflow_dispatch:
-
 permissions:
   contents: read
-
-concurrency:
-  group: team-sync-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  check:
-    name: Collaboration and configured application checks
+  test:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Test automation logic
-        run: python -m unittest discover -s automation/tests -v
-      - name: Validate, run configured checks, and summarize
-        env:
-          SYNC_BASE: ${{ github.event.before }}
-        run: python automation/check.py
-      - name: Keep synchronization summary
+      # Add the application's dependency installation step here when needed.
+      - name: Run all tests
+        run: python Tester/automation/check.py
+      - name: Save results even when tests fail
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: team-sync-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .team-sync-summary.md
-          if-no-files-found: warn
+          path: Tester/.team-sync/
+          include-hidden-files: true
           retention-days: 14

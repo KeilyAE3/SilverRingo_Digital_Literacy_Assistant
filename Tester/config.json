@@ -1,0 +1,9 @@
+{
+  "checks": [
+    {
+      "name": "예시: 학습 진행률 계산",
+      "module": "Tester/example/progress.py",
+      "test": "example/tests/test_progress.py"
+    }
+  ]
+}

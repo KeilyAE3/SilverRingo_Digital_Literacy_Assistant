@@ -5,43 +5,45 @@ on:
     workflows: ['Team Sync']
     types: [completed]
 
-permissions: {}
+permissions:
+  contents: read
+  actions: read
 
 jobs:
   notify:
     if: >-
-      github.event.workflow_run.event == 'push' &&
-      (github.event.workflow_run.conclusion == 'failure' ||
-       (github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.conclusion == 'success'))
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.conclusion != 'cancelled'
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
-      - name: Notify Discord if configured
+      - name: Load notifier from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download only the triggering run and attempt
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v5
+        with:
+          name: team-sync-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: ${{ runner.temp }}/team-sync-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Send result summary or missing-result notice
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          RUN_URL: ${{ github.event.workflow_run.html_url }}
-          RESULT: ${{ github.event.workflow_run.conclusion }}
-          BRANCH: ${{ github.event.workflow_run.head_branch }}
-          SHA: ${{ github.event.workflow_run.head_sha }}
+          SYNC_ACTOR: ${{ github.event.workflow_run.actor.login }}
+          SYNC_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          SYNC_SHA: ${{ github.event.workflow_run.head_sha }}
+          SYNC_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          SYNC_RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SYNC_RESULTS: ${{ runner.temp }}/team-sync-results/results.json
         shell: python
         run: |
-          import json, os, urllib.request
-          from urllib.parse import urlparse
-          url = os.environ.get('DISCORD_WEBHOOK_URL', '')
-          if not url:
-              print('SKIP: DISCORD_WEBHOOK_URL is not configured.')
-              raise SystemExit(0)
-          parsed = urlparse(url)
-          if parsed.scheme != 'https' or parsed.hostname != 'discord.com' or not parsed.path.startswith('/api/webhooks/'):
-              raise SystemExit('Invalid Discord webhook endpoint; configure an https://discord.com/api/webhooks/ URL.')
-          message = ('SilverRingo | ' + os.environ['RESULT'] + '\n'
-                     + 'branch: ' + os.environ['BRANCH'][:180] + '\n'
-                     + 'commit: ' + os.environ['SHA'][:12] + '\n'
-                     + os.environ['RUN_URL'])
-          data = json.dumps({'content': message, 'allowed_mentions': {'parse': []}}).encode()
-          request = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json', 'User-Agent': 'SilverRingo-Team-Sync/1.0'}, method='POST')
-          try:
-              with urllib.request.urlopen(request, timeout=20) as response:
-                  print('Discord notification delivered:', response.status)
-          except Exception:
-              raise SystemExit('Discord delivery failed. Check webhook validity and rerun this job; the webhook URL is not logged.') from None
+          import os, subprocess, sys
+          raise SystemExit(subprocess.call([sys.executable, 'Tester/automation/notify.py']))
