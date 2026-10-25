@@ -3,6 +3,7 @@ name: Discord Sync Notification
 on:
   workflow_run:
     workflows: ['Team Sync']
+    branches: [main]
     types: [completed]
 
 permissions:

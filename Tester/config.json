@@ -4,17 +4,27 @@
       "name": "Example-01: 학습 진행률",
       "module": "Tester/example/Example-01.py",
       "test": "example/tests/test_example_01.py",
-      "enabled": true,
-      "include": [
-        "test_progress_pass",
-        "test_remaining_pass"
-      ]
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true,
+        "include": [
+          "test_progress_pass",
+          "test_remaining_pass"
+        ]
+      }
     },
     {
       "name": "Example-02: 퀴즈 점수",
       "module": "Tester/example/Example-02.py",
       "test": "example/tests/test_example_02.py",
-      "enabled": true
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true
+      }
     }
   ]
 }

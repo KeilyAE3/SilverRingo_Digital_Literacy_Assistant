@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import sys
 import unittest
+import argparse
 
 TESTER = Path(__file__).resolve().parents[1]
 ROOT = TESTER.parent
@@ -18,7 +19,7 @@ def flatten(suite):
             yield item
 
 
-def load_suite():
+def load_suite(mode):
     config = json.loads(
         (TESTER / "config.json").read_text(encoding="utf-8")
     )
@@ -34,7 +35,15 @@ def load_suite():
         if not isinstance(check, dict):
             raise ValueError("checks의 각 항목은 객체여야 합니다.")
 
-        enabled = check.get("enabled", True)
+        selection = check.get(mode)
+
+        if not isinstance(selection, dict):
+            raise ValueError(
+                f"{check.get('name', '(이름 없음)')}: "
+                f"{mode} 설정이 필요합니다."
+            )
+
+        enabled = selection.get("enabled", True)
 
         if not isinstance(enabled, bool):
             raise ValueError("enabled는 true 또는 false여야 합니다.")
@@ -45,9 +54,13 @@ def load_suite():
 
         # include 생략 = 전체 실행
         # include: [] = 실행할 항목 없음
-        include = check.get("include") if "include" in check else None
+        include = (
+            selection.get("include")
+            if "include" in selection
+            else None
+        )
 
-        if "include" in check:
+        if "include" in selection:
             if not isinstance(include, list):
                 raise ValueError("include는 테스트 메서드 이름 목록이어야 합니다.")
 
@@ -257,7 +270,8 @@ def make_summary(report):
             f"Expected failures: {report['expected_failures']}"
         ),
         "",
-        "검사 범위: 현재 작업 파일. main과의 가상 병합은 수행하지 않음.",
+        f"선택 설정: {report['mode']}",
+        f"검사 범위: {report['scope']}",
         "",
         "## 이번 실행의 검사 목록",
         "",
@@ -316,6 +330,14 @@ def make_summary(report):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="Team Sync 테스트 실행")
+    parser.add_argument(
+        "--mode",
+        choices=("local", "workflow"),
+        default="local",
+    )
+    args = parser.parse_args()
+
     os.chdir(ROOT)
     sys.path.insert(0, str(ROOT))
 
@@ -327,7 +349,7 @@ def main():
 
     with (output / "tests.log").open("w", encoding="utf-8") as log:
         try:
-            suite = load_suite()
+            suite = load_suite(args.mode)
             result = unittest.TextTestRunner(
                 stream=log,
                 verbosity=2,
@@ -393,7 +415,15 @@ def main():
             }
 
     report["sha"] = os.environ.get("GITHUB_SHA", "")
-    report["scope"] = "current checkout; no prospective merge"
+    report["mode"] = args.mode
+    report["scope"] = (
+        "main에 반영된 실행 대상 커밋"
+        if (
+            os.environ.get("GITHUB_ACTIONS") == "true"
+            and os.environ.get("GITHUB_REF") == "refs/heads/main"
+        )
+        else "현재 로컬 작업 파일: main과의 가상 병합 없음"
+    )
 
     (output / "results.json").write_text(
         json.dumps(report, ensure_ascii=False, indent=2),
