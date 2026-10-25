@@ -1,9 +1,14 @@
 {
   "checks": [
     {
-      "name": "예시: 학습 진행률 계산",
-      "module": "Tester/example/progress.py",
-      "test": "example/tests/test_progress.py"
+      "name": "Example-01: 학습 진행률",
+      "module": "Tester/example/Example-01.py",
+      "test": "example/tests/test_example_01.py"
+    },
+    {
+      "name": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test": "example/tests/test_example_02.py"
     }
   ]
 }

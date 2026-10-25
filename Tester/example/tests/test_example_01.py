@@ -1,9 +1,11 @@
 import unittest
 
-from Tester.example.progress import (
-    calculate_progress,
-    calculate_remaining,
-)
+from importlib import import_module
+
+example_01 = import_module("Tester.example.Example-01")
+
+calculate_progress = example_01.calculate_progress
+calculate_remaining = example_01.calculate_remaining
 
 
 class ProgressTests(unittest.TestCase):

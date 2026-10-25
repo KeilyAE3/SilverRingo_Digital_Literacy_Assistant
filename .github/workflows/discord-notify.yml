@@ -44,6 +44,4 @@ jobs:
           SYNC_RUN_URL: ${{ github.event.workflow_run.html_url }}
           SYNC_RESULTS: ${{ runner.temp }}/team-sync-results/results.json
         shell: python
-        run: |
-          import os, subprocess, sys
-          raise SystemExit(subprocess.call([sys.executable, 'Tester/automation/notify.py']))
+        run: python Tester/automation/notify.py

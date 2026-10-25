@@ -1,15 +1,16 @@
-# 진행률 계산 예시
+# 테스트 작성 예시
 
-이 폴더는 실제 애플리케이션과 분리된 테스트 작성 예시입니다.
+| 기능 모듈 | 테스트 파일 | 구성 |
+|---|---|---|
+| Example-01.py | tests/test_example_01.py | 학습 진행률·남은 개수: 성공 2개, 의도된 실패 2개 |
+| Example-02.py | tests/test_example_02.py | 퀴즈 점수: 정상 입력 2개, 잘못된 입력 1개, 모두 통과 |
 
-- progress.py: 학습 완료 개수로 진행률을 계산합니다.
-- tests/test_progress.py: 일부 완료, 전체 완료, 잘못된 입력을 검사합니다.
-- 한 테스트 파일에 독립적인 테스트 메서드 3개를 작성했습니다.
-- Tester/config.json에서 이 예시의 실행 여부를 관리합니다.
+검사 등록은 Tester/config.json에서 관리합니다.
+파일명에 하이픈이 있어 테스트에서는 importlib.import_module로 불러옵니다.
 
 저장소 최상위에서 실행:
 
 python Tester/automation/check.py
 
-세 테스트가 통과해도 실제 애플리케이션의 정상 작동을 검증한 것은 아닙니다.
-예시를 제거할 때는 config.json의 예시 항목과 이 폴더를 함께 제거하세요.
+Example-01의 의도된 실패 때문에 전체 결과는 failed가 됩니다.
+이 예시는 실제 애플리케이션의 정상 작동을 검증하지 않습니다.
