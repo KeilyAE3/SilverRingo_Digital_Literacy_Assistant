@@ -1,32 +1,12 @@
 {
-  "status": "failed",
-  "total": 7,
+  "status": "passed",
+  "total": 5,
   "passed": 5,
-  "failure_events": 2,
+  "failure_events": 0,
   "skipped": 0,
   "expected_failures": 0,
-  "failures": [
-    {
-      "test": "Tester.example.tests.test_example_01.ProgressTests.test_progress_fail_demo",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\user\\바탕 화면\\작업실\\SilverRingo_Assistant\\Tester\\example\\tests\\test_example_01.py\", line 32, in test_progress_fail_demo\n    self.assertEqual(\nAssertionError: 25.0 != 50.0 : [의도된 실패] 진행률 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=25.0, 기대값=50.0. 정상적인 기대값은 25.0입니다.\n"
-    },
-    {
-      "test": "Tester.example.tests.test_example_01.ProgressTests.test_remaining_fail_demo",
-      "detail": "Traceback (most recent call last):\n  File \"C:\\Users\\user\\바탕 화면\\작업실\\SilverRingo_Assistant\\Tester\\example\\tests\\test_example_01.py\", line 63, in test_remaining_fail_demo\n    self.assertEqual(\nAssertionError: 3 != 2 : [의도된 실패] 남은 개수 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=3, 기대값=2. 정상적인 기대값은 3입니다.\n"
-    }
-  ],
+  "failures": [],
   "tests": [
-    {
-      "group": "Example-01: 학습 진행률",
-      "module": "Tester/example/Example-01.py",
-      "test_file": "example/tests/test_example_01.py",
-      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_progress_fail_demo",
-      "description": "진행률 실패 출력 예시: 정상 결과 25%에 잘못된 기대값 50%를 비교한다.",
-      "status": "failed",
-      "details": [
-        "Traceback (most recent call last):\n  File \"C:\\Users\\user\\바탕 화면\\작업실\\SilverRingo_Assistant\\Tester\\example\\tests\\test_example_01.py\", line 32, in test_progress_fail_demo\n    self.assertEqual(\nAssertionError: 25.0 != 50.0 : [의도된 실패] 진행률 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=25.0, 기대값=50.0. 정상적인 기대값은 25.0입니다.\n"
-      ]
-    },
     {
       "group": "Example-01: 학습 진행률",
       "module": "Tester/example/Example-01.py",
@@ -35,17 +15,6 @@
       "description": "진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다.",
       "status": "passed",
       "details": []
-    },
-    {
-      "group": "Example-01: 학습 진행률",
-      "module": "Tester/example/Example-01.py",
-      "test_file": "example/tests/test_example_01.py",
-      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_remaining_fail_demo",
-      "description": "남은 개수 실패 출력 예시: 정상 결과 3개에 잘못된 기대값 2개를 비교한다.",
-      "status": "failed",
-      "details": [
-        "Traceback (most recent call last):\n  File \"C:\\Users\\user\\바탕 화면\\작업실\\SilverRingo_Assistant\\Tester\\example\\tests\\test_example_01.py\", line 63, in test_remaining_fail_demo\n    self.assertEqual(\nAssertionError: 3 != 2 : [의도된 실패] 남은 개수 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=3, 기대값=2. 정상적인 기대값은 3입니다.\n"
-      ]
     },
     {
       "group": "Example-01: 학습 진행률",

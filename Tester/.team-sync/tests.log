@@ -1,21 +1,9 @@
-test_progress_fail_demo (Tester.example.tests.test_example_01.ProgressTests.test_progress_fail_demo)
-진행률 실패 출력 예시: 정상 결과 25%에 잘못된 기대값 50%를 비교한다. ... 
-기능 모듈: Tester/example/Example-01.py
-테스트 항목: Tester.example.tests.test_example_01.ProgressTests.test_progress_fail_demo
-명세: 진행률 실패 출력 예시: 정상 결과 25%에 잘못된 기대값 50%를 비교한다.
-FAIL
 test_progress_pass (Tester.example.tests.test_example_01.ProgressTests.test_progress_pass)
 진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다. ... 
 기능 모듈: Tester/example/Example-01.py
 테스트 항목: Tester.example.tests.test_example_01.ProgressTests.test_progress_pass
 명세: 진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다.
 ok
-test_remaining_fail_demo (Tester.example.tests.test_example_01.ProgressTests.test_remaining_fail_demo)
-남은 개수 실패 출력 예시: 정상 결과 3개에 잘못된 기대값 2개를 비교한다. ... 
-기능 모듈: Tester/example/Example-01.py
-테스트 항목: Tester.example.tests.test_example_01.ProgressTests.test_remaining_fail_demo
-명세: 남은 개수 실패 출력 예시: 정상 결과 3개에 잘못된 기대값 2개를 비교한다.
-FAIL
 test_remaining_pass (Tester.example.tests.test_example_01.ProgressTests.test_remaining_pass)
 남은 개수 정상 사례: 4개 중 1개 완료 시 3개가 남는다. ... 
 기능 모듈: Tester/example/Example-01.py
@@ -41,25 +29,7 @@ test_partial_correct (Tester.example.tests.test_example_02.Example02Tests.test_p
 명세: 일부 정답: 5문항 중 3문항을 맞히면 60점이다.
 ok
 
-======================================================================
-FAIL: test_progress_fail_demo (Tester.example.tests.test_example_01.ProgressTests.test_progress_fail_demo)
-진행률 실패 출력 예시: 정상 결과 25%에 잘못된 기대값 50%를 비교한다.
 ----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Users\user\바탕 화면\작업실\SilverRingo_Assistant\Tester\example\tests\test_example_01.py", line 32, in test_progress_fail_demo
-    self.assertEqual(
-AssertionError: 25.0 != 50.0 : [의도된 실패] 진행률 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=25.0, 기대값=50.0. 정상적인 기대값은 25.0입니다.
+Ran 5 tests in 0.001s
 
-======================================================================
-FAIL: test_remaining_fail_demo (Tester.example.tests.test_example_01.ProgressTests.test_remaining_fail_demo)
-남은 개수 실패 출력 예시: 정상 결과 3개에 잘못된 기대값 2개를 비교한다.
-----------------------------------------------------------------------
-Traceback (most recent call last):
-  File "C:\Users\user\바탕 화면\작업실\SilverRingo_Assistant\Tester\example\tests\test_example_01.py", line 63, in test_remaining_fail_demo
-    self.assertEqual(
-AssertionError: 3 != 2 : [의도된 실패] 남은 개수 오류 보고 형식을 확인합니다. 입력: completed=1, total=4. 실제값=3, 기대값=2. 정상적인 기대값은 3입니다.
-
-----------------------------------------------------------------------
-Ran 7 tests in 0.002s
-
-FAILED (failures=2)
+OK

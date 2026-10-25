@@ -23,6 +23,7 @@ def load_suite():
         (TESTER / "config.json").read_text(encoding="utf-8")
     )
     checks = config["checks"]
+
     if not isinstance(checks, list):
         raise ValueError("config.json의 checks는 목록이어야 합니다.")
 
@@ -30,31 +31,131 @@ def load_suite():
     registered = set()
 
     for check in checks:
+        if not isinstance(check, dict):
+            raise ValueError("checks의 각 항목은 객체여야 합니다.")
+
+        enabled = check.get("enabled", True)
+
+        if not isinstance(enabled, bool):
+            raise ValueError("enabled는 true 또는 false여야 합니다.")
+
+        # 꺼진 검사 묶음은 파일 확인이나 import도 수행하지 않는다.
+        if not enabled:
+            continue
+
+        # include 생략 = 전체 실행
+        # include: [] = 실행할 항목 없음
+        include = check.get("include") if "include" in check else None
+
+        if "include" in check:
+            if not isinstance(include, list):
+                raise ValueError("include는 테스트 메서드 이름 목록이어야 합니다.")
+
+            if not all(
+                isinstance(name, str) and name.startswith("test_")
+                for name in include
+            ):
+                raise ValueError(
+                    "include에는 test_로 시작하는 메서드 이름을 적어야 합니다."
+                )
+
+            if len(include) != len(set(include)):
+                raise ValueError("include에 같은 이름을 중복 등록할 수 없습니다.")
+
+            if not include:
+                continue
+
         module_path = (ROOT / check["module"]).resolve()
         test_path = (TESTER / check["test"]).resolve()
 
         if not module_path.is_relative_to(ROOT):
             raise ValueError("기능 파일은 저장소 안에 있어야 합니다.")
+
         if not test_path.is_relative_to(TESTER):
             raise ValueError("테스트 파일은 Tester 안에 있어야 합니다.")
+
         if not module_path.is_file():
-            raise FileNotFoundError(f"기능 파일 없음: {check['module']}")
+            raise FileNotFoundError(
+                f"기능 파일 없음: {check['module']}"
+            )
+
         if not test_path.is_file():
-            raise FileNotFoundError(f"테스트 파일 없음: {check['test']}")
-        if not test_path.name.startswith("test_") or test_path.suffix != ".py":
+            raise FileNotFoundError(
+                f"테스트 파일 없음: {check['test']}"
+            )
+
+        if (
+            not test_path.name.startswith("test_")
+            or test_path.suffix != ".py"
+        ):
             raise ValueError("테스트 파일 이름은 test_*.py여야 합니다.")
+
         if test_path in registered:
-            raise ValueError(f"중복 등록된 테스트: {check['test']}")
+            raise ValueError(
+                f"중복 등록된 테스트 파일: {check['test']}"
+            )
+
         registered.add(test_path)
 
         import_name = ".".join(
             test_path.relative_to(ROOT).with_suffix("").parts
         )
-        loaded = unittest.defaultTestLoader.loadTestsFromName(import_name)
-        if loaded.countTestCases() == 0:
-            raise ValueError(f"테스트 항목이 없는 파일: {check['test']}")
 
-        for test in flatten(loaded):
+        # 각 파일마다 새 loader를 사용해 로딩 오류를 구분한다.
+        loader = unittest.TestLoader()
+        loaded = loader.loadTestsFromName(import_name)
+
+        # 선택 과정에서 import 오류가 가려지지 않도록 먼저 확인한다.
+        if loader.errors:
+            raise ValueError(
+                f"테스트 로딩 실패: {check['test']}\n"
+                + "\n".join(loader.errors)
+            )
+
+        candidates = list(flatten(loaded))
+
+        if not candidates:
+            raise ValueError(
+                f"테스트 항목이 없는 파일: {check['test']}"
+            )
+
+        if include is None:
+            selected = candidates
+        else:
+            by_name = {}
+
+            for test in candidates:
+                method_name = test.id().rsplit(".", 1)[-1]
+                by_name.setdefault(method_name, []).append(test)
+
+            missing = [
+                name for name in include
+                if name not in by_name
+            ]
+            if missing:
+                raise ValueError(
+                    f"{check['test']}: 존재하지 않는 테스트 이름: "
+                    + ", ".join(missing)
+                )
+
+            ambiguous = [
+                name for name in include
+                if len(by_name[name]) > 1
+            ]
+            if ambiguous:
+                raise ValueError(
+                    f"{check['test']}: 여러 클래스에서 중복된 테스트 이름: "
+                    + ", ".join(ambiguous)
+                    + ". 선택할 메서드 이름을 서로 다르게 지정하세요."
+                )
+
+            # include에 작성한 순서대로 실행한다.
+            selected = [
+                by_name[name][0]
+                for name in include
+            ]
+
+        for test in selected:
             test.sync_info = {
                 "group": check["name"],
                 "module": check["module"],
@@ -158,7 +259,10 @@ def make_summary(report):
         "",
         "검사 범위: 현재 작업 파일. main과의 가상 병합은 수행하지 않음.",
         "",
-        "## 전체 검사 목록",
+        "## 이번 실행의 검사 목록",
+        "",
+        "config.json에서 활성화·선택한 항목만 실행했습니다.",
+        "설정으로 제외한 항목은 테스트 수와 Skipped에 포함하지 않습니다.",
         "",
         "| 검사 묶음 | 기능 모듈 식별명 | 테스트 항목 식별명 | 명세 | 결과 |",
         "|---|---|---|---|---|",
@@ -177,7 +281,7 @@ def make_summary(report):
     if report["status"] == "not_configured":
         lines.extend([
             "",
-            "테스트 미등록: Tester/config.json에 검사를 등록하세요.",
+            "실행 대상 없음: Tester/config.json의 checks, enabled, include를 확인하세요.",
         ])
 
     lines.extend(["", "## 실패 및 미통과 상세", ""])
