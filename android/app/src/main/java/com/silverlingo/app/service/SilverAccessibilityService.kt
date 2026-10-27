@@ -4,6 +4,8 @@ import android.accessibilityservice.AccessibilityService
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.os.SystemClock
 import android.provider.Settings
 import android.speech.tts.TextToSpeech
@@ -52,7 +54,12 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     private companion object {
         const val DDOCDOC_PACKAGE = "com.bbros.sayup"
+        val SIGNUP_KEYWORDS = listOf("회원가입", "약관", "본인인증", "인증번호")
+        const val REVIEW_MS = 8000L
     }
+
+    private val handler = Handler(Looper.getMainLooper())
+    private var reviewStartedAt = 0L
 
     private lateinit var windowManager: WindowManager
     private var ringView: ComposeView? = null
@@ -83,7 +90,13 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null) return
+        refreshGuidance(
+            isWindowChange = event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
+            isOwnEvent = event.packageName?.toString() == packageName
+        )
+    }
 
+    private fun refreshGuidance(isWindowChange: Boolean = false, isOwnEvent: Boolean = false) {
         // 똑닥 화면(및 똑닥이 띄운 시스템 권한 허용 창) 위에서만 동작. 실버링고 등 다른 앱이 맨 앞이면 정리
         val rootNode = rootInActiveWindow ?: return
         val activePkg = rootNode.packageName?.toString() ?: ""
@@ -93,7 +106,14 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
             return
         }
         // 우리 오버레이 창이 낸 이벤트는 똑닥 화면 변화가 아니므로 무시 (표시→재탐색 반복 방지)
-        if (event.packageName?.toString() == packageName) return
+        if (isOwnEvent) return
+
+        // 회원가입·본인인증 화면은 안내 대상이 아님 ("본인인증"의 "본인"이 5단계로 잘못 잡히던 문제)
+        if (SIGNUP_KEYWORDS.any { kw -> rootNode.findAccessibilityNodeInfosByText(kw).orEmpty().any { it.isVisibleToUser } }) {
+            lastTargetRect = null
+            removeSpotlightOverlay()
+            return
+        }
 
         val target = findDdocdocStep(rootNode)
 
@@ -117,7 +137,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                     speak(message)
                 }
             }
-        } else if (event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) {
+        } else if (isWindowChange) {
             // 다른 화면이나 앱으로 이동하여 타깃이 없으면 기존 오버레이 정리
             lastTargetRect = null
             removeSpotlightOverlay()
@@ -131,18 +151,35 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     /**
      * 똑닥: "이 버튼은 무엇" 대신 병원을 찾아가는 순서를 안내
-     * 1 검색창 → 2 검색어 입력 → 3 병원 고르기 → 4 후기 확인/바로 접수 → 5 본인 선택 → 6 접수 신청
+     * 1 검색창 → 2 검색어 입력 → 3 병원 고르기 → 4 후기 확인 → 5 바로 접수 → 6 본인 선택 → 7 접수 신청
      * 뒤 단계 화면일수록 먼저 검사하고, "접수/확인/선택"처럼 여러 화면에 흔한 단어는 쓰지 않음 (홈의 "실시간 접수"가 검색창을 가로채던 문제)
      */
     private fun findDdocdocStep(root: AccessibilityNodeInfo): Pair<AccessibilityNodeInfo, String>? {
         findNodeByKeywords(root, listOf("접수 신청", "접수신청", "접수 요청하기"))
-            ?.let { return it to "6단계: 마지막 단계예요. [접수 신청]을 눌러주세요." }
-        findNodeByKeywords(root, listOf("본인"))
-            ?.let { return it to "5단계: 진료받으실 분으로 [본인]을 선택해주세요." }
-        findNodeByKeywords(root, listOf("바로접수", "바로 접수", "진료접수", "진료 접수", "접수하기"))
-            ?.let { return it to "4단계: 이 병원으로 접수하시려면 [바로 접수]를 눌러주세요. 아래로 내리시면 다른 분들의 후기도 볼 수 있어요." }
-        findNodeByKeywords(root, listOf("후기", "리뷰"))
-            ?.let { return it to "4단계: [후기]를 눌러 이 병원 평이 어떤지 먼저 확인해 보세요." }
+            ?.let { return it to "7단계: 마지막 단계예요. [접수 신청]을 눌러주세요." }
+        findNodeByKeywords(root, listOf("본인", "진료받을 분", "진료 받을 분", "진료 대상자"))
+            ?.let { return it to "6단계: 진료받으실 분으로 [본인]을 선택해주세요." }
+
+        // 병원 상세 화면: 후기 확인은 누를 버튼이 없어 넘어갈 계기가 없으므로, 일정 시간 뒤 [바로 접수] 안내로 자동 전환
+        val applyBtn = findNodeByKeywords(root, listOf("바로접수", "바로 접수", "진료접수", "진료 접수", "접수하기"))
+        val reviewBtn = findNodeByKeywords(root, listOf("후기", "리뷰"))
+        if (applyBtn != null || reviewBtn != null) {
+            val now = SystemClock.uptimeMillis()
+            if (reviewStartedAt == 0L) {
+                reviewStartedAt = now
+                handler.postDelayed({ refreshGuidance() }, REVIEW_MS)
+            }
+            val showReview = reviewBtn != null && (applyBtn == null || now - reviewStartedAt < REVIEW_MS)
+            return if (showReview) {
+                reviewBtn!! to "4단계: [후기]를 눌러 이 병원 평이 어떤지 먼저 확인해 보세요."
+            } else {
+                applyBtn!! to "5단계: 이 병원으로 접수하시려면 [바로 접수]를 눌러주세요."
+            }
+        }
+        // 다른 병원을 고르면 후기 확인부터 다시 시작
+        reviewStartedAt = 0L
+        handler.removeCallbacksAndMessages(null)
+
         root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)?.takeIf { it.isEditable }
             ?.let { return it to "2단계: 아픈 곳(예: 감기)이나 진료과(예: 내과), 병원 이름을 적고 검색해주세요." }
         findNodeByKeywords(root, listOf("질병, 진료과", "질병", "병원 검색", "병원검색"))
@@ -164,7 +201,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                     val interactive = findClickableAncestor(node)
                     val rect = Rect()
                     interactive.getBoundsInScreen(rect)
-                    if (rect.width() > 10 && rect.height() > 10 && rect.top >= 0) {
+                    if (node.isVisibleToUser && rect.width() > 10 && rect.height() > 10 && rect.top >= 0) {
                         return interactive
                     }
                 }
@@ -190,7 +227,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                     val interactive = findClickableAncestor(node)
                     val rect = Rect()
                     interactive.getBoundsInScreen(rect)
-                    if (rect.width() > 10 && rect.height() > 10 && rect.top >= 0) {
+                    if (node.isVisibleToUser && rect.width() > 10 && rect.height() > 10 && rect.top >= 0) {
                         return interactive
                     }
                 }
@@ -258,6 +295,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
+            useScreenCoordinates()
         }
         placeRing(newRingParams, targetRect)
         ringParams = newRingParams
@@ -296,6 +334,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
             PixelFormat.TRANSLUCENT
         ).apply {
             gravity = Gravity.TOP or Gravity.START
+            useScreenCoordinates()
         }
         placeTooltip(newTooltipParams, targetRect)
         tooltipParams = newTooltipParams
@@ -329,6 +368,14 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
             windowManager.addView(tooltipView, newTooltipParams)
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    // 오버레이 창은 기본적으로 상태바·노치 아래부터 배치되어, 화면 절대좌표(getBoundsInScreen)와 기기마다 다른 만큼 어긋남
+    private fun WindowManager.LayoutParams.useScreenCoordinates() {
+        flags = flags or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN or WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
         }
     }
 
@@ -391,6 +438,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     override fun onDestroy() {
         super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
         removeSpotlightOverlay()
         tts?.stop()
         tts?.shutdown()
