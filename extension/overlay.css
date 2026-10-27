@@ -1,0 +1,294 @@
+/* SilverLingo - 실제 공식 사이트 주입형 오버레이 스타일 v2.1 */
+
+/* 1. 타깃 요소 하이라이트 박스 (포인터 이벤트 100% 관통하여 클릭 차단 전혀 없음) */
+.silverlingo-spotlight-ring {
+  position: absolute !important;
+  pointer-events: none !important;
+  z-index: 999998 !important;
+  border: 4px solid #f59e0b !important;
+  border-radius: 12px !important;
+  box-shadow: 0 0 0 6px rgba(245, 158, 11, 0.45), 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+  animation: silverlingo-pulse 1.8s infinite alternate ease-in-out !important;
+  transition: all 0.25s ease !important;
+}
+
+@keyframes silverlingo-pulse {
+  0% {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.45), 0 4px 14px rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    border-color: #d97706;
+    box-shadow: 0 0 0 12px rgba(217, 119, 6, 0.65), 0 12px 30px rgba(217, 119, 6, 0.35);
+  }
+}
+
+/* 2. '여기를 누르세요' 스마트 말풍선 툴팁 (타깃 바깥에 정밀 배치) */
+.silverlingo-tooltip-bubble {
+  position: absolute !important;
+  z-index: 999999 !important;
+  background: rgba(30, 27, 75, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #ffffff !important;
+  padding: 14px 18px !important;
+  border-radius: 16px !important;
+  border: 2.5px solid rgba(251, 191, 36, 0.9) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif !important;
+  width: 320px !important;
+  max-width: 90vw !important;
+  cursor: default !important;
+  animation: silverlingo-fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  transition: top 0.25s cubic-bezier(0.16, 1, 0.3, 1), left 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s ease, opacity 0.2s ease !important;
+  user-select: none !important;
+}
+
+.silverlingo-tooltip-bubble:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.55) !important;
+}
+
+@keyframes silverlingo-fade-in {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 말풍선 헤더 (도우미 뱃지 + 비키기 버튼) */
+.silverlingo-tooltip-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  margin-bottom: 8px !important;
+}
+
+.silverlingo-tooltip-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  background-color: #fbbf24 !important;
+  color: #78350f !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  padding: 3px 8px !important;
+  border-radius: 6px !important;
+}
+
+/* 위치 비키기 버튼 */
+.silverlingo-dodge-btn {
+  background: rgba(255, 255, 255, 0.15) !important;
+  border: 1px solid rgba(251, 191, 36, 0.6) !important;
+  color: #fef08a !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 3px 8px !important;
+  border-radius: 12px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.silverlingo-dodge-btn:hover {
+  background: #fbbf24 !important;
+  color: #1e1b4b !important;
+}
+
+.silverlingo-tooltip-text {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  line-height: 1.45 !important;
+  color: #ffffff !important;
+  margin: 0 0 6px 0 !important;
+}
+
+.silverlingo-tooltip-text strong {
+  color: #fbbf24 !important;
+  font-size: 17px !important;
+  font-weight: 900 !important;
+  text-decoration: underline !important;
+}
+
+.silverlingo-tooltip-desc {
+  color: #f1f5f9 !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  display: inline-block !important;
+  margin-top: 2px !important;
+}
+
+.silverlingo-click-hint {
+  font-size: 11px !important;
+  color: #93c5fd !important;
+  font-weight: 600 !important;
+  border-top: 1px dashed rgba(255, 255, 255, 0.2) !important;
+  padding-top: 6px !important;
+  margin-top: 4px !important;
+}
+
+.silverlingo-finger-pointer {
+  display: inline-block !important;
+  font-size: 22px !important;
+  animation: silverlingo-bounce 0.9s infinite alternate !important;
+  margin-right: 6px !important;
+  vertical-align: middle !important;
+}
+
+@keyframes silverlingo-bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-5px); }
+}
+
+/* 말풍선 꼬리표 (타깃 방향을 가리키는 뾰족한 삼각형) */
+.silverlingo-tooltip-arrow {
+  position: absolute !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-style: solid !important;
+}
+
+/* 툴팁이 타깃 위에 위치할 때 (아래 방향 화살표) */
+.silverlingo-tooltip-bubble.arrow-bottom .silverlingo-tooltip-arrow {
+  bottom: -10px !important;
+  border-width: 10px 9px 0 9px !important;
+  border-color: #fbbf24 transparent transparent transparent !important;
+}
+
+/* 툴팁이 타깃 아래에 위치할 때 (위 방향 화살표) */
+.silverlingo-tooltip-bubble.arrow-top .silverlingo-tooltip-arrow {
+  top: -10px !important;
+  border-width: 0 9px 10px 9px !important;
+  border-color: transparent transparent #fbbf24 transparent !important;
+}
+
+/* 성공/진행 중 트랜지션 */
+.silverlingo-tooltip-success {
+  background: linear-gradient(135deg, #065f46 0%, #047857 100%) !important;
+  border-color: #34d399 !important;
+}
+.silverlingo-tooltip-success .silverlingo-tooltip-badge {
+  background-color: #34d399 !important;
+  color: #064e3b !important;
+}
+
+/* 3. 화면 우하단 상시 상주 플로팅 도우미 바 (스마트 충돌 회피 & 최소화 지원) */
+.silverlingo-global-floating-bar {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 1000000 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%) !important;
+  border: 2px solid #fbbf24 !important;
+  color: #ffffff !important;
+  padding: 10px 16px !important;
+  border-radius: 40px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45) !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif !important;
+  user-select: none !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+/* 하단 버튼과 충돌 시 상단으로 자동 대피 */
+.silverlingo-global-floating-bar.dock-top {
+  bottom: auto !important;
+  top: 20px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* 최소화(접힘) 상태 */
+.silverlingo-global-floating-bar.collapsed {
+  padding: 0 !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 50% !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  border: 3px solid #fbbf24 !important;
+}
+
+.silverlingo-global-floating-bar.collapsed .silverlingo-bot-info,
+.silverlingo-global-floating-bar.collapsed .silverlingo-bar-actions {
+  display: none !important;
+}
+
+.silverlingo-global-floating-bar.collapsed .silverlingo-bot-avatar {
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.silverlingo-bot-avatar {
+  font-size: 24px !important;
+  background-color: #ffffff !important;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  cursor: pointer !important;
+}
+
+.silverlingo-bot-info strong {
+  display: block !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  color: #fbbf24 !important;
+}
+
+.silverlingo-bot-info span {
+  font-size: 12px !important;
+  color: #e2e8f0 !important;
+}
+
+.silverlingo-bar-actions {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.silverlingo-btn-tts {
+  background-color: #fbbf24 !important;
+  color: #78350f !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 4px !important;
+  transition: transform 0.15s ease, background-color 0.15s ease !important;
+}
+
+.silverlingo-btn-tts:hover {
+  transform: scale(1.05) !important;
+}
+
+.silverlingo-btn-tts:active {
+  background-color: #f59e0b !important;
+}
+
+.silverlingo-btn-icon {
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 26px !important;
+  height: 26px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease !important;
+}
+
+.silverlingo-btn-icon:hover {
+  background: rgba(255, 255, 255, 0.4) !important;
+}

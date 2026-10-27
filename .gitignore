@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+bin/
+android/.gradle/
+android/build/
+android/app/build/
+
+# Local configuration
+android/local.properties
+.idea/
+*.iml
+.vscode/
+
+# System
+.DS_Store
+Thumbs.db
+
+# Local backups
+backup/
+
+
+# Local-only files (not committed)
+dist_phone/SilverLingo_v2.3_태블릿_스마트폰_통합본.zip
+docs/클로드_오해방지_시작_프롬프트.txt

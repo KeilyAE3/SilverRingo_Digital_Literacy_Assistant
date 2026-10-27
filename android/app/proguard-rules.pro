@@ -1,0 +1,1 @@
+# SilverLingo Proguard Rules

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "SilverLingo - 실시간 공식 사이트 동행 오버레이",
+  "version": "1.0.0",
+  "description": "코레일 등 실제 사이트 화면 위에 '여기를 누르세요' 위치 안내 및 쉬운 말풍선을 직접 띄워주는 어르신 전용 동행 도우미",
+  "permissions": [
+    "activeTab"
+  ],
+  "host_permissions": [
+    "*://*.letskorail.com/*",
+    "*://letskorail.com/*",
+    "*://*.korail.com/*",
+    "*://korail.com/*",
+    "http://localhost/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.letskorail.com/*",
+        "*://letskorail.com/*",
+        "*://*.korail.com/*",
+        "*://korail.com/*"
+      ],
+      "css": ["overlay.css"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
