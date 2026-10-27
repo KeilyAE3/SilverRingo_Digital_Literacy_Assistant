@@ -1,0 +1,48 @@
+name: Discord Sync Notification
+
+on:
+  workflow_run:
+    workflows: ['Team Sync']
+    branches: [main]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  notify:
+    if: >-
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.conclusion != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Load notifier from main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download only the triggering run and attempt
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v5
+        with:
+          name: team-sync-${{ github.event.workflow_run.id }}-${{ github.event.workflow_run.run_attempt }}
+          path: ${{ runner.temp }}/team-sync-results
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Send result summary or missing-result notice
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SYNC_ACTOR: ${{ github.event.workflow_run.actor.login }}
+          SYNC_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          SYNC_SHA: ${{ github.event.workflow_run.head_sha }}
+          SYNC_CONCLUSION: ${{ github.event.workflow_run.conclusion }}
+          SYNC_RUN_URL: ${{ github.event.workflow_run.html_url }}
+          SYNC_RESULTS: ${{ runner.temp }}/team-sync-results/results.json
+        shell: bash
+        run: python Tester/automation/notify.py

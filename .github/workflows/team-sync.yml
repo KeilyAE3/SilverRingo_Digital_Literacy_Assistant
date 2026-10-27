@@ -1,0 +1,41 @@
+name: Team Sync
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout the main commit being tested
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # 앱 의존성 설치가 필요해지면 이 위치에 추가합니다.
+
+      - name: Run workflow tests
+        run: python Tester/automation/check.py --mode workflow
+
+      - name: Save results even when tests fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: team-sync-${{ github.run_id }}-${{ github.run_attempt }}
+          path: Tester/.team-sync/
+          include-hidden-files: true
+          retention-days: 14

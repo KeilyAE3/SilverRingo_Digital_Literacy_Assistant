@@ -1,0 +1,58 @@
+{
+  "status": "passed",
+  "total": 5,
+  "passed": 5,
+  "failure_events": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "failures": [],
+  "tests": [
+    {
+      "group": "Example-01: 학습 진행률",
+      "module": "Tester/example/Example-01.py",
+      "test_file": "example/tests/test_example_01.py",
+      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_progress_pass",
+      "description": "진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-01: 학습 진행률",
+      "module": "Tester/example/Example-01.py",
+      "test_file": "example/tests/test_example_01.py",
+      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_remaining_pass",
+      "description": "남은 개수 정상 사례: 4개 중 1개 완료 시 3개가 남는다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_all_correct",
+      "description": "전체 정답: 5문항을 모두 맞히면 100점이다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_correct_answers_exceed_total",
+      "description": "잘못된 입력: 정답 수가 전체 문항 수보다 크면 거부한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_partial_correct",
+      "description": "일부 정답: 5문항 중 3문항을 맞히면 60점이다.",
+      "status": "passed",
+      "details": []
+    }
+  ],
+  "sha": "",
+  "scope": "current checkout; no prospective merge"
+}
