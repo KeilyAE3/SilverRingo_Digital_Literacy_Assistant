@@ -1,0 +1,15 @@
+PASS v2 single-item pricing defect reproduced
+PASS browser level 1
+PASS browser level 2
+PASS browser level 3
+PASS browser level 4
+PASS browser level 5
+PASS browser level 6
+PASS persisted level unlock after reload
+PASS multiple items, surcharge, quantity, back, resume, and wrong-order feedback
+PASS single branch and empty cart
+PASS 390px, 320px, enlarged text no horizontal overflow
+PASS embedded entry, completion and exit bridge messages (browser mock)
+PASS no browser JS errors
+PASS standalone single-HTML target order and embedded SVG
+PASS storage-disabled fallback continues practice
