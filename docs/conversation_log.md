@@ -955,3 +955,27 @@
 2. **똑닥 이탈 (`SilverAccessibilityService.kt`)**: 똑닥이 맨 앞이 되면 `hasEnteredDdocdoc = true`. 이후 창 전환 시 경유 화면(똑닥, 실버링고, 권한 창, `com.android.systemui`, 현재 키보드, `com.kakao.talk`, `com.nhn.android.search`)이 아닌 홈/다른 앱이면 위젯 서비스 종료 후 플래그 초기화(`isTransitPackage`).
 3. **인앱 브라우저**: `CompanionBrowserActivity.onDestroy()`에서 `isFinishing`일 때만 위젯 종료 (화면 회전 제외).
 4. 자석 도킹·[✕ 종료] 드래그 기능은 그대로. `assembleDebug` 성공, 바탕화면 `SilverLingo_v3.0.5_위젯_자동종료.zip`. 실기기 확인 필요.
+
+## 대화 57. 4단계→5단계 자동 전환이 안 되던 원인([시간예약] 버튼 미인식) 수정
+
+**사용자 질문 (원문)**
+> (병원 상세 진료후기 화면 스크린샷 첨부) 아직도 이 단계에서 자동으로 넘어가지지가 않네. 4단계에서 5단계로 넘어가지지가 않아
+
+**답변 요약**
+1. **원인**: 스크린샷의 병원은 접수 마감 상태라 하단 버튼이 [시간예약](활성)과 "내일 09:00 접수 가능"(비활성)뿐. 5단계 키워드("바로 접수/진료 접수/접수하기")에 맞는 버튼이 없어, "접수 버튼을 못 찾으면 4단계 유지" 규칙 때문에 계속 4단계에 머묾.
+2. **수정 (`SilverAccessibilityService.kt`)**: 5단계 키워드에 "시간예약", "시간 예약", "예약하기" 추가. 5단계 문구를 "[접수/예약] 버튼을 눌러주세요"로 일반화.
+3. **추가 관찰**: 스크린샷에서 노란 링이 [진료후기] 탭보다 위로 약간 밀려 보임 → 대화 56의 좌표 보정 영향인지 확인 필요(다른 화면에서도 같은 방향으로 밀리는지 사용자 확인 요청).
+4. `assembleDebug` 성공, 바탕화면 `SilverLingo_v3.0.5_시간예약_인식.zip`.
+
+## 대화 58. 스크롤 중 하이라이트 네모칸이 어긋나지 않도록 추적
+
+**사용자 질문 (원문)**
+> 스크롤할때 네모칸이 어긋나지 않게 조절해줄 수 있어?
+
+**답변 요약**
+1. **원인**: 접근성 서비스가 스크롤 이벤트(`typeViewScrolled`)를 받지 않고, 화면 변화 이벤트도 200ms마다만 받아 스크롤하는 동안 링이 제자리에 남아 있었음.
+2. **수정**:
+   - `accessibility_service_config.xml`: `typeViewScrolled` 구독 추가, `notificationTimeout` 200 → 50ms.
+   - `SilverAccessibilityService.kt` `followTargetOnScroll`: 스크롤 중에는 전체 탐색 없이 현재 타깃 노드 좌표만 다시 읽어(`refresh`) 링·말풍선 이동. 타깃이 화면 밖으로 나가면 숨김. 스크롤이 300ms 멈추면 전체 탐색으로 확정(`scrollSettled`).
+   - 후기 자동 전환 타이머와 스크롤 정착 타이머를 별도 `Runnable`로 분리해 서로 취소하지 않도록 함.
+3. `assembleDebug` 성공, 바탕화면 `SilverLingo_v3.0.6_스크롤_따라가기.zip`. 실기기 확인 필요.

@@ -61,6 +61,9 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
     }
 
     private val handler = Handler(Looper.getMainLooper())
+    private val reviewTimeout = Runnable { refreshGuidance() }
+    private val scrollSettled = Runnable { refreshGuidance() }
+    private var trackedNode: AccessibilityNodeInfo? = null
     private var hasEnteredDdocdoc = false
     private var reviewStartedAt = 0L
 
@@ -93,6 +96,10 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event == null) return
+        if (event.eventType == AccessibilityEvent.TYPE_VIEW_SCROLLED) {
+            followTargetOnScroll()
+            return
+        }
         refreshGuidance(
             isWindowChange = event.eventType == AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED,
             isOwnEvent = event.packageName?.toString() == packageName
@@ -136,6 +143,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
         if (target != null) {
             val (targetNode, message) = target
+            trackedNode = targetNode
             val rect = Rect()
             targetNode.getBoundsInScreen(rect)
             if ((!rect.isNear(lastTargetRect) || ringView == null || message != shownLabel) && rect.width() > 10 && rect.height() > 10) {
@@ -178,24 +186,25 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
             ?.let { return it to "6단계: 진료받으실 분으로 [본인]을 선택해주세요." }
 
         // 병원 상세 화면: 후기 확인은 누를 버튼이 없어 넘어갈 계기가 없으므로, 일정 시간 뒤 [바로 접수] 안내로 자동 전환
-        val applyBtn = findNodeByKeywords(root, listOf("바로접수", "바로 접수", "진료접수", "진료 접수", "접수하기"))
+        // 접수 마감 시간에는 [바로 접수] 대신 [시간예약]만 활성화됨
+        val applyBtn = findNodeByKeywords(root, listOf("바로접수", "바로 접수", "진료접수", "진료 접수", "접수하기", "시간예약", "시간 예약", "예약하기"))
         val reviewBtn = findNodeByKeywords(root, listOf("후기", "리뷰"))
         if (applyBtn != null || reviewBtn != null) {
             val now = SystemClock.uptimeMillis()
             if (reviewStartedAt == 0L) {
                 reviewStartedAt = now
-                handler.postDelayed({ refreshGuidance() }, REVIEW_MS)
+                handler.postDelayed(reviewTimeout, REVIEW_MS)
             }
             val showReview = reviewBtn != null && (applyBtn == null || now - reviewStartedAt < REVIEW_MS)
             return if (showReview) {
                 reviewBtn!! to "4단계: [후기]를 눌러 이 병원 평이 어떤지 먼저 확인해 보세요."
             } else {
-                applyBtn!! to "5단계: 이 병원으로 접수하시려면 [바로 접수]를 눌러주세요."
+                applyBtn!! to "5단계: 이 병원으로 접수하시려면 노란색으로 표시된 [접수/예약] 버튼을 눌러주세요."
             }
         }
         // 다른 병원을 고르면 후기 확인부터 다시 시작
         reviewStartedAt = 0L
-        handler.removeCallbacksAndMessages(null)
+        handler.removeCallbacks(reviewTimeout)
 
         root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)?.takeIf { it.isEditable }
             ?.let { return it to "2단계: 아픈 곳(예: 감기)이나 진료과(예: 내과), 병원 이름을 적고 검색해주세요." }
@@ -431,6 +440,26 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         val tolerance = 8
         return abs(left - other.left) < tolerance && abs(top - other.top) < tolerance &&
             abs(right - other.right) < tolerance && abs(bottom - other.bottom) < tolerance
+    }
+
+    // 스크롤 중에는 무거운 전체 탐색 대신 현재 타깃 노드 좌표만 새로 읽어 링을 따라 움직이고, 멈추면 전체 탐색으로 확정
+    private fun followTargetOnScroll() {
+        handler.removeCallbacks(scrollSettled)
+        handler.postDelayed(scrollSettled, 300)
+        val node = trackedNode ?: return
+        val label = shownLabel ?: return
+        val rect = Rect()
+        if (!node.refresh() || !node.isVisibleToUser) {
+            // 타깃이 화면 밖으로 나가면 엉뚱한 곳에 남지 않도록 숨김 (멈추면 scrollSettled가 다시 찾음)
+            lastTargetRect = null
+            removeSpotlightOverlay()
+            return
+        }
+        node.getBoundsInScreen(rect)
+        if (rect.width() > 10 && rect.height() > 10 && !rect.isNear(lastTargetRect)) {
+            lastTargetRect = rect
+            showSpotlightOverlay(targetRect = rect, nodeText = label)
+        }
     }
 
     private fun removeSpotlightOverlay() {
