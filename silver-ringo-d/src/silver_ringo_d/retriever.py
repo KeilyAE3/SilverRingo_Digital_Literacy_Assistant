@@ -9,7 +9,7 @@ from typing import Protocol
 
 from .knowledge_store import CURRENT_STATUSES
 from .models import KnowledgeDocument, KnowledgeHit
-from .normalizer import contains_phrase, normalize, tokens
+from .normalizer import contains_phrase, expanded_query_tokens, normalize, tokens
 
 MAX_QUERY_LENGTH = 1000
 MAX_TOP_K = 10
@@ -46,7 +46,8 @@ class LexicalRetriever:
         frequency = Counter(term for _, fields in prepared
                             for term in set().union(*(set(words) for _, words in fields)))
         query_tokens = tokens(query)
-        query_terms = set(query_tokens)
+        query_terms = set(expanded_query_tokens(query))
+        original_term_count = max(1, len(set(query_tokens)))
         hits = []
         for doc, fields in prepared:
             exact_id = query.strip().casefold() == doc.id.casefold()
@@ -70,7 +71,7 @@ class LexicalRetriever:
             if len(query_terms) >= 3 and len(matched) < 2 and not (exact_id or exact_title):
                 continue
             # Average by total meaningful query terms to suppress incidental overlap.
-            score = sum(best.values()) / max(1, len(query_terms))
+            score = sum(best.values()) / original_term_count
             phrase_bonus = 0.0
             for value, weight in [(doc.title, 12.0), *[(k, 8.0) for k in doc.keywords],
                                   *[(a, 5.0) for a in doc.aliases]]:

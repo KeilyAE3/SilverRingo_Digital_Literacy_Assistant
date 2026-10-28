@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "example_only": true,
+  "notes": "M07 QA용 더미 지식. silver-ringo-d/knowledge의 런타임 자료가 아니며 KnowledgeStore에 적재하지 않는다.",
+  "app_examples": [
+    {
+      "id": "example:app:home",
+      "title": "실버링고 홈",
+      "content": "실버링고는 어르신의 디지털 기기 사용과 생활 속 앱 이용을 돕는 학습 도우미입니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    }
+  ],
+  "assistant_examples": [
+    {
+      "id": "example:guide:appointment",
+      "title": "병원 접수 준비",
+      "content": "병원 접수 전에 병원과 진료과를 확인하는 연습 안내입니다. 실제 접수 완료를 대신하지 않습니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    },
+    {
+      "id": "example:guide:checkin",
+      "title": "접수 화면 확인",
+      "content": "접수 화면에서 본인 정보를 확인하는 연습 안내입니다. 인증정보를 입력받지 않습니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    }
+  ],
+  "course_examples": [
+    {
+      "id": "example:course:menu",
+      "title": "키오스크 메뉴 고르기",
+      "content": "키오스크에서 메뉴를 찾아 선택하는 연습입니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    },
+    {
+      "id": "example:course:cart",
+      "title": "장바구니 확인",
+      "content": "장바구니에서 주문 수량과 선택 항목을 확인하는 연습입니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    },
+    {
+      "id": "example:course:payment",
+      "title": "모의 카드 결제",
+      "content": "실제 카드나 돈 없이 카드 결제 화면을 연습하는 예시입니다.",
+      "status": "prototype",
+      "source": {"branch": "m07-fixture", "path": "Tester/example/knowledge/m07_examples.json", "kind": "design_doc"}
+    }
+  ]
+}
