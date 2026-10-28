@@ -3,7 +3,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'silver-ringo-d' / 'src'))
+sys.path.insert(0, str(ROOT / 'SilverRingo_Chat-bot' / 'src'))
 
 from silver_ringo_d.action_registry import ActionRegistry
 from silver_ringo_d.knowledge_store import KnowledgeStore
@@ -12,7 +12,7 @@ from silver_ringo_d.knowledge_store import KnowledgeStore
 class DKnowledgeTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.knowledge_dir = ROOT / 'silver-ringo-d' / 'knowledge'
+        cls.knowledge_dir = ROOT / 'SilverRingo_Chat-bot' / 'knowledge'
         cls.store = KnowledgeStore(cls.knowledge_dir)
         cls.store.load()
 

@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "example_only": true,
-  "notes": "M07 QA용 더미 지식. silver-ringo-d/knowledge의 런타임 자료가 아니며 KnowledgeStore에 적재하지 않는다.",
+  "notes": "M07 QA용 더미 지식. SilverRingo_Chat-bot/knowledge의 런타임 자료가 아니며 KnowledgeStore에 적재하지 않는다.",
   "app_examples": [
     {
       "id": "example:app:home",

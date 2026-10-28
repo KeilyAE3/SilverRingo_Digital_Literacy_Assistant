@@ -31,7 +31,7 @@
     },
     {
       "name": "D: Knowledge integrity",
-      "module": "silver-ringo-d/src/silver_ringo_d/knowledge_store.py",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/knowledge_store.py",
       "test": "tests/test_d_knowledge.py",
       "local": {
         "enabled": true
@@ -45,7 +45,7 @@
     },
     {
       "name": "D: Retriever QA",
-      "module": "silver-ringo-d/src/silver_ringo_d/retriever.py",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/retriever.py",
       "test": "tests/test_d_retriever.py",
       "local": {
         "enabled": true
@@ -56,7 +56,7 @@
     },
     {
       "name": "D: Action allow-list",
-      "module": "silver-ringo-d/src/silver_ringo_d/action_registry.py",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/action_registry.py",
       "test": "tests/test_d_action.py",
       "local": {
         "enabled": true
@@ -67,7 +67,7 @@
     },
     {
       "name": "D: ChatService QA",
-      "module": "silver-ringo-d/src/silver_ringo_d/chat_service.py",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/chat_service.py",
       "test": "tests/test_d_chat_service.py",
       "local": {
         "enabled": true

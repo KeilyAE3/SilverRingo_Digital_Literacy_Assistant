@@ -3,7 +3,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'silver-ringo-d' / 'src'))
+sys.path.insert(0, str(ROOT / 'SilverRingo_Chat-bot' / 'src'))
 
 from silver_ringo_d.action_registry import ActionRegistry
 from silver_ringo_d.chat_service import ChatService
@@ -15,7 +15,7 @@ from silver_ringo_d.retriever import LexicalRetriever
 
 
 def service(llm):
-    store = KnowledgeStore(ROOT / 'silver-ringo-d' / 'knowledge')
+    store = KnowledgeStore(ROOT / 'SilverRingo_Chat-bot' / 'knowledge')
     store.load()
     return ChatService(LexicalRetriever(store), llm, ActionRegistry(), Settings())
 

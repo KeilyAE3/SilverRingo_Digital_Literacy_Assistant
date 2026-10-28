@@ -9,14 +9,14 @@ ChatService, FastAPI HTTP 경계를 담당한다. 현재는 프로토타입이�
 Fake 모드 데모:
 
 ```text
-python silver-ringo-d/scripts/demo_queries.py
+python SilverRingo_Chat-bot/scripts/demo_queries.py
 ```
 
 HTTP API:
 
 ```text
-pip install -e "./silver-ringo-d[api]"
-uvicorn silver_ringo_d.api:app --app-dir silver-ringo-d/src --host 127.0.0.1 --port 8000
+pip install -e "./SilverRingo_Chat-bot[api]"
+uvicorn silver_ringo_d.api:app --app-dir SilverRingo_Chat-bot/src --host 127.0.0.1 --port 8000
 ```
 
 실제 Gemini는 모바일 앱이 아니라 D 서버의 환경변수로 설정한다. `.env`는 Git에서
@@ -35,7 +35,7 @@ main workflow는 대표 최종 QA 6개(D-QA-01~06)만 실행한다. 상세 회�
 local 모드에서 실행한다.
 
 M07 예시 지식은 [Tester/example/knowledge](../Tester/example/knowledge)에 있다.
-이는 `example_only=true`인 QA용 더미 자료이며 `silver-ringo-d/knowledge`의
+이는 `example_only=true`인 QA용 더미 자료이며 `SilverRingo_Chat-bot/knowledge`의
 런타임 자료와 분리되어 있다. 실행 서비스는 이 예시를 읽지 않는다.
 
 ## 인터페이스

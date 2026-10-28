@@ -3,7 +3,7 @@ from pathlib import Path
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'silver-ringo-d' / 'src'))
+sys.path.insert(0, str(ROOT / 'SilverRingo_Chat-bot' / 'src'))
 
 from silver_ringo_d.knowledge_store import KnowledgeStore
 from silver_ringo_d.retriever import LexicalRetriever
@@ -12,7 +12,7 @@ from silver_ringo_d.retriever import LexicalRetriever
 class DRetrieverTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        store = KnowledgeStore(ROOT / 'silver-ringo-d' / 'knowledge')
+        store = KnowledgeStore(ROOT / 'SilverRingo_Chat-bot' / 'knowledge')
         store.load()
         cls.retriever = LexicalRetriever(store)
 
