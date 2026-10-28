@@ -1,0 +1,205 @@
+{
+  "version": "0.1",
+  "date": "2026-10-28",
+  "kind": "planning_scaffolding_and_verified_seed_data",
+  "source_repo": "KeilyAE3/SilverRingo_Digital_Literacy_Assistant",
+  "source_branches": [
+    "hjh",
+    "Juno",
+    "jib",
+    "ydy_workspace"
+  ],
+  "file_count": 38,
+  "files": [
+    {
+      "path": "CODEX_KICKOFF_PROMPT.md",
+      "bytes": 1951,
+      "sha256": "584413fb145f6a4b616ddd648f0da307bda0860df8f03e2a062a363c7e19658a"
+    },
+    {
+      "path": "README_START_HERE.md",
+      "bytes": 3307,
+      "sha256": "b0a7935b8dddaab82d87938823ac3ce2917a0588cc650790cdbe243874ccf6b5"
+    },
+    {
+      "path": "silver-ringo-d/.env.example",
+      "bytes": 151,
+      "sha256": "382c1000c9547e5a335d3c51cbaada9a70ff49ad269c684230d26376de870a3e"
+    },
+    {
+      "path": "silver-ringo-d/.gitignore",
+      "bytes": 85,
+      "sha256": "2b5ea59fbe9021039c928dbf6b2375897b4c3771c07b339c2d764f4b7cba20da"
+    },
+    {
+      "path": "silver-ringo-d/AGENTS.md",
+      "bytes": 1510,
+      "sha256": "45b15e79c978f426c62d48dc9ad40c1ba4842288e9e63de8c361cd5f176a5982"
+    },
+    {
+      "path": "silver-ringo-d/docs/00_MASTER_PLAN.md",
+      "bytes": 7040,
+      "sha256": "214334d43dcf6e17333a35b392035ef1d5b38742c5e68422ccd04da46042227d"
+    },
+    {
+      "path": "silver-ringo-d/docs/01_DATA_CONTRACT.md",
+      "bytes": 5246,
+      "sha256": "e1dc0e5972f74d609af9f12b7b58c9acd86c91747b42942e765b8f8b6535a11e"
+    },
+    {
+      "path": "silver-ringo-d/docs/02_API_INTEGRATION.md",
+      "bytes": 3484,
+      "sha256": "776f4b3402a508b5679f577a52baa7e06858a9f630c20408dbecd7a00d19e6ea"
+    },
+    {
+      "path": "silver-ringo-d/docs/03_SOURCE_CATALOG.md",
+      "bytes": 3835,
+      "sha256": "0d0db81b2ebd4f0207c0c7046a090c45e08a990a97741ff0eb6cadfedcccc131"
+    },
+    {
+      "path": "silver-ringo-d/docs/04_TEST_PLAN.md",
+      "bytes": 3877,
+      "sha256": "ef6bc084c03356cf2d22eeeb1487c049b159e64725d4c305a46830cd8ba7850e"
+    },
+    {
+      "path": "silver-ringo-d/docs/05_DATA_GAPS_AND_IDEAS.md",
+      "bytes": 2363,
+      "sha256": "cc143904577f3c35fff927e7ae387cf1a6be95a8bfbaa035ad6b7e5a4bcfef57"
+    },
+    {
+      "path": "silver-ringo-d/docs/06_TEAM_HANDOFF.md",
+      "bytes": 1824,
+      "sha256": "c4dc463985baa1d8a8bb2183b5d4e9943ae36fbe418481e9b8159d7a2ed32fe3"
+    },
+    {
+      "path": "silver-ringo-d/docs/07_SPRINT_TRACKER.md",
+      "bytes": 964,
+      "sha256": "b825e50795721091e3187cd6b00dd2a19b4928a4fee6c9f06d9f7350aff59130"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M00_FOUNDATION.md",
+      "bytes": 2158,
+      "sha256": "ab0ab1036e9409dd0bec72922ba89f9d64aa0bc6b406a10f8700849eb136a73d"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M01_KNOWLEDGE_RESOURCES.md",
+      "bytes": 2955,
+      "sha256": "0a476368c102b8b26062efe94deef167d2cd18a6affe450198a6777683da0058"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M02_RETRIEVER.md",
+      "bytes": 2444,
+      "sha256": "578f3e39a69240ddae13cb8943a89ed18b6e6046b98ec1333a2f407daaac89d2"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M03_GEMINI_ADAPTER.md",
+      "bytes": 2121,
+      "sha256": "0913ae52ac893183ce6b0e88a3e14e37f01c047803a91cd4829502d52388f9b3"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M04_ACTION_REGISTRY.md",
+      "bytes": 1625,
+      "sha256": "e4f030fa90141a3e68ca2bf079ebf2b1fd419f024855a0d564d73e97740f8e8b"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M05_CHAT_SERVICE.md",
+      "bytes": 2027,
+      "sha256": "46f126f5d1f421ff081a30f6cbe7e91455c37300cf696e5f6075cd41b802a558"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M06_FASTAPI.md",
+      "bytes": 1810,
+      "sha256": "0aa04b0b588ce57ec4640989d12b4f0d687ef4d89a6bd9f78656a1b21318eae6"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M07_TESTER_AND_DEMO.md",
+      "bytes": 2484,
+      "sha256": "1a3684bcfdb75e4e9b47a363157a093c3ef097d3dc93c4e560265fa1ccba194b"
+    },
+    {
+      "path": "silver-ringo-d/docs/modules/M08_OPTIONAL_EMBEDDINGS.md",
+      "bytes": 1837,
+      "sha256": "706c9a39c35113526403ec09eef26f06bb73a18ccbb921af7b4cbb9f3dfd055e"
+    },
+    {
+      "path": "silver-ringo-d/knowledge/action_catalog.json",
+      "bytes": 2076,
+      "sha256": "b186a1596fdad67e94559f375157a75a127638ecf9a5f4f4881b477aa40d609f"
+    },
+    {
+      "path": "silver-ringo-d/knowledge/app_info.json",
+      "bytes": 5154,
+      "sha256": "8f843779eaaf344de7e7366eb8ba4056d7db434724fb9f151bb04b13dc9be2e2"
+    },
+    {
+      "path": "silver-ringo-d/knowledge/assistant_guides.json",
+      "bytes": 10140,
+      "sha256": "f76c6fdd082fe39db2a01cd96961a7e5c71426744094e6c55fae89d223150c4a"
+    },
+    {
+      "path": "silver-ringo-d/knowledge/learning_courses.json",
+      "bytes": 8372,
+      "sha256": "727dada6ede071d1737b06239ab5994141cf34397a6368e9d40a1894364214a5"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M00_FIRST_IMPLEMENT.md",
+      "bytes": 538,
+      "sha256": "d2fbee4a9f687b689e32ee2f57a0cec493c70765bb68eef5870b02ccf5fd3e3d"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M01_TASK.md",
+      "bytes": 1357,
+      "sha256": "3ede596108a3ea3a167d8f6e7fad0ed3ece1f7a3243daf7f0a6df1292a6ee8ef"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M02_TASK.md",
+      "bytes": 1347,
+      "sha256": "ba6b948956c5e55a352b3943fee384d49ed1444c15eb29db54da3153791d132d"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M03_TASK.md",
+      "bytes": 1352,
+      "sha256": "e30105e4c0ab1dd0c868d680f460cb038b0e40c6a4320cb52102b58e56f4cbc4"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M04_TASK.md",
+      "bytes": 1353,
+      "sha256": "4b432969fbf8d347ffcac197884bee0e8ea84571abb62ee6e6bffe5f0e38b06a"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M05_TASK.md",
+      "bytes": 1350,
+      "sha256": "503730a19de822d6a5163ea79f4f11507df7e1c24d27c99e8abaaee65650eaef"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M06_TASK.md",
+      "bytes": 1345,
+      "sha256": "8413bc14dcf6cc209da3881652b154ffda7444732df9661f364bca28265817d0"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M07_TASK.md",
+      "bytes": 1353,
+      "sha256": "a5c298d8457b9ee244cc9a1a13641780164b0b63915b6d6169694382c304ba14"
+    },
+    {
+      "path": "silver-ringo-d/prompts/M08_TASK.md",
+      "bytes": 1357,
+      "sha256": "d6a600f1f7aa806d0fa79b68d9858cedce4ba80afca453352091cd5a48efdf24"
+    },
+    {
+      "path": "silver-ringo-d/prompts/REVIEW_GATE.md",
+      "bytes": 888,
+      "sha256": "4c07c0e8ededb4dbd366e128c52a17633f0bc734c6c9b0be2c5bb778558b87b9"
+    },
+    {
+      "path": "silver-ringo-d/prompts/TASK_TEMPLATE.md",
+      "bytes": 1592,
+      "sha256": "48e850e5035f311c6710ed9b7b91945df599a2af63d447829bdcdf34da58ec9c"
+    },
+    {
+      "path": "silver-ringo-d/tests/fixtures/retrieval_cases.json",
+      "bytes": 2957,
+      "sha256": "df8c55022128a505ccc9832c1036d753895730888629b12b873e3c9587e21ff7"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "notes": "MVP 시작 상태. A/B/C의 코드 참조는 실제 통합 완료가 아니므로 전부 disabled. target은 D 제안 ID이며 A 합의 전 확정 계약이 아님.",
+  "actions": [
+    {
+      "id": "open_learning_home",
+      "kind": "navigate",
+      "target": "learning.home",
+      "label": "IT 기능 배우기",
+      "enabled": false,
+      "status": "unintegrated",
+      "owner": "A",
+      "requires": [],
+      "source": {
+        "branch": "hjh",
+        "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
+        "kind": "code"
+      }
+    },
+    {
+      "id": "open_guide_home",
+      "kind": "navigate",
+      "target": "guides.home",
+      "label": "생활 가이드",
+      "enabled": false,
+      "status": "unintegrated",
+      "owner": "A",
+      "requires": [],
+      "source": {
+        "branch": "hjh",
+        "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
+        "kind": "code"
+      }
+    },
+    {
+      "id": "open_kiosk_course",
+      "kind": "navigate",
+      "target": "learning.kiosk",
+      "label": "키오스크 배우기 열기",
+      "enabled": false,
+      "status": "unintegrated",
+      "owner": "A+C",
+      "requires": [
+        "C 학습 코스 진입점 통합",
+        "레벨 잠금은 C가 판정"
+      ],
+      "source": {
+        "branch": "jib",
+        "path": "silver-ringo-c/android/app/src/main/java/kr/silverringo/learning/LearningEntry.kt",
+        "kind": "code"
+      }
+    },
+    {
+      "id": "start_ddocdoc_companion",
+      "kind": "navigate",
+      "target": "guides.ddocdoc",
+      "label": "병원 접수 도우미 열기",
+      "enabled": false,
+      "status": "unintegrated",
+      "owner": "A+B",
+      "requires": [
+        "A/B 이동 계약",
+        "Android 권한 확인",
+        "앱 설치/웹 대체 처리"
+      ],
+      "source": {
+        "branch": "Juno",
+        "path": "android/app/src/main/java/com/silverlingo/app/ui/screens/MainDashboardScreen.kt",
+        "kind": "code"
+      }
+    }
+  ]
+}
