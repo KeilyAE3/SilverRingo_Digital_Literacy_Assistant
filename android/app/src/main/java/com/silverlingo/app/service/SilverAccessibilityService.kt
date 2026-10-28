@@ -55,7 +55,12 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
     private companion object {
         const val DDOCDOC_PACKAGE = "com.bbros.sayup"
-        val SIGNUP_KEYWORDS = listOf("회원가입", "약관", "본인인증", "인증번호")
+        val AUTH_KEYWORDS = listOf(
+            "회원가입", "약관", "본인인증", "본인 인증", "본인확인", "본인 확인", "인증번호", "통신사",
+            "문자(SMS)", "보안문자", "주민등록번호", "생년월일", "휴대폰번호", "이메일 로그인", "카카오로 시작"
+        )
+        val HOME_SEARCH_KEYWORDS = listOf("질병, 진료과", "병원 검색", "병원검색")
+        val SEARCH_INPUT_KEYWORDS = listOf("질병", "진료과", "병원", "검색", "증상")
         const val REVIEW_MS = 8000L
         val TRANSIT_PACKAGES = setOf(DDOCDOC_PACKAGE, "com.android.systemui", "com.kakao.talk", "com.nhn.android.search")
     }
@@ -65,6 +70,8 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
     private val scrollSettled = Runnable { refreshGuidance() }
     private var trackedNode: AccessibilityNodeInfo? = null
     private var hasEnteredDdocdoc = false
+    // 홈(1단계 검색창)을 보기 전 로그인·인증 화면의 글자/입력창이 2·6단계로 잡히지 않도록 막는 게이트
+    private var hasReachedHome = false
     private var reviewStartedAt = 0L
 
     private lateinit var windowManager: WindowManager
@@ -132,8 +139,9 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         // 우리 오버레이 창이 낸 이벤트는 똑닥 화면 변화가 아니므로 무시 (표시→재탐색 반복 방지)
         if (isOwnEvent) return
 
-        // 회원가입·본인인증 화면은 안내 대상이 아님 ("본인인증"의 "본인"이 5단계로 잘못 잡히던 문제)
-        if (SIGNUP_KEYWORDS.any { kw -> rootNode.findAccessibilityNodeInfosByText(kw).orEmpty().any { it.isVisibleToUser } }) {
+        // 로그인·회원가입·본인인증·주민번호 입력 화면은 안내 대상이 아님 (PASS 웹뷰 내부·입력창 hint까지 DFS로 확인)
+        if (isAuthOrSignupScreen(rootNode)) {
+            hasReachedHome = false
             lastTargetRect = null
             removeSpotlightOverlay()
             return
@@ -162,8 +170,8 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                     speak(message)
                 }
             }
-        } else if (isWindowChange) {
-            // 다른 화면이나 앱으로 이동하여 타깃이 없으면 기존 오버레이 정리
+        } else {
+            // 타깃이 없으면 즉시 정리 (RN/웹뷰는 액티비티 전환 없이 내용만 바뀌어 이전 말풍선이 남던 문제)
             lastTargetRect = null
             removeSpotlightOverlay()
         }
@@ -180,9 +188,17 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
      * 뒤 단계 화면일수록 먼저 검사하고, "접수/확인/선택"처럼 여러 화면에 흔한 단어는 쓰지 않음 (홈의 "실시간 접수"가 검색창을 가로채던 문제)
      */
     private fun findDdocdocStep(root: AccessibilityNodeInfo): Pair<AccessibilityNodeInfo, String>? {
+        val homeSearch = findNodeByKeywords(root, HOME_SEARCH_KEYWORDS)
+        if (homeSearch != null) hasReachedHome = true
+        if (!hasReachedHome) {
+            return findNodeByKeywords(root, listOf("앱 사용 중에만 허용", "허용", "건너뛰기"))
+                ?.let { it to "시작하기 전에 화면의 [허용] 또는 [건너뛰기]를 눌러주세요." }
+        }
+
         findNodeByKeywords(root, listOf("접수 신청", "접수신청", "접수 요청하기"))
             ?.let { return it to "7단계: 마지막 단계예요. [접수 신청]을 눌러주세요." }
-        findNodeByKeywords(root, listOf("본인", "진료받을 분", "진료 받을 분", "진료 대상자"))
+        // "본인 인증하기", "본인 확인을 하기 위해" 같은 문구의 "본인"은 제외
+        findNodeByKeywords(root, listOf("본인", "진료받을 분", "진료 받을 분", "진료 대상자"), exclude = listOf("인증", "확인"))
             ?.let { return it to "6단계: 진료받으실 분으로 [본인]을 선택해주세요." }
 
         // 병원 상세 화면: 후기 확인은 누를 버튼이 없어 넘어갈 계기가 없으므로, 일정 시간 뒤 [바로 접수] 안내로 자동 전환
@@ -206,24 +222,44 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         reviewStartedAt = 0L
         handler.removeCallbacks(reviewTimeout)
 
-        root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)?.takeIf { it.isEditable }
+        // 병원 검색창일 때만 2단계 (PASS 이름·휴대폰번호·인증번호 입력창 등은 제외)
+        val guidingSearch = shownLabel?.let { it.startsWith("1단계") || it.startsWith("2단계") } == true
+        root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            ?.takeIf { it.isEditable && (guidingSearch || SEARCH_INPUT_KEYWORDS.any { kw -> nodeText(it).contains(kw) }) }
             ?.let { return it to "2단계: 아픈 곳(예: 감기)이나 진료과(예: 내과), 병원 이름을 적고 검색해주세요." }
-        findNodeByKeywords(root, listOf("질병, 진료과", "질병", "병원 검색", "병원검색"))
-            ?.let { return it to "1단계: 먼저 맨 위 검색창을 눌러주세요. 아픈 곳, 진료과, 병원 이름으로 찾을 수 있어요." }
+        homeSearch?.let { return it to "1단계: 먼저 맨 위 검색창을 눌러주세요. 아픈 곳, 진료과, 병원 이름으로 찾을 수 있어요." }
         findNodeByKeywords(root, listOf("진료중", "진료 중", "접수가능", "접수 가능"))
             ?.let { return it to "3단계: 원하시는 병원 하나를 눌러 들어가 보세요." }
-        findNodeByKeywords(root, listOf("앱 사용 중에만 허용", "허용", "카카오로 시작", "시작하기", "건너뛰기"))
-            ?.let { return it to "시작하기 전에 [허용] 또는 [카카오로 시작]을 눌러주세요." }
         return null
     }
 
+    private fun nodeText(node: AccessibilityNodeInfo): String {
+        val hint = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) node.hintText?.toString() ?: "" else ""
+        return "${node.text ?: ""} ${node.contentDescription ?: ""} $hint"
+    }
 
-    private fun findNodeByKeywords(root: AccessibilityNodeInfo, keywords: List<String>): AccessibilityNodeInfo? {
+    // 보이는 노드의 text·contentDescription·hintText를 DFS로 훑어 인증/가입 키워드 확인 (findAccessibilityNodeInfosByText는 웹뷰·hint를 놓침)
+    private fun isAuthOrSignupScreen(node: AccessibilityNodeInfo?): Boolean {
+        if (node == null) return false
+        if (node.isVisibleToUser && AUTH_KEYWORDS.any { nodeText(node).contains(it) }) return true
+        for (i in 0 until node.childCount) {
+            if (isAuthOrSignupScreen(node.getChild(i))) return true
+        }
+        return false
+    }
+
+
+    private fun findNodeByKeywords(
+        root: AccessibilityNodeInfo,
+        keywords: List<String>,
+        exclude: List<String> = emptyList()
+    ): AccessibilityNodeInfo? {
         // 1. Android 기본 substring 검색
         for (kw in keywords) {
             val nodes = root.findAccessibilityNodeInfosByText(kw)
             if (!nodes.isNullOrEmpty()) {
                 for (node in nodes) {
+                    if (exclude.any { nodeText(node).contains(it) }) continue
                     val interactive = findClickableAncestor(node)
                     val rect = Rect()
                     interactive.getBoundsInScreen(rect)
@@ -235,19 +271,20 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         }
 
         // 2. React Native 및 커스텀 컴포넌트 깊이 우선 재귀 탐색 (DFS)
-        return findDeepInteractiveNode(root, keywords)
+        return findDeepInteractiveNode(root, keywords, exclude)
     }
 
-    private fun findDeepInteractiveNode(node: AccessibilityNodeInfo?, keywords: List<String>): AccessibilityNodeInfo? {
+    private fun findDeepInteractiveNode(
+        node: AccessibilityNodeInfo?,
+        keywords: List<String>,
+        exclude: List<String> = emptyList()
+    ): AccessibilityNodeInfo? {
         if (node == null) return null
 
-        val text = node.text?.toString() ?: ""
-        val desc = node.contentDescription?.toString() ?: ""
         // 똑닥 검색창의 "질병, 진료과, 병원 검색"처럼 입력창 안내 문구는 hintText에만 들어 있음
-        val hint = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) node.hintText?.toString() ?: "" else ""
-        val combined = "$text $desc $hint"
+        val combined = nodeText(node)
 
-        if (combined.isNotBlank()) {
+        if (combined.isNotBlank() && exclude.none { combined.contains(it) }) {
             for (kw in keywords) {
                 if (combined.contains(kw, ignoreCase = true)) {
                     val interactive = findClickableAncestor(node)
@@ -262,7 +299,7 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
 
         for (i in 0 until node.childCount) {
             val child = node.getChild(i) ?: continue
-            val found = findDeepInteractiveNode(child, keywords)
+            val found = findDeepInteractiveNode(child, keywords, exclude)
             if (found != null) return found
         }
 
