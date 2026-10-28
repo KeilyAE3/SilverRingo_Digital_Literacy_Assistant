@@ -1,6 +1,6 @@
 # 구현 체크리스트와 작동 구조
 
-필수 M00~M07 중 3개 모듈의 코드가 작성되어 있다. 이는 작업량 37.5%나 제품 완성도를 뜻하지 않는다.
+필수 M00~M07 중 4개 모듈(M00~M03)의 코드가 작성되어 있다. 모듈 개수는 작업량이나 제품 완성도를 뜻하지 않는다.
 M08은 선택 사항이다. 아직 채팅 API/생성/화면 실행은 연결되지 않았다.
 
 ## 모듈별 상태
@@ -10,7 +10,7 @@ M08은 선택 사항이다. 아직 채팅 API/생성/화면 실행은 연결되�
 | M00 패키지·타입·설정 | 구현됨 | Python 3.12.10 core import/fake 확인. 패키지 빌드·설치는 미검증. 이전 테스트 제거 유지 |
 | M01 지식·변환·적재 | 구현됨 | 원본 대조, C 생성, 3.12 정상 적재 36개 확인. 실패 reload 등 전체 수락은 보류 |
 | M02 키워드/유의어 검색 | 구현됨 | 3.12 fixture 10/10·입력/필터/순서 경계 확인. 일반화 품질 검증은 남음 |
-| M03 Gemini/Fake 어댑터 | 미구현 | 외부 API 요청·응답 처리 미연결 |
+| M03 Gemini/Fake 어댑터 | 구현됨 | 3.12 Fake/mock 검증 완료. 실제 SDK 설치·키·Gemini 호출 미검증 |
 | M04 ActionRegistry | 미구현 | 4개 액션은 비활성, 실행 검증 로직 미구현 |
 | M05 ChatService | 미구현 | 이력/검색 문맥/프롬프트/응답 통합 미구현 |
 | M06 HTTP API | 미구현 | Android 요청/응답 경로 미연결 |
@@ -43,7 +43,7 @@ flowchart TD
   Q["질의"] --> M02
   M02 --> H["KnowledgeHit 목록"]
   H -.-> M05["미구현 M05 요청 구성·응답 통합"]
-  M05 -.-> M03["미구현 M03 Gemini/Fake 생성"]
+  M05 -.-> M03["✓ M03 Gemini/Fake 경계 · 실제 API 미검증"]
   A["비활성 액션 카탈로그"] -.-> M04["미구현 M04 액션 검증"]
   M03 -.-> R["계획: 답변 + 출처 + 검증된 액션"]
   M04 -.-> R
@@ -64,7 +64,8 @@ silver-ringo-d/
 ├─ src/silver_ringo_d/
 │  ├─ __init__.py, models.py, config.py       [M00]
 │  ├─ knowledge_store.py                     [M01]
-│  └─ normalizer.py, retriever.py             [M02 신규]
+│  ├─ normalizer.py, retriever.py             [M02]
+│  └─ system_prompt.py, llm.py, gemini_adapter.py, local_settings.py [M03]
 ├─ knowledge/*.json (4종)                    [M01 자료]
 ├─ scripts/
 │  ├─ import_jib_content.py                  [M01 변환]
@@ -85,6 +86,30 @@ silver-ringo-d/
 - 이번 승인 범위: Python 3.12 호환 확인과 M02 로컬 fixture/경계 질의 실행.
   외부 API를 호출하지 않았으며 API 키는 지금 필요하지 않다.
 - Tester 항목은 후속 사용자 지시 전까지 추가하지 않는다.
-- 다음 모듈은 M03. 실제 Gemini 사용 시에만 서버 환경변수 키/모델 설정이 필요하다.
+- 다음 모듈은 M04. 사용자는 D의 .env 또는 서버 환경변수에 키/모델을 설정한다. 다음 단계에서 weak/rag 실제 호출 확인 예정이며 이번에는 호출하지 않았다.
 
 자세한 가중치·제한·실행 결과는 [M02 보고](M02_IMPLEMENTATION_REPORT.md)를 참고한다.
+
+## M03까지 확인한 실제 로컬 흐름
+
+```mermaid
+flowchart TD
+  Q["질의"] --> RET["M02 검색"]
+  DATA["M01 지식 적재"] --> RET
+  RET --> CTX["M03 선택 근거 JSON"]
+  HIST["최근 대화 최대 6개"] --> REQ["M03 요청 구성"]
+  CTX --> REQ
+  Q --> REQ
+  SYS["앱의 고정 역할 정의"] --> CFG["별도 system_instruction 필드"]
+  REQ --> FAKE["FakeLLM / SDK mock · 검증 완료"]
+  CFG --> FAKE
+  REQ -.-> REAL["Gemini API · 실제 호출 미검증"]
+  CFG -.-> REAL
+  FAKE --> JSON["reply + source_ids JSON 검증"]
+  REAL -.-> JSON
+  JSON -.-> SERVICE["M05 서비스 통합 · 미구현"]
+```
+
+M03 시스템 지침은 사용자 질의에서 분리해 관리하지만 generateContent 전송에는 매번 포함한다.
+API에 영구 기억시키는 기능은 구현하지 않았다. source_ids는 근거 ID이며 실행 권한이 아니다.
+[키 저장·API 규격·다음 실호출 절차](M03_IMPLEMENTATION_REPORT.md)를 참고한다.

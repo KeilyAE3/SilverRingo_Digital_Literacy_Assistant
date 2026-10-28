@@ -1,0 +1,16 @@
+pyproject.toml
+src/silver_ringo_d/__init__.py
+src/silver_ringo_d/config.py
+src/silver_ringo_d/gemini_adapter.py
+src/silver_ringo_d/knowledge_store.py
+src/silver_ringo_d/llm.py
+src/silver_ringo_d/local_settings.py
+src/silver_ringo_d/models.py
+src/silver_ringo_d/normalizer.py
+src/silver_ringo_d/retriever.py
+src/silver_ringo_d/system_prompt.py
+src/silver_ringo_d.egg-info/PKG-INFO
+src/silver_ringo_d.egg-info/SOURCES.txt
+src/silver_ringo_d.egg-info/dependency_links.txt
+src/silver_ringo_d.egg-info/requires.txt
+src/silver_ringo_d.egg-info/top_level.txt
