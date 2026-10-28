@@ -944,3 +944,14 @@
 1. **원인**: 버튼 좌표(`getBoundsInScreen`)는 화면 맨 위(상태바 포함) 기준인데, 오버레이 창은 기본적으로 상태바·노치 아래부터 배치됨 → 상태바 높이만큼 어긋나고, 상태바·노치 크기가 기기마다 달라 어긋남 정도도 기기마다 다름.
 2. **수정**: 펄스 링·말풍선 창에 `FLAG_LAYOUT_IN_SCREEN | FLAG_LAYOUT_NO_LIMITS` 및 `LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES`(Android 9+) 적용(`useScreenCoordinates`)하여 창 좌표도 화면 절대좌표 기준으로 통일.
 3. `assembleDebug` 성공, 바탕화면 `SilverLingo_v3.0.4_하이라이트_위치보정.zip`. 실기기 확인 필요.
+
+## 대화 57. '실버링고 동행 중' 플로팅 위젯이 앱 종료 후에도 남는 문제 수정
+
+**사용자 요청 (요약)**
+> 앱을 종료해도 `FloatingCompanionService` 위젯이 사라지지 않음. 최근 앱에서 종료 / 똑닥 이탈 / 인앱 브라우저 종료 시 위젯도 함께 종료되게 하고 `assembleDebug` 검증.
+
+**답변 요약**
+1. **최근 앱에서 종료**: `AndroidManifest.xml` 서비스에 `android:stopWithTask="true"`, `FloatingCompanionService.onTaskRemoved()`에서 `stopForeground(STOP_FOREGROUND_REMOVE)` + `stopSelf()`. `onDestroy()`에서도 알림 제거.
+2. **똑닥 이탈 (`SilverAccessibilityService.kt`)**: 똑닥이 맨 앞이 되면 `hasEnteredDdocdoc = true`. 이후 창 전환 시 경유 화면(똑닥, 실버링고, 권한 창, `com.android.systemui`, 현재 키보드, `com.kakao.talk`, `com.nhn.android.search`)이 아닌 홈/다른 앱이면 위젯 서비스 종료 후 플래그 초기화(`isTransitPackage`).
+3. **인앱 브라우저**: `CompanionBrowserActivity.onDestroy()`에서 `isFinishing`일 때만 위젯 종료 (화면 회전 제외).
+4. 자석 도킹·[✕ 종료] 드래그 기능은 그대로. `assembleDebug` 성공, 바탕화면 `SilverLingo_v3.0.5_위젯_자동종료.zip`. 실기기 확인 필요.

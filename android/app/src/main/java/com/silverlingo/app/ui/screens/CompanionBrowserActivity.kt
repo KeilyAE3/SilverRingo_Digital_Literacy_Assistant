@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import com.silverlingo.app.service.FloatingCompanionService
 import com.silverlingo.app.service.OverlayScriptProvider
 import com.silverlingo.app.ui.theme.*
 import java.util.Locale
@@ -78,6 +79,8 @@ class CompanionBrowserActivity : ComponentActivity(), TextToSpeech.OnInitListene
 
     override fun onDestroy() {
         super.onDestroy()
+        // 화면 회전 등 재생성이 아니라 실제로 나갈 때만 '동행 중' 위젯 종료
+        if (isFinishing) stopService(Intent(this, FloatingCompanionService::class.java))
         tts?.stop()
         tts?.shutdown()
         webView?.destroy()

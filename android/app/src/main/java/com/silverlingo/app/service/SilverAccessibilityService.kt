@@ -1,6 +1,7 @@
 package com.silverlingo.app.service
 
 import android.accessibilityservice.AccessibilityService
+import android.content.Intent
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
@@ -56,9 +57,11 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         const val DDOCDOC_PACKAGE = "com.bbros.sayup"
         val SIGNUP_KEYWORDS = listOf("회원가입", "약관", "본인인증", "인증번호")
         const val REVIEW_MS = 8000L
+        val TRANSIT_PACKAGES = setOf(DDOCDOC_PACKAGE, "com.android.systemui", "com.kakao.talk", "com.nhn.android.search")
     }
 
     private val handler = Handler(Looper.getMainLooper())
+    private var hasEnteredDdocdoc = false
     private var reviewStartedAt = 0L
 
     private lateinit var windowManager: WindowManager
@@ -96,10 +99,24 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
         )
     }
 
+    // 똑닥 이용 중 잠시 거쳐 갈 수 있는 화면 (실버링고, 권한 창, 시스템 UI, 키보드, 카카오/네이버 로그인)
+    private fun isTransitPackage(pkg: String): Boolean {
+        val imePkg = Settings.Secure.getString(contentResolver, Settings.Secure.DEFAULT_INPUT_METHOD)?.substringBefore('/')
+        return pkg.isEmpty() || pkg == packageName || pkg == imePkg || pkg in TRANSIT_PACKAGES ||
+            pkg.contains("permissioncontroller") || pkg.contains("inputmethod")
+    }
+
     private fun refreshGuidance(isWindowChange: Boolean = false, isOwnEvent: Boolean = false) {
         // 똑닥 화면(및 똑닥이 띄운 시스템 권한 허용 창) 위에서만 동작. 실버링고 등 다른 앱이 맨 앞이면 정리
         val rootNode = rootInActiveWindow ?: return
         val activePkg = rootNode.packageName?.toString() ?: ""
+        if (activePkg == DDOCDOC_PACKAGE) {
+            hasEnteredDdocdoc = true
+        } else if (isWindowChange && hasEnteredDdocdoc && !isTransitPackage(activePkg)) {
+            // 똑닥을 쓰다가 홈 화면이나 다른 앱으로 완전히 나가면 '동행 중' 위젯도 종료
+            hasEnteredDdocdoc = false
+            stopService(Intent(this, FloatingCompanionService::class.java))
+        }
         if (activePkg != DDOCDOC_PACKAGE && !activePkg.contains("permissioncontroller")) {
             lastTargetRect = null
             removeSpotlightOverlay()

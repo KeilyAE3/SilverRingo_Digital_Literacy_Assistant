@@ -261,8 +261,16 @@ class FloatingCompanionService : Service() {
         } catch (_: Exception) {}
     }
 
+    // 최근 앱 목록에서 실버링고를 밀어 종료하면 위젯도 함께 종료
+    override fun onTaskRemoved(rootIntent: Intent?) {
+        super.onTaskRemoved(rootIntent)
+        stopForeground(STOP_FOREGROUND_REMOVE)
+        stopSelf()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
+        stopForeground(STOP_FOREGROUND_REMOVE)
         snapAnimator?.cancel()
         listOf(composeView, dismissView).forEach { view ->
             try {
