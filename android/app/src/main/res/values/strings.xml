@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">SilverLingo</string>
+    <string name="app_name_kr">실버링고</string>
+    <string name="accessibility_service_desc">똑닥 앱으로 병원 당일 접수를 하실 때 화면 위에서 버튼 위치를 찾아 노란색 테두리와 쉬운 말풍선, 음성으로 짚어드리는 어르신 전용 동행 도우미 서비스입니다.</string>
+    <string name="accessibility_service_summary">실버링고 실시간 위치 안내 접근성 도우미</string>
+</resources>

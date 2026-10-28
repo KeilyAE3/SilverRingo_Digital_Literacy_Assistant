@@ -1,6 +1,13 @@
 {
   "checks": [
     {
+      "name": "통합 앱: 실제 키오스크 학습 엔진·콘텐츠",
+      "module": "silver-ringo-c/web/engine.js",
+      "test": "tests/test_learning_engine.py",
+      "local": { "enabled": true },
+      "workflow": { "enabled": true }
+    },
+    {
       "name": "Example-01: 학습 진행률",
       "module": "Tester/example/Example-01.py",
       "test": "example/tests/test_example_01.py",

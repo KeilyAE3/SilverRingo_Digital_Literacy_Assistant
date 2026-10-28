@@ -1,0 +1,12 @@
+# Local Android builds and machine-specific configuration
+.local/
+.gradle/
+**/.gradle/
+**/build/
+**/local.properties
+**/node_modules/
+**/tests/artifacts/
+**/__pycache__/
+*.py[cod]
+Tester/.team-sync/
+*.apk

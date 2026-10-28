@@ -1,0 +1,1454 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#211c50" />
+    <title>Silver Ringo · 키오스크 배우기</title>
+    <style>:root {
+  font-family: system-ui, "Malgun Gothic", sans-serif;
+  color: #191d32;
+  background: #f3f5f9;
+  font-size: 20px;
+  --navy: #211c50;
+  --yellow: #ffd337;
+  --muted: #58647b;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+  min-height: 56px;
+  border: 2px solid #cbd0dd;
+  border-radius: 14px;
+  padding: 12px 18px;
+  color: inherit;
+  background: white;
+  font-weight: 700;
+}
+button:hover {
+  border-color: #211c50;
+  background: #faf8ee;
+}
+button:disabled {
+  cursor: default;
+  color: #60677a;
+  background: #e7e9ee;
+}
+button:focus-visible {
+  outline: 4px solid #0078a8;
+  outline-offset: 3px;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0 0 16px;
+}
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.1rem);
+  line-height: 1.35;
+}
+h2 {
+  font-size: 1.5rem;
+}
+p {
+  line-height: 1.6;
+}
+.brand {
+  background: var(--navy);
+  color: var(--yellow);
+  padding: 22px max(20px, calc((100vw - 1160px) / 2));
+  font-size: 28px;
+  font-weight: 850;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand-mark {
+  font-size: 38px;
+}
+.part {
+  margin-left: auto;
+  font-size: 17px;
+  color: #fff;
+}
+main {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+.eyebrow {
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.hero {
+  border-radius: 26px;
+  background: var(--navy);
+  color: #fff;
+  padding: 30px;
+  position: relative;
+}
+.hero .eyebrow {
+  color: var(--yellow);
+}
+.hero p {
+  max-width: 650px;
+}
+.hero em {
+  color: var(--yellow);
+  font-style: normal;
+}
+.row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.between {
+  justify-content: space-between;
+}
+.primary {
+  background: var(--yellow);
+  border-color: var(--yellow);
+  color: var(--navy);
+}
+.primary:hover {
+  background: #ffe36b;
+}
+.secondary {
+  background: #eef0f7;
+}
+.quiet {
+  color: var(--muted);
+  font-size: 18px;
+}
+.map-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 32px;
+  margin-top: 28px;
+}
+.path {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.node {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: calc(100% - 28px);
+  text-align: left;
+  border-radius: 24px;
+  box-shadow: 0 4px 0 #dde1ea;
+  position: relative;
+  min-height: 116px;
+}
+.node:nth-child(even) {
+  margin-left: 28px;
+}
+.node:not(:last-child):after {
+  content: "";
+  position: absolute;
+  height: 25px;
+  width: 4px;
+  top: 100%;
+  left: 50%;
+  background: #cbd0dd;
+}
+.circle {
+  border-radius: 50%;
+  height: 64px;
+  min-width: 64px;
+  background: var(--navy);
+  color: var(--yellow);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+}
+.node:disabled .circle {
+  background: #cbd0dd;
+  color: #4d5568;
+}
+.node small {
+  display: block;
+  font-weight: 400;
+  margin-top: 6px;
+  font-size: 17px;
+}
+.aside,
+.card,
+.intro {
+  background: white;
+  padding: 26px;
+  border-radius: 24px;
+  border: 1px solid #e3e6ee;
+}
+.aside {
+  align-self: start;
+  position: sticky;
+  top: 24px;
+}
+.aside h2 {
+  font-size: 24px;
+}
+.pill {
+  display: inline-block;
+  font-size: 16px;
+  padding: 7px 12px;
+  border-radius: 100px;
+  background: #fff4c2;
+  color: #53420a;
+  font-weight: 700;
+}
+.intro {
+  max-width: 720px;
+  margin: 24px auto;
+}
+.intro p {
+  margin-top: 16px;
+}
+.practice-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 640px) minmax(280px, 1fr);
+  gap: 24px;
+  align-items: start;
+  max-width: 1020px;
+  margin: 24px auto;
+}
+.coach {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 22px;
+}
+.coach .card {
+  margin-bottom: 16px;
+}
+.coach h2 {
+  font-size: 24px;
+}
+.coach .task {
+  font-size: 22px;
+}
+.kiosk {
+  grid-column: 1;
+  grid-row: 1;
+  background: #fff;
+  border: 8px solid #303141;
+  border-radius: 30px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px #211c5016;
+  min-height: 740px;
+  display: flex;
+  flex-direction: column;
+}
+.store-head {
+  padding: 20px;
+  background: #176055;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 25px;
+  font-weight: 850;
+}
+.store-head small {
+  font-size: 14px;
+  background: #ffffff20;
+  padding: 7px;
+  border-radius: 8px;
+}
+.store-info {
+  padding: 10px 20px;
+  background: #eaf4ef;
+  font-size: 16px;
+  color: #24534b;
+}
+.screen {
+  padding: 24px;
+  flex: 1;
+}
+.screen h2:focus {
+  outline: none;
+}
+.screen h2 {
+  font-size: 28px;
+}
+.screen .row > button {
+  flex: 1;
+}
+.splash {
+  background: #fff4dd;
+  text-align: center;
+  border-radius: 20px;
+  padding: 32px 18px;
+  margin-bottom: 20px;
+}
+.splash img {
+  width: 200px;
+  max-width: 100%;
+}
+.splash strong {
+  display: block;
+  font-size: 34px;
+  color: #20564c;
+  margin-top: 8px;
+}
+.wide {
+  width: 100%;
+  margin-top: 14px;
+}
+.choices,
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.choice {
+  min-height: 106px;
+}
+.choice span {
+  display: block;
+  font-size: 38px;
+  margin-bottom: 8px;
+}
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+.tabs button {
+  flex: 1;
+  padding: 10px 6px;
+  font-size: 19px;
+}
+.selected {
+  border-color: #176055;
+  background: #e7f3ed !important;
+  color: #164f43;
+  box-shadow: inset 0 0 0 1px #176055;
+}
+.product {
+  padding: 14px 10px;
+  text-align: left;
+  min-width: 0;
+}
+.product img {
+  width: 100%;
+  height: 118px;
+  object-fit: contain;
+  display: block;
+}
+.product strong {
+  display: block;
+  font-size: 20px;
+}
+.price {
+  font-size: 18px;
+  color: #536179;
+  margin-top: 8px;
+  display: block;
+}
+.highlight {
+  outline: 4px solid #c58b00;
+  outline-offset: 2px;
+}
+.target-label {
+  display: block;
+  color: #765000;
+  font-size: 15px;
+  margin-top: 8px;
+}
+.cart-bar {
+  background: #f0f2f6;
+  padding: 16px;
+  border-radius: 14px;
+  margin-top: 24px;
+}
+.dialog {
+  border: 2px solid #dde1e9;
+  border-radius: 20px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 10px 22px #0001;
+}
+.dialog h3 {
+  font-size: 22px;
+  margin-top: 20px;
+}
+.options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.options button {
+  flex: 1;
+  font-size: 18px;
+  padding: 10px;
+}
+.line {
+  padding: 18px 0;
+  border-bottom: 1px solid #dce1e8;
+}
+.line p {
+  font-size: 18px;
+  margin: 6px 0;
+  color: var(--muted);
+}
+.quantity {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.quantity button {
+  min-width: 56px;
+  padding: 8px;
+}
+.amount {
+  font-size: 27px;
+  font-weight: 850;
+  text-align: right;
+  margin: 22px 0;
+}
+.bottom-nav {
+  padding: 14px 20px;
+  background: #f4f5f8;
+  border-top: 1px solid #ddd;
+}
+.bottom-nav button {
+  width: 100%;
+}
+.receipt {
+  text-align: center;
+  padding: 30px 12px;
+  border: 2px dashed #b9c3cf;
+  border-radius: 15px;
+}
+.receipt .number {
+  font-size: 68px;
+  font-weight: 900;
+  color: #176055;
+}
+.result {
+  max-width: 720px;
+  margin: 24px auto;
+}
+.result-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 40px;
+  background: #fff1b5;
+  margin-bottom: 20px;
+}
+.result ul {
+  padding-left: 24px;
+  line-height: 1.8;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+.metrics div {
+  background: #f2f4f8;
+  padding: 16px;
+  border-radius: 14px;
+}
+.metrics strong {
+  display: block;
+  font-size: 28px;
+}
+.disclaimer {
+  font-size: 16px;
+  color: #566176;
+  text-align: center;
+  padding: 12px 20px 28px;
+  line-height: 1.7;
+}
+#notice {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+  color: #714600;
+}
+#notice:not(:empty) {
+  padding: 18px 24px;
+  background: #fff0ba;
+  border-radius: 14px;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+.embed .brand,
+.embed .disclaimer {
+  display: none;
+}
+.embed main {
+  padding: 12px;
+}
+.embed .practice-layout {
+  margin: 0 auto;
+}
+.embed .kiosk {
+  border-width: 3px;
+}
+.embed .coach {
+  position: static;
+}
+@media (max-width: 850px) {
+  .practice-layout {
+    display: flex;
+    flex-direction: column;
+    max-width: 640px;
+  }
+  .coach {
+    position: static;
+    width: 100%;
+  }
+  .coach .card {
+    padding: 20px;
+  }
+  .kiosk {
+    width: 100%;
+    min-height: 680px;
+  }
+  .map-layout {
+    grid-template-columns: 1fr;
+  }
+  .aside {
+    position: static;
+  }
+  .part {
+    display: none;
+  }
+}
+@media (max-width: 450px) {
+  main {
+    padding: 20px 12px;
+  }
+  .brand {
+    padding: 14px;
+    font-size: 25px;
+  }
+  .hero {
+    padding: 24px;
+  }
+  .screen {
+    padding: 18px 14px;
+  }
+  .store-head {
+    padding: 16px;
+    font-size: 22px;
+  }
+  .node {
+    padding: 16px 12px;
+    gap: 12px;
+  }
+  .circle {
+    min-width: 52px;
+    height: 52px;
+  }
+  .product strong {
+    font-size: 19px;
+  }
+  .options button {
+    min-width: 110px;
+  }
+  .kiosk {
+    border-width: 4px;
+  }
+  .tabs button {
+    font-size: 18px;
+  }
+  .intro {
+    padding: 22px;
+  }
+  .coach .task {
+    font-size: 21px;
+  }
+}
+.practice-tools summary {
+  font-size: 18px;
+  cursor: pointer;
+  padding: 14px 4px;
+  color: #334057;
+  font-weight: 700;
+  min-height: 56px;
+}
+.practice-tools {
+  margin-top: 12px;
+  border-top: 1px solid #dce1e8;
+}
+@media (max-width: 850px) {
+  .coach > p {
+    display: none;
+  }
+  .coach h1 {
+    font-size: 26px;
+  }
+  .coach .task {
+    font-size: 20px;
+  }
+  .coach .card {
+    padding: 20px;
+    margin-bottom: 0;
+  }
+  .coach .quiet {
+    font-size: 17px;
+  }
+  .practice-layout {
+    gap: 16px;
+  }
+}
+</style>
+  </head>
+  <body>
+    <header class="brand">
+      <span class="brand-mark" aria-hidden="true">☺</span> Silver Ringo
+      <span class="part">디지털 배움터</span>
+    </header>
+    <main id="app"></main>
+    <div id="notice" role="status" aria-live="polite"></div>
+    <footer class="disclaimer">
+      C파트 학습 콘텐츠 · 교육용 가상 매장<br />표시 금액은 예시이며 실제 주문과
+      결제는 발생하지 않습니다.
+    </footer>
+    <script>(function (root) {
+  const content = {
+    schemaVersion: 1,
+    topicId: "kiosk",
+    products: [
+      {
+        id: "bulgogi",
+        name: "불고기 버거",
+        category: "burger",
+        price: 5000,
+        image: "burger.svg",
+      },
+      {
+        id: "shrimp",
+        name: "새우 버거",
+        category: "burger",
+        price: 5200,
+        image: "shrimp.svg",
+      },
+      {
+        id: "chicken",
+        name: "치킨 버거",
+        category: "burger",
+        price: 5500,
+        image: "chicken.svg",
+      },
+      {
+        id: "fries",
+        name: "감자튀김",
+        category: "side",
+        price: 2200,
+        image: "fries.svg",
+      },
+      {
+        id: "cola",
+        name: "콜라",
+        category: "drink",
+        price: 1800,
+        image: "cola.svg",
+      },
+    ],
+    categories: [
+      ["burger", "햄버거"],
+      ["side", "사이드"],
+      ["drink", "음료"],
+    ],
+    sides: [
+      { id: "fries", name: "감자튀김", extra: 0 },
+      { id: "cheese", name: "치즈스틱", extra: 500 },
+    ],
+    drinks: [
+      { id: "cola", name: "콜라", extra: 0 },
+      { id: "cider", name: "사이다", extra: 0 },
+      { id: "water", name: "생수", extra: 0 },
+    ],
+    goal: {
+      dining: "here",
+      productId: "bulgogi",
+      kind: "set",
+      side: "fries",
+      drink: "cola",
+      quantity: 1,
+      payment: "card",
+    },
+    levels: [
+      {
+        id: 1,
+        title: "키오스크 시작하기",
+        description: "시작 화면과 식사 장소를 배워요.",
+        start: "start",
+        end: "menu",
+        checks: ["dining"],
+        concept:
+          "화면을 눌러 주문을 시작합니다. 매장에서 먹기와 포장 중 원하는 장소를 고릅니다.",
+        task: "주문을 시작하고 매장에서 먹기를 선택하세요.",
+      },
+      {
+        id: 2,
+        title: "메뉴 찾기",
+        description: "카테고리에서 원하는 버거를 찾아요.",
+        start: "menu",
+        end: "options",
+        checks: ["product"],
+        concept:
+          "메뉴는 햄버거·사이드·음료로 나뉩니다. 햄버거 탭에서 상품의 그림과 이름을 확인하세요.",
+        task: "햄버거 카테고리에서 불고기 버거를 찾으세요.",
+      },
+      {
+        id: 3,
+        title: "세트와 옵션 선택",
+        description: "사이드와 음료를 골라 담아요.",
+        start: "options",
+        end: "cart",
+        checks: ["set"],
+        concept:
+          "단품은 버거만, 세트는 버거·사이드·음료입니다. 옵션을 확인한 뒤 장바구니에 담습니다.",
+        task: "불고기 버거 세트에 감자튀김과 콜라를 골라 담으세요.",
+      },
+      {
+        id: 4,
+        title: "장바구니 확인",
+        description: "수량과 합계를 살펴봐요.",
+        start: "cart",
+        end: "payment",
+        checks: ["cart"],
+        concept:
+          "장바구니는 결제 전 주문을 모아 보는 곳입니다. 수량을 바꾸거나 삭제할 수 있습니다.",
+        task: "불고기 버거 세트 1개인지 확인하고 결제 화면으로 이동하세요.",
+      },
+      {
+        id: 5,
+        title: "결제 방법 배우기",
+        description: "모의 카드 결제를 연습해요.",
+        start: "payment",
+        end: "receipt",
+        checks: ["payment"],
+        concept:
+          "결제 수단을 선택한 뒤 안내를 따릅니다. 이 연습에서는 실제 카드나 돈이 필요하지 않습니다.",
+        task: "카드 결제를 선택하고 모의 결제를 완료하세요.",
+      },
+      {
+        id: 6,
+        title: "혼자서 주문하기",
+        description: "처음부터 끝까지 직접 해봐요.",
+        start: "start",
+        end: "receipt",
+        checks: ["dining", "set", "cart", "payment"],
+        concept:
+          "배운 순서대로 주문해 보세요. 화면 강조 없이 진행합니다. 실패해도 다시 연습할 수 있어요.",
+        task: "매장에서 먹기 · 불고기 버거 세트 1개 · 감자튀김 · 콜라 · 카드 결제",
+      },
+    ],
+    guides: {
+      start: "주문 시작하기를 눌러 주세요.",
+      dining: "매장에서 먹기를 선택해 보세요.",
+      menu: "햄버거 탭에서 불고기 버거를 찾아 주세요.",
+      options: "세트, 감자튀김, 콜라를 확인한 뒤 장바구니에 담으세요.",
+      cart: "세트 1개와 합계를 확인하고 주문 확인을 누르세요.",
+      review: "주문 내역과 식사 장소를 확인하고 결제 수단 선택을 누르세요.",
+      payment: "카드 결제를 선택하세요.",
+      card: "모의 카드로 결제하기를 누르세요. 실제 카드는 필요 없어요.",
+      receipt: "주문번호를 확인하세요.",
+    },
+  };
+  root.SRContent = content;
+  if (typeof module !== "undefined") module.exports = content;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+    <script>(function (root) {
+  const C =
+    typeof module !== "undefined" ? require("./content.js") : root.SRContent;
+  const clone = (x) => JSON.parse(JSON.stringify(x));
+  function item(
+    productId = "bulgogi",
+    kind = "set",
+    side = "fries",
+    drink = "cola",
+  ) {
+    return {
+      productId,
+      kind,
+      side: kind === "set" ? side : null,
+      drink: kind === "set" ? drink : null,
+      quantity: 1,
+    };
+  }
+  function create(level = 6, mode = "learn") {
+    const l = C.levels.find((x) => x.id === level) || C.levels[5];
+    const s = {
+      version: 1,
+      level: l.id,
+      mode: l.id === 6 && mode !== "free" ? "test" : mode,
+      screen: l.start,
+      dining: null,
+      category: "burger",
+      draft: null,
+      cart: [],
+      payment: null,
+      events: [],
+      hints: 0,
+      startedAt: Date.now(),
+      orderNo: null,
+    };
+    if (l.id >= 2 && l.id <= 5) s.dining = "here";
+    if (l.id === 3) s.draft = item();
+    if (l.id === 4 || l.id === 5) s.cart = [item()];
+    return s;
+  }
+  function unit(i) {
+    const p = C.products.find((x) => x.id === i.productId);
+    return (
+      p.price +
+      (i.kind === "set"
+        ? 2500 + (C.sides.find((x) => x.id === i.side)?.extra || 0)
+        : 0)
+    );
+  }
+  function total(s) {
+    return s.cart.reduce((sum, i) => sum + unit(i) * i.quantity, 0);
+  }
+  function transition(state, a) {
+    const s = clone(state),
+      at = s.screen;
+    let accepted = true;
+    switch (a.type) {
+      case "start":
+        if (at === "start") s.screen = "dining";
+        else accepted = false;
+        break;
+      case "dining":
+        if (at === "dining" && ["here", "takeout"].includes(a.value)) {
+          s.dining = a.value;
+          s.screen = "menu";
+        } else accepted = false;
+        break;
+      case "category":
+        if (at === "menu" && C.categories.some((x) => x[0] === a.value))
+          s.category = a.value;
+        else accepted = false;
+        break;
+      case "product": {
+        const p = C.products.find((x) => x.id === a.value);
+        if (at !== "menu" || !p) {
+          accepted = false;
+          break;
+        }
+        s.draft = item(p.id, p.category === "burger" ? "single" : "single");
+        s.screen = "options";
+        break;
+      }
+      case "kind":
+        if (
+          at === "options" &&
+          C.products.find((x) => x.id === s.draft.productId).category ===
+            "burger" &&
+          ["single", "set"].includes(a.value)
+        )
+          s.draft = item(s.draft.productId, a.value);
+        else accepted = false;
+        break;
+      case "side":
+      case "drink": {
+        const list = a.type === "side" ? C.sides : C.drinks;
+        if (
+          at === "options" &&
+          s.draft.kind === "set" &&
+          list.some((x) => x.id === a.value)
+        )
+          s.draft[a.type] = a.value;
+        else accepted = false;
+        break;
+      }
+      case "add":
+        if (at === "options" && s.draft) {
+          s.cart.push(clone(s.draft));
+          s.draft = null;
+          s.screen = "cart";
+        } else accepted = false;
+        break;
+      case "quantity":
+        if (at === "cart" && s.cart[a.index] && [-1, 1].includes(a.delta))
+          s.cart[a.index].quantity = Math.max(
+            1,
+            Math.min(9, s.cart[a.index].quantity + a.delta),
+          );
+        else accepted = false;
+        break;
+      case "remove":
+        if (at === "cart" && s.cart[a.index]) s.cart.splice(a.index, 1);
+        else accepted = false;
+        break;
+      case "more":
+        if (at === "cart") s.screen = "menu";
+        else accepted = false;
+        break;
+      case "review":
+        if (at === "cart" && s.cart.length) s.screen = "review";
+        else accepted = false;
+        break;
+      case "checkout":
+        if (at === "review" && s.cart.length) s.screen = "payment";
+        else accepted = false;
+        break;
+      case "payment":
+        if (at === "payment" && ["card", "mobile"].includes(a.value)) {
+          s.payment = a.value;
+          s.screen = "card";
+        } else accepted = false;
+        break;
+      case "pay":
+        if (at === "card" && s.cart.length) {
+          s.screen = "receipt";
+          s.orderNo = String(100 + Math.floor(Math.random() * 900));
+        } else accepted = false;
+        break;
+      case "back": {
+        const prev = {
+          dining: "start",
+          menu: "dining",
+          options: "menu",
+          cart: "menu",
+          review: "cart",
+          payment: "review",
+          card: "payment",
+        };
+        if (prev[at]) s.screen = prev[at];
+        else accepted = false;
+        break;
+      }
+      default:
+        accepted = false;
+    }
+    if (accepted)
+      s.events.push({
+        type: a.type,
+        value: a.value ?? null,
+        from: at,
+        to: s.screen,
+      });
+    return { state: s, accepted };
+  }
+  function evaluate(s) {
+    const l = C.levels.find((x) => x.id === s.level),
+      g = C.goal;
+    const target = s.cart[0] || s.draft;
+    const set =
+      !!target &&
+      target.productId === g.productId &&
+      target.kind === g.kind &&
+      target.side === g.side &&
+      target.drink === g.drink;
+    const checks = {
+      dining: [s.dining === g.dining, "매장에서 먹기를 선택했나요?"],
+      product: [
+        s.draft?.productId === g.productId,
+        "불고기 버거를 선택했나요?",
+      ],
+      set: [set, "불고기 버거 세트 · 감자튀김 · 콜라를 확인해 주세요."],
+      cart: [
+        s.cart.length === 1 && set && target.quantity === g.quantity,
+        "장바구니에는 지정한 세트 1개만 담아 주세요.",
+      ],
+      payment: [
+        s.payment === g.payment && s.screen === "receipt",
+        "카드 결제를 선택하고 모의 결제를 끝내 주세요.",
+      ],
+    };
+    const failures = l.checks
+      .filter((k) => !checks[k][0])
+      .map((k) => checks[k][1]);
+    return {
+      schemaVersion: 1,
+      topicId: C.topicId,
+      levelId: s.level,
+      mode: s.mode,
+      passed: failures.length === 0,
+      failures,
+      hints: s.hints,
+      actions: s.events.length,
+      elapsedSeconds: Math.round((Date.now() - s.startedAt) / 1000),
+      completedAt: new Date().toISOString(),
+    };
+  }
+  function reached(s) {
+    return s.screen === C.levels.find((x) => x.id === s.level).end;
+  }
+  function unlocked(level, results) {
+    return (
+      level === 1 ||
+      results.some(
+        (r) => r.levelId === level - 1 && r.passed && r.mode !== "free",
+      )
+    );
+  }
+  const api = {
+    create,
+    transition,
+    total,
+    unit,
+    evaluate,
+    reached,
+    unlocked,
+    item,
+  };
+  root.SREngine = api;
+  if (typeof module !== "undefined") module.exports = api;
+})(typeof globalThis !== "undefined" ? globalThis : this);
+</script>
+    <script>const SRImages={"burger.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgwIj48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMTU4IiByeD0iOTQiIHJ5PSIxMCIgZmlsbD0iI2U4ZGNjOSIvPjxwYXRoIGQ9Ik0zMCA4MEMzMiAxMiAyMDggMTIgMjEwIDgwWiIgZmlsbD0iI2FkNjEzMiIvPjxnIGZpbGw9IiNmZmYxYmYiPjxlbGxpcHNlIGN4PSI4MCIgY3k9IjQ3IiByeD0iNSIgcnk9IjIiIHRyYW5zZm9ybT0icm90YXRlKC0yMCA4MCA0NykiLz48ZWxsaXBzZSBjeD0iMTE1IiBjeT0iMzgiIHJ4PSI1IiByeT0iMiIvPjxlbGxpcHNlIGN4PSIxNTAiIGN5PSI0OCIgcng9IjUiIHJ5PSIyIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAxNTAgNDgpIi8+PC9nPjxwYXRoIGQ9Ik0yOCA4Nkw1MCA3OUw3MCA5MEw5NSA4MEwxMjAgODlMMTQ5IDgwTDE3NSA5MUwyMDggODFMMjE0IDk3SDI4WiIgZmlsbD0iIzc1YTk0MyIvPjxyZWN0IHg9IjI3IiB5PSI5OSIgd2lkdGg9IjE4NyIgaGVpZ2h0PSIyNyIgcng9IjEzIiBmaWxsPSIjNTkzMjI1Ii8+PHBhdGggZD0iTTM1IDk5SDIwNUwxNjUgMTEzTDExNSAxMDNMNzUgMTEyWiIgZmlsbD0iI2ZmZDM1NiIvPjxwYXRoIGQ9Ik0yOSAxMzJIMjEyUTIwOCAxNTcgMTg0IDE1N0g1NVEzMSAxNTUgMjkgMTMyWiIgZmlsbD0iI2FkNjEzMiIvPjxyZWN0IHg9IjM2IiB5PSIxMjUiIHdpZHRoPSIxNjkiIGhlaWdodD0iOCIgcng9IjQiIGZpbGw9IiNjNjNiMzAiLz48L3N2Zz4=","chicken.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgwIj48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMTU4IiByeD0iOTQiIHJ5PSIxMCIgZmlsbD0iI2U4ZGNjOSIvPjxwYXRoIGQ9Ik0zMCA4MEMzMiAxMiAyMDggMTIgMjEwIDgwWiIgZmlsbD0iI2Q4OWE0OSIvPjxnIGZpbGw9IiNmZmYxYmYiPjxlbGxpcHNlIGN4PSI4MCIgY3k9IjQ3IiByeD0iNSIgcnk9IjIiIHRyYW5zZm9ybT0icm90YXRlKC0yMCA4MCA0NykiLz48ZWxsaXBzZSBjeD0iMTE1IiBjeT0iMzgiIHJ4PSI1IiByeT0iMiIvPjxlbGxpcHNlIGN4PSIxNTAiIGN5PSI0OCIgcng9IjUiIHJ5PSIyIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAxNTAgNDgpIi8+PC9nPjxwYXRoIGQ9Ik0yOCA4Nkw1MCA3OUw3MCA5MEw5NSA4MEwxMjAgODlMMTQ5IDgwTDE3NSA5MUwyMDggODFMMjE0IDk3SDI4WiIgZmlsbD0iIzc1YTk0MyIvPjxyZWN0IHg9IjI3IiB5PSI5OSIgd2lkdGg9IjE4NyIgaGVpZ2h0PSIyNyIgcng9IjEzIiBmaWxsPSIjY2M3NzI4Ii8+PHBhdGggZD0iTTM1IDk5SDIwNUwxNjUgMTEzTDExNSAxMDNMNzUgMTEyWiIgZmlsbD0iI2ZmZDM1NiIvPjxwYXRoIGQ9Ik0yOSAxMzJIMjEyUTIwOCAxNTcgMTg0IDE1N0g1NVEzMSAxNTUgMjkgMTMyWiIgZmlsbD0iI2Q4OWE0OSIvPjxyZWN0IHg9IjM2IiB5PSIxMjUiIHdpZHRoPSIxNjkiIGhlaWdodD0iOCIgcng9IjQiIGZpbGw9IiNjNjNiMzAiLz48L3N2Zz4=","cola.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgwIj48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMTY0IiByeD0iNTciIHJ5PSI4IiBmaWxsPSIjZThkY2M5Ii8+PHBhdGggZD0iTTEyOCA2MEwxNDQgOUgxNTRMMTM4IDYwIiBmaWxsPSIjNGU4ZjdmIi8+PHBhdGggZD0iTTcwIDU4SDE3MkwxNTggMTYwSDg1WiIgZmlsbD0iI2IxNDQzNiIvPjxwYXRoIGQ9Ik03OCA4MkgxNjVMMTYxIDExMUg4MloiIGZpbGw9IiNmN2U1YzEiLz48cmVjdCB4PSI2NiIgeT0iNDkiIHdpZHRoPSIxMTAiIGhlaWdodD0iMTMiIHJ4PSI2IiBmaWxsPSIjZTRkN2JjIi8+PHRleHQgeD0iMTIxIiB5PSIxMDMiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjE3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjNjQzYjMzIj5SSU5HTzwvdGV4dD48L3N2Zz4=","fries.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgwIj48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMTYzIiByeD0iNjUiIHJ5PSI4IiBmaWxsPSIjZThkY2M5Ii8+PGcgZmlsbD0iI2Y0YmQ0MiIgc3Ryb2tlPSIjZGNhMjM3IiBzdHJva2Utd2lkdGg9IjIiPjxwYXRoIGQ9Ik02MiAxMDlMNTEgMzNMNjUgMzBMNzggMTA5Wk04MyAxMDhMODAgMjBIOTVMOTkgMTExWk0xMDUgMTA5TDEwNiAxM0gxMjFMMTIxIDExMFpNMTMwIDEwN0wxMzUgMjJMMTUwIDIzTDE0NiAxMTFaTTE1MyAxMTJMMTY2IDM1TDE4MCAzOEwxNjkgMTE3WiIvPjwvZz48cGF0aCBkPSJNNTEgODBRMTIwIDExNiAxODggODBMMTcxIDE2MUg3MFoiIGZpbGw9IiNjZTU2M2QiLz48cGF0aCBkPSJNMTA5IDExNUgxMzFWMTQ0SDEwOVoiIGZpbGw9IiNmZmYxY2UiLz48L3N2Zz4=","shrimp.svg":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTgwIj48ZWxsaXBzZSBjeD0iMTIwIiBjeT0iMTU4IiByeD0iOTQiIHJ5PSIxMCIgZmlsbD0iI2U4ZGNjOSIvPjxwYXRoIGQ9Ik0zMCA4MEMzMiAxMiAyMDggMTIgMjEwIDgwWiIgZmlsbD0iI2UxYWM1ZSIvPjxnIGZpbGw9IiNmZmYxYmYiPjxlbGxpcHNlIGN4PSI4MCIgY3k9IjQ3IiByeD0iNSIgcnk9IjIiIHRyYW5zZm9ybT0icm90YXRlKC0yMCA4MCA0NykiLz48ZWxsaXBzZSBjeD0iMTE1IiBjeT0iMzgiIHJ4PSI1IiByeT0iMiIvPjxlbGxpcHNlIGN4PSIxNTAiIGN5PSI0OCIgcng9IjUiIHJ5PSIyIiB0cmFuc2Zvcm09InJvdGF0ZSgyMCAxNTAgNDgpIi8+PC9nPjxwYXRoIGQ9Ik0yOCA4Nkw1MCA3OUw3MCA5MEw5NSA4MEwxMjAgODlMMTQ5IDgwTDE3NSA5MUwyMDggODFMMjE0IDk3SDI4WiIgZmlsbD0iIzc1YTk0MyIvPjxyZWN0IHg9IjI3IiB5PSI5OSIgd2lkdGg9IjE4NyIgaGVpZ2h0PSIyNyIgcng9IjEzIiBmaWxsPSIjZWE5ODUyIi8+PHBhdGggZD0iTTM1IDk5SDIwNUwxNjUgMTEzTDExNSAxMDNMNzUgMTEyWiIgZmlsbD0iI2ZmZDM1NiIvPjxwYXRoIGQ9Ik0yOSAxMzJIMjEyUTIwOCAxNTcgMTg0IDE1N0g1NVEzMSAxNTUgMjkgMTMyWiIgZmlsbD0iI2UxYWM1ZSIvPjxyZWN0IHg9IjM2IiB5PSIxMjUiIHdpZHRoPSIxNjkiIGhlaWdodD0iOCIgcng9IjQiIGZpbGw9IiNjNjNiMzAiLz48L3N2Zz4="};
+(() => {
+  "use strict";
+  const C = SRContent,
+    E = SREngine,
+    $ = (id) => document.getElementById(id),
+    app = $("app");
+  const key = "silver-ringo-c-v3",
+    params = new URLSearchParams(location.search),
+    embedded = params.get("embed") === "1";
+  let store = { version: 1, results: [], completed: [], session: null },
+    state = null,
+    view = "map",
+    level = 1,
+    result = null,
+    voice = false,
+    storageOK = true;
+  try {
+    const saved = JSON.parse(localStorage.getItem(key));
+    if (saved?.version === 1 && Array.isArray(saved.results)) store = saved;
+  } catch {
+    storageOK = false;
+  }
+  store.completed = Array.from(
+    new Set([
+      ...(Array.isArray(store.completed) ? store.completed : []),
+      ...store.results
+        .filter((r) => r.passed && r.mode !== "free")
+        .map((r) => r.levelId),
+    ]),
+  );
+  const progressResults = () =>
+    store.completed.map((levelId) => ({
+      levelId,
+      passed: true,
+      mode: "learn",
+    }));
+  if (embedded) document.body.classList.add("embed");
+  function save() {
+    store.session = state;
+    try {
+      localStorage.setItem(key, JSON.stringify(store));
+    } catch {
+      storageOK = false;
+      notice(
+        "이 환경에서는 진도가 저장되지 않아요. 현재 연습은 계속할 수 있습니다.",
+      );
+    }
+  }
+  function notice(t = "") {
+    $("notice").textContent = t;
+  }
+  function native(type, payload = {}) {
+    if (window.SilverRingoNative?.postMessage)
+      window.SilverRingoNative.postMessage(
+        JSON.stringify({ type, ...payload }),
+      );
+  }
+  function speak(text) {
+    if (window.SilverRingoNative?.postMessage) {
+      native("speak", { text });
+      return;
+    }
+    if (!window.speechSynthesis) {
+      notice("음성을 지원하지 않는 환경이에요. 화면 안내를 읽어 주세요.");
+      return;
+    }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = "ko-KR";
+    u.rate = 0.85;
+    speechSynthesis.speak(u);
+  }
+  const money = (n) => n.toLocaleString("ko-KR") + "원",
+    product = (id) => C.products.find((x) => x.id === id),
+    name = (list, id) => list.find((x) => x.id === id)?.name || "";
+  const B = (label, action, value = "", cls = "", extra = "") =>
+    `<button class="${cls}" data-action="${action}" data-value="${value}" ${extra}>${label}</button>`;
+  function hinted(action, value) {
+    if (!state || state.mode !== "learn") return false;
+    return (
+      {
+        start: ["start", ""],
+        dining: ["dining", "here"],
+        menu:
+          state.category === "burger"
+            ? ["product", "bulgogi"]
+            : ["category", "burger"],
+        options: state.draft?.kind === "set" ? ["add", ""] : ["kind", "set"],
+        cart: ["review", ""],
+        review: ["checkout", ""],
+        payment: ["payment", "card"],
+        card: ["pay", ""],
+      }[state.screen]?.join(":") === [action, value].join(":")
+    );
+  }
+  function choice(label, action, value = "", cls = "", extra = "") {
+    const h = hinted(action, value);
+    return B(
+      label + (h ? '<span class="target-label">여기를 눌러 보세요</span>' : ""),
+      action,
+      value,
+      cls + (h ? " highlight" : ""),
+      extra,
+    );
+  }
+  function heading(text) {
+    return `<h2 tabindex="-1" id="screen-title">${text}</h2>`;
+  }
+  function map() {
+    return `<section class="hero"><div class="eyebrow">IT 기능 배우기 / 키오스크</div><h1>한 걸음씩 배우는<br><em>나의 첫 키오스크 주문</em></h1><p>짧게 배우고, 직접 눌러 보고, 익숙해질 때까지 연습해요.</p><span class="pill">${store.completed.length} / 6 단계 완료</span></section><div class="map-layout"><section class="path" aria-label="학습 단계">${C.levels
+      .map((l) => {
+        const done = store.completed.includes(l.id),
+          open = E.unlocked(l.id, progressResults());
+        return B(
+          `<span class="circle">${done ? "✓" : open ? l.id : "🔒"}</span><span>${l.title}<small>${open ? l.description : "앞 단계를 완료하면 열려요"}</small></span>`,
+          "intro",
+          l.id,
+          "node",
+          open ? "" : "disabled",
+        );
+      })
+      .join(
+        "",
+      )}</section><aside class="aside"><span class="eyebrow">차근차근, 부담 없이</span><h2>주문 연습 안내</h2><p>1~5단계는 한 부분씩 연습합니다. 마지막 단계에서 전체 주문을 해봐요.</p><p class="quiet">시간제한은 없어요. 틀려도 다시 할 수 있습니다.</p>${B("자유 실습 시작", "free", "", "primary wide")}${store.session ? B("이어 하던 연습", "resume", "", "wide") : ""}<p class="quiet" style="margin-top:16px">자유 실습은 단계 잠금에 영향을 주지 않아요.</p></aside></div>`;
+  }
+  function intro() {
+    const l = C.levels[level - 1];
+    return `<section class="intro"><div class="eyebrow">키오스크 배우기 · ${level}단계</div><h1>${l.title}</h1><span class="pill">${level === 6 ? "실전 모드 · 강조 없이 도전" : "학습 모드 · 안내와 함께"}</span><p>${l.concept}</p><div class="card secondary"><strong>이번 연습 목표</strong><p>${l.task}</p></div>${level > 1 && level < 6 ? '<p class="quiet">앞부분의 주문은 미리 준비되어 있어요. 이번 단계만 연습합니다.</p>' : ""}${B("직접 연습하기", "launch", "", "primary wide")}${B("학습 목록으로", "home", "", "wide")}</section>`;
+  }
+  function detail(i) {
+    return i.kind === "set"
+      ? `세트 · ${name(C.sides, i.side)} · ${name(C.drinks, i.drink)}`
+      : "단품";
+  }
+  function orderLines(edit = false) {
+    return state.cart
+      .map(
+        (i, index) =>
+          `<div class="line"><strong>${product(i.productId).name} ${i.kind === "set" ? "세트" : ""}</strong><p>${detail(i)}</p><strong>${money(E.unit(i) * i.quantity)}</strong>${edit ? `<div class="quantity">${B("−", "quantity", index, "", `aria-label="${product(i.productId).name} 수량 줄이기" data-delta="-1" ${i.quantity === 1 ? "disabled" : ""}`)}<span>${i.quantity}개</span>${B("+", "quantity", index, "", `aria-label="${product(i.productId).name} 수량 늘리기" data-delta="1" ${i.quantity === 9 ? "disabled" : ""}`)}${B("삭제", "remove", index, "quiet", `aria-label="${product(i.productId).name} 삭제"`)}</div>` : `<p>수량 ${i.quantity}개</p>`}</div>`,
+      )
+      .join("");
+  }
+  function screen() {
+    const s = state;
+    switch (s.screen) {
+      case "start":
+        return `<div class="splash"><span class="pill">직접 눌러 보는 가상 매장</span><img src="${SRImages['burger.svg']}" alt="햄버거 그림"><strong>링고 버거</strong><p>맛있는 한 끼,<br>천천히 골라 보세요.</p></div>${heading("화면을 눌러 주문을 시작하세요")}${choice("주문 시작하기", "start", "", "primary wide")}`;
+      case "dining":
+        return (
+          heading("어디에서 드시나요?") +
+          `<p>식사하실 장소를 선택해 주세요.</p><div class="choices">${choice('<span aria-hidden="true">🍽️</span>매장에서 먹기', "dining", "here", "choice")}${choice('<span aria-hidden="true">🛍️</span>포장하기', "dining", "takeout", "choice")}</div>`
+        );
+      case "menu":
+        return (
+          heading("메뉴를 골라 주세요") +
+          `<nav class="tabs" aria-label="메뉴 카테고리">${C.categories.map(([id, n]) => choice(n, "category", id, s.category === id ? "selected" : "", `aria-pressed="${s.category === id}"`)).join("")}</nav><div class="products">${C.products
+            .filter((p) => p.category === s.category)
+            .map((p) =>
+              choice(
+                `<img src="${SRImages[p.image]}" alt=""><strong>${p.name}</strong><span class="price">${money(p.price)}부터</span>`,
+                "product",
+                p.id,
+                "product",
+              ),
+            )
+            .join(
+              "",
+            )}</div><div class="cart-bar row between"><span>장바구니 ${s.cart.reduce((a, i) => a + i.quantity, 0)}개</span><strong>${money(E.total(s))}</strong>${B("장바구니 보기", "open-cart", "", "wide", s.cart.length ? "" : "disabled")}</div>`
+        );
+      case "options": {
+        const d = s.draft,
+          p = product(d.productId),
+          burger = p.category === "burger";
+        return (
+          heading("선택한 메뉴를 확인하세요") +
+          `<section class="dialog" role="region" aria-label="메뉴 옵션 선택"><div class="row"><img width="110" height="90" src="${SRImages[p.image]}" alt=""><strong>${p.name}</strong></div>${burger ? `<h3>1. 구성을 선택하세요</h3><div class="options">${["single", "set"].map((k) => choice(k === "set" ? "세트 +2,500원" : "단품", "kind", k, d.kind === k ? "selected" : "", `aria-pressed="${d.kind === k}"`)).join("")}</div>` : ""}${d.kind === "set" ? `<h3>2. 사이드 선택</h3><div class="options">${C.sides.map((o) => choice(o.name + (o.extra ? ` +${o.extra}원` : ""), "side", o.id, d.side === o.id ? "selected" : "", `aria-pressed="${d.side === o.id}"`)).join("")}</div><h3>3. 음료 선택</h3><div class="options">${C.drinks.map((o) => choice(o.name, "drink", o.id, d.drink === o.id ? "selected" : "", `aria-pressed="${d.drink === o.id}"`)).join("")}</div>` : "<p>이 메뉴는 단품으로 담습니다.</p>"}<p class="amount">${money(E.unit(d))}</p>${choice("장바구니 담기", "add", "", "primary wide")}${B("선택 취소", "cancel", "", "wide")}</section>`
+        );
+      }
+      case "cart":
+        return (
+          heading("장바구니") +
+          (s.cart.length
+            ? orderLines(true) +
+              `<p class="amount">합계 ${money(E.total(s))}</p>${choice("주문 확인", "review", "", "primary wide")}`
+            : "<p>장바구니가 비어 있어요.<br>메뉴를 먼저 담아 주세요.</p>") +
+          B("메뉴 더 담기", "more", "", "wide")
+        );
+      case "review":
+        return (
+          heading("주문 내역이 맞나요?") +
+          `<p class="pill">${s.dining === "here" ? "매장에서 먹기" : "포장하기"}</p>${orderLines()}<p class="amount">결제 금액 ${money(E.total(s))}</p>${choice("결제 수단 선택", "checkout", "", "primary wide")}`
+        );
+      case "payment":
+        return (
+          heading("어떻게 결제하시겠어요?") +
+          `<p class="amount">${money(E.total(s))}</p><div class="choices">${choice('<span aria-hidden="true">💳</span>카드 결제', "payment", "card", "choice")}${choice('<span aria-hidden="true">📱</span>간편결제', "payment", "mobile", "choice")}</div>`
+        );
+      case "card":
+        return (
+          heading(s.payment === "card" ? "카드 결제 연습" : "간편결제 연습") +
+          `<div class="splash"><span style="font-size:76px" aria-hidden="true">${s.payment === "card" ? "💳" : "📱"}</span><p>화면 아래의 모의 결제 버튼을 눌러 주세요.</p><strong>${money(E.total(s))}</strong></div><p>실제 카드·휴대폰을 대거나 결제 정보를 입력할 필요가 없습니다.</p>${choice(s.payment === "card" ? "모의 카드로 결제하기" : "모의 간편결제 하기", "pay", "", "primary wide")}`
+        );
+      case "receipt":
+        return (
+          heading("모의 주문이 완료됐어요") +
+          `<div class="receipt"><p>주문번호</p><div class="number">${s.orderNo}</div><p>${s.dining === "here" ? "매장에서 먹기" : "포장하기"} · ${money(E.total(s))}</p></div>${B("연습 결과 확인", "finish", "", "primary wide")}`
+        );
+    }
+  }
+  function practice() {
+    const l = C.levels[state.level - 1],
+      learn = state.mode === "learn";
+    return `<div class="practice-layout"><aside class="coach"><section class="card"><div class="eyebrow">${state.mode === "free" ? "자유 실습" : learn ? "안내와 함께 연습" : "혼자서 실전 연습"}</div><h1>${l.title}</h1><p class="task">${l.task}</p>${learn ? `<p id="guide" aria-live="polite">${C.guides[state.screen]}</p>` : '<p class="quiet">주문 목표를 보고 자유롭게 조작해 보세요. 버튼 강조는 없습니다.</p>'}<details class="practice-tools" ${matchMedia("(max-width:850px)").matches ? "" : "open"}><summary>도움말 · 음성 · 다시 시작</summary>${learn ? `${B("🔊 안내 다시 듣기", "speak", "", "wide")}${B(voice ? "자동 음성 끄기" : "자동 음성 켜기", "voice", "", "wide", `aria-pressed="${voice}"`)}` : ""}${B("힌트 보기", "hint", "", "wide")}${B("이번 단계 다시 시작", "restart", "", "wide")}${B("학습 목록으로", "home", "", "wide")}</details></section><p class="quiet">서두르지 않아도 괜찮아요.<br>어떤 화면에서도 다시 연습할 수 있어요.</p></aside><section class="kiosk" aria-label="키오스크 시뮬레이터"><div class="store-head"><span>RINGO BURGER</span><small>연습용</small></div><div class="store-info">${state.dining ? (state.dining === "here" ? "매장에서 먹는 주문" : "포장 주문") : "가상 매장 · 실제 결제 없음"}</div><div class="screen">${screen()}</div><div class="bottom-nav">${B("← 이전 화면", "back", "", "", state.screen === l.start || state.screen === "receipt" ? "disabled" : "")}</div></section></div>`;
+  }
+  function resultHTML() {
+    const r = result,
+      l = C.levels[state.level - 1];
+    return `<section class="card result"><div class="result-icon" aria-hidden="true">${r.passed ? "✓" : "↻"}</div><div class="eyebrow">${l.title} · 연습 결과</div><h1>${r.passed ? "차근차근 잘 해냈어요!" : "한 번 더 연습해 볼까요?"}</h1>${r.passed ? `<p>${state.level === 6 ? "처음부터 주문을 완성했어요." : l.description + " 이번 단계를 완료했어요."}</p>` : `<p>주문 목표와 다른 부분이 있어요.</p><ul>${r.failures.map((t) => `<li>${t}</li>`).join("")}</ul>`}${state.orderNo ? `<p>모의 주문번호 <strong>${state.orderNo}</strong> · ${money(E.total(state))}</p>` : ""}<div class="metrics"><div>직접 조작<strong>${r.actions}회</strong></div><div>요청한 힌트<strong>${r.hints}회</strong></div></div><p class="quiet">점수나 시간제한 없이, 익숙해질 때까지 반복해요.</p>${!embedded && r.passed && state.level < 6 && state.mode !== "free" ? B("다음 단계로", "next-level", "", "primary wide") : ""}${B("같은 단계 다시 연습", "restart", "", "wide")}${B("학습 목록으로", "home", "", "wide")}</section>`;
+  }
+  function render(focus = true) {
+    app.innerHTML =
+      view === "map"
+        ? map()
+        : view === "intro"
+          ? intro()
+          : view === "result"
+            ? resultHTML()
+            : practice();
+    if (focus) {
+      (
+        app.querySelector("#screen-title") || app.querySelector("h1")
+      )?.setAttribute("tabindex", "-1");
+      (app.querySelector("#screen-title") || app.querySelector("h1"))?.focus({
+        preventScroll: true,
+      });
+    }
+    if (!storageOK) notice("진도 저장을 사용할 수 없는 환경입니다.");
+  }
+  function launch(id, mode = "learn") {
+    level = id;
+    state = E.create(id, mode);
+    view = "practice";
+    result = null;
+    save();
+    render();
+    window.scrollTo(0, 0);
+  }
+  function finish() {
+    if (view === "result") return;
+    result = E.evaluate(state);
+    view = "result";
+    store.results.push(result);
+    if (
+      result.passed &&
+      result.mode !== "free" &&
+      !store.completed.includes(result.levelId)
+    )
+      store.completed.push(result.levelId);
+    store.results = store.results.slice(-120);
+    store.session = null;
+    try {
+      localStorage.setItem(key, JSON.stringify(store));
+    } catch {
+      storageOK = false;
+    }
+    native("result", result);
+    render();
+    window.scrollTo(0, 0);
+  }
+  function home() {
+    if (embedded) {
+      native("exit");
+      return;
+    }
+    state = null;
+    view = "map";
+    notice();
+    render();
+    window.scrollTo(0, 0);
+  }
+  function action(a) {
+    notice();
+    const old = state.screen;
+    if (a.type === "open-cart") {
+      state.screen = "cart";
+      save();
+      render();
+      return;
+    }
+    if (a.type === "cancel") {
+      state.draft = null;
+      state.screen = "menu";
+      save();
+      render();
+      return;
+    }
+    const t = E.transition(state, a);
+    state = t.state;
+    if (!t.accepted) {
+      notice("먼저 메뉴와 수량을 확인해 주세요.");
+      return;
+    }
+    if (state.mode === "learn") {
+      const unexpected =
+        (a.type === "dining" && a.value !== "here") ||
+        (a.type === "product" && a.value !== "bulgogi") ||
+        (a.type === "kind" && a.value !== "set") ||
+        (a.type === "side" && a.value !== "fries") ||
+        (a.type === "drink" && a.value !== "cola") ||
+        (a.type === "payment" && a.value !== "card");
+      if (unexpected) {
+        state.hints++;
+        notice(
+          "선택할 수 있는 항목이지만 이번 목표와는 달라요. 목표를 다시 읽고 이전 화면에서 바꿀 수 있어요.",
+        );
+      }
+    }
+    save();
+    if (E.reached(state) && state.screen !== "receipt") {
+      finish();
+      return;
+    }
+    render(old !== state.screen);
+    if (voice && state.mode === "learn" && old !== state.screen)
+      speak(C.guides[state.screen]);
+  }
+  app.addEventListener("click", (e) => {
+    const b = e.target.closest("button[data-action]");
+    if (!b || b.disabled) return;
+    const a = b.dataset.action,
+      v = b.dataset.value;
+    if (a === "intro") {
+      level = Number(v);
+      if (E.unlocked(level, progressResults())) {
+        view = "intro";
+        render();
+        window.scrollTo(0, 0);
+      }
+      return;
+    }
+    if (a === "launch") {
+      launch(level);
+      return;
+    }
+    if (a === "free") {
+      launch(6, "free");
+      return;
+    }
+    if (a === "home") {
+      home();
+      return;
+    }
+    if (a === "resume") {
+      try {
+        const s = store.session;
+        if (
+          s?.version !== 1 ||
+          !C.levels.some((l) => l.id === s.level) ||
+          !C.guides[s.screen] ||
+          !Array.isArray(s.cart) ||
+          !Array.isArray(s.events)
+        )
+          throw Error();
+        state = s;
+        level = s.level;
+        view = "practice";
+        render();
+      } catch {
+        store.session = null;
+        notice("이전 연습을 불러올 수 없어요. 새 연습을 시작해 주세요.");
+      }
+      return;
+    }
+    if (a === "next-level") {
+      level = state.level + 1;
+      view = "intro";
+      state = null;
+      render();
+      return;
+    }
+    if (a === "restart") {
+      launch(state.level, state.mode);
+      return;
+    }
+    if (a === "finish") {
+      finish();
+      return;
+    }
+    if (a === "speak") {
+      speak(C.guides[state.screen]);
+      return;
+    }
+    if (a === "voice") {
+      voice = !voice;
+      if (voice) speak(C.guides[state.screen]);
+      else {
+        window.speechSynthesis?.cancel();
+        native("stopSpeech");
+      }
+      render(false);
+      return;
+    }
+    if (a === "hint") {
+      state.hints++;
+      save();
+      notice(C.guides[state.screen]);
+      speak(C.guides[state.screen]);
+      return;
+    }
+    action(
+      a === "quantity"
+        ? { type: a, index: Number(v), delta: Number(b.dataset.delta) }
+        : a === "remove"
+          ? { type: a, index: Number(v) }
+          : { type: a, value: v },
+    );
+  });
+  window.addEventListener("beforeunload", () =>
+    window.speechSynthesis?.cancel(),
+  );
+  if (embedded) {
+    const n = Number(params.get("level"));
+    level = C.levels.some((l) => l.id === n) ? n : 1;
+    view = "intro";
+  }
+  render(false);
+})();
+</script>
+  </body>
+</html>

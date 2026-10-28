@@ -1,0 +1,36 @@
+diff --git "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-build.gradle.kts" "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-build.gradle.kts"
+index b105108..bea43b0 100644
+--- "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-build.gradle.kts"
++++ "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-build.gradle.kts"
+@@ -37,8 +37,15 @@ android {
+     buildFeatures {
+         compose = true
+     }
++    sourceSets["main"].assets.srcDir(layout.buildDirectory.dir("generated/learningAssets"))
+ }
+ 
++val syncLearningAssets by tasks.registering(Sync::class) {
++    from(rootProject.file("../silver-ringo-c/web"))
++    into(layout.buildDirectory.dir("generated/learningAssets/kiosk"))
++}
++tasks.named("preBuild").configure { dependsOn(syncLearningAssets) }
++
+ dependencies {
+     implementation(libs.androidx.core.ktx)
+     implementation(libs.androidx.lifecycle.runtime.ktx)
+@@ -50,6 +57,15 @@ dependencies {
+     implementation(libs.androidx.material3)
+     implementation(libs.androidx.material.icons.extended)
+     implementation(libs.androidx.security.crypto)
++    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.6")
++    implementation("androidx.webkit:webkit:1.12.1")
++    testImplementation("junit:junit:4.13.2")
++    testImplementation("org.json:json:20240303")
++    androidTestImplementation(platform(libs.androidx.compose.bom))
++    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
++    androidTestImplementation("androidx.test.ext:junit:1.2.1")
++    androidTestImplementation("androidx.test:runner:1.6.2")
++    debugImplementation("androidx.compose.ui:ui-test-manifest")
+ 
+     debugImplementation(libs.androidx.ui.tooling)
+ }

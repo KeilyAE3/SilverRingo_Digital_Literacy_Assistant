@@ -1,0 +1,21 @@
+diff --git "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-LearningEntry.kt" "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-LearningEntry.kt"
+index 141a4fa..b54e3be 100644
+--- "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-LearningEntry.kt"
++++ "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-LearningEntry.kt"
+@@ -33,13 +33,9 @@ fun LearningEntry(onExit: () -> Unit, onResult: (String) -> Unit = {}) {
+     val current = level
+     if (current != null) {
+         KioskPracticeScreen(levelId = current, onExit = { level = null }, onResult = { text ->
+-            runCatching {
+-                val result = JSONObject(text)
+-                val id = result.getInt("levelId")
+-                if (id == current && result.optBoolean("passed") && result.optString("mode") != "free") {
+-                    prefs.edit().putBoolean("done_$id", true).putString("last_result_$id", text).apply()
+-                    revision++
+-                }
++            completedLesson(text, current)?.let { id ->
++                prefs.edit().putBoolean("done_$id", true).putString("last_result_$id", text).apply()
++                revision++
+             }
+             onResult(text)
+         })

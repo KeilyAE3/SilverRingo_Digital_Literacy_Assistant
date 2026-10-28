@@ -1,0 +1,14 @@
+{
+  "name": "silver-ringo-c",
+  "version": "0.3.0",
+  "private": true,
+  "scripts": {
+    "sync": "node scripts/sync-content.cjs",
+    "test": "node --test tests/engine.test.cjs",
+    "test:browser": "node tests/browser.cjs",
+    "demo": "python3 -m http.server 8000 --directory web"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
