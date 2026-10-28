@@ -10,6 +10,7 @@ dependencies = []
 
 [project.optional-dependencies]
 gemini = ["google-genai"]
+api = ["fastapi", "uvicorn"]
 
 [tool.setuptools.packages.find]
 where = ["src"]
