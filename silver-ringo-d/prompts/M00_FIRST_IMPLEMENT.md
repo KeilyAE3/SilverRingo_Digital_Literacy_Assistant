@@ -1,1 +1,0 @@
-이번 작업은 M00만 구현한다. `silver-ringo-d/AGENTS.md`, `docs/00_MASTER_PLAN.md`, `docs/01_DATA_CONTRACT.md`, `docs/modules/M00_FOUNDATION.md`를 읽어라. 현재 브랜치 `ydy_workspace`와 Git 상태를 확인하고, 해당 문서의 골격·공통 타입·fake 가능한 설정만 구현한 뒤 단위 테스트를 실행하라. M01~M08은 구현하지 마라. A/B/C 브랜치와 Tester 및 GitHub Actions는 수정하지 마라. 코드/테스트 결과/미결정 사항을 정리해 보고하고 commit/push하지 마라.
