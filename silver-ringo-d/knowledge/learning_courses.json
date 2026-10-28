@@ -3,16 +3,24 @@
   "source": {
     "branch": "jib",
     "path": "silver-ringo-c/web/content.json",
-    "kind": "code"
+    "kind": "code",
+    "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+    "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
   },
-  "notes": "jib/content.json 확인값. JSON의 가격/상품 카탈로그는 RAG MVP에서 생략. Android 실기기 검증은 C 문서상 미완료.",
+  "notes": "C content.json에서 재생성. 상품/가격 제외. A 통합 및 Android 실기기 검증 미완료. aliases는 D 편집값.",
   "courses": [
     {
       "id": "course:kiosk",
-      "topic_id": "kiosk",
       "title": "키오스크 배우기",
-      "summary": "키오스크로 주문하는 방법을 단계적으로 연습하는 학습 코스입니다.",
       "content": "키오스크 사용의 시작, 메뉴 선택, 옵션, 장바구니, 모의 카드 결제, 혼자 주문하기를 6단계로 연습합니다. 실제 주문이나 결제는 이루어지지 않습니다.",
+      "status": "prototype",
+      "source": {
+        "branch": "jib",
+        "path": "silver-ringo-c/web/content.json",
+        "kind": "code",
+        "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+        "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+      },
       "keywords": [
         "키오스크",
         "무인 주문",
@@ -24,29 +32,32 @@
         "화면 눌러서 주문하기"
       ],
       "alias_origin": "curated_by_d",
-      "status": "prototype",
-      "unlock_policy": "앞 단계 통과 시 다음 단계 해제. 세부 판정은 C 소유.",
-      "source": {
-        "branch": "jib",
-        "path": "silver-ringo-c/web/content.json",
-        "kind": "code"
-      },
       "related_action_ids": [
         "open_kiosk_course"
       ],
+      "topic_id": "kiosk",
+      "summary": "키오스크로 주문하는 방법을 단계적으로 연습하는 학습 코스입니다.",
+      "summary_origin": "curated_by_d",
+      "unlock_policy": "앞 단계 통과 시 다음 단계 해제. 세부 판정은 C 소유.",
+      "unlock_policy_source": {
+        "branch": "jib",
+        "path": "silver-ringo-c/android/app/src/main/java/kr/silverringo/learning/LearningEntry.kt",
+        "kind": "code",
+        "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7"
+      },
       "levels": [
         {
           "id": "course:kiosk:level:1",
-          "level_id": 1,
           "title": "키오스크 시작하기",
-          "summary": "시작 화면과 식사 장소를 배워요.",
           "content": "화면을 눌러 주문을 시작합니다. 매장에서 먹기와 포장 중 원하는 장소를 고릅니다.",
-          "task": "주문을 시작하고 매장에서 먹기를 선택하세요.",
-          "start": "start",
-          "end": "menu",
-          "checks": [
-            "dining"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "주문 시작",
             "매장에서 먹기",
@@ -56,28 +67,30 @@
             "무인 주문 시작"
           ],
           "alias_origin": "curated_by_d",
-          "status": "prototype",
-          "source": {
-            "branch": "jib",
-            "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
-          },
           "related_action_ids": [
             "open_kiosk_course"
+          ],
+          "level_id": 1,
+          "summary": "시작 화면과 식사 장소를 배워요.",
+          "task": "주문을 시작하고 매장에서 먹기를 선택하세요.",
+          "start": "start",
+          "end": "menu",
+          "checks": [
+            "dining"
           ]
         },
         {
           "id": "course:kiosk:level:2",
-          "level_id": 2,
           "title": "메뉴 찾기",
-          "summary": "카테고리에서 원하는 버거를 찾아요.",
           "content": "메뉴는 햄버거·사이드·음료로 나뉩니다. 햄버거 탭에서 상품의 그림과 이름을 확인하세요.",
-          "task": "햄버거 카테고리에서 불고기 버거를 찾으세요.",
-          "start": "menu",
-          "end": "options",
-          "checks": [
-            "product"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "메뉴",
             "버거",
@@ -87,28 +100,30 @@
             "상품 찾기"
           ],
           "alias_origin": "curated_by_d",
-          "status": "prototype",
-          "source": {
-            "branch": "jib",
-            "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
-          },
           "related_action_ids": [
             "open_kiosk_course"
+          ],
+          "level_id": 2,
+          "summary": "카테고리에서 원하는 버거를 찾아요.",
+          "task": "햄버거 카테고리에서 불고기 버거를 찾으세요.",
+          "start": "menu",
+          "end": "options",
+          "checks": [
+            "product"
           ]
         },
         {
           "id": "course:kiosk:level:3",
-          "level_id": 3,
           "title": "세트와 옵션 선택",
-          "summary": "사이드와 음료를 골라 담아요.",
           "content": "단품은 버거만, 세트는 버거·사이드·음료입니다. 옵션을 확인한 뒤 장바구니에 담습니다.",
-          "task": "불고기 버거 세트에 감자튀김과 콜라를 골라 담으세요.",
-          "start": "options",
-          "end": "cart",
-          "checks": [
-            "set"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "세트",
             "옵션",
@@ -119,28 +134,30 @@
             "세트 메뉴 고르기"
           ],
           "alias_origin": "curated_by_d",
-          "status": "prototype",
-          "source": {
-            "branch": "jib",
-            "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
-          },
           "related_action_ids": [
             "open_kiosk_course"
+          ],
+          "level_id": 3,
+          "summary": "사이드와 음료를 골라 담아요.",
+          "task": "불고기 버거 세트에 감자튀김과 콜라를 골라 담으세요.",
+          "start": "options",
+          "end": "cart",
+          "checks": [
+            "set"
           ]
         },
         {
           "id": "course:kiosk:level:4",
-          "level_id": 4,
           "title": "장바구니 확인",
-          "summary": "수량과 합계를 살펴봐요.",
           "content": "장바구니는 결제 전 주문을 모아 보는 곳입니다. 수량을 바꾸거나 삭제할 수 있습니다.",
-          "task": "불고기 버거 세트 1개인지 확인하고 결제 화면으로 이동하세요.",
-          "start": "cart",
-          "end": "payment",
-          "checks": [
-            "cart"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "장바구니",
             "수량",
@@ -150,28 +167,30 @@
             "주문 내역 확인"
           ],
           "alias_origin": "curated_by_d",
-          "status": "prototype",
-          "source": {
-            "branch": "jib",
-            "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
-          },
           "related_action_ids": [
             "open_kiosk_course"
+          ],
+          "level_id": 4,
+          "summary": "수량과 합계를 살펴봐요.",
+          "task": "불고기 버거 세트 1개인지 확인하고 결제 화면으로 이동하세요.",
+          "start": "cart",
+          "end": "payment",
+          "checks": [
+            "cart"
           ]
         },
         {
           "id": "course:kiosk:level:5",
-          "level_id": 5,
           "title": "결제 방법 배우기",
-          "summary": "모의 카드 결제를 연습해요.",
           "content": "결제 수단을 선택한 뒤 안내를 따릅니다. 이 연습에서는 실제 카드나 돈이 필요하지 않습니다.",
-          "task": "카드 결제를 선택하고 모의 결제를 완료하세요.",
-          "start": "payment",
-          "end": "receipt",
-          "checks": [
-            "payment"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "결제",
             "카드",
@@ -182,31 +201,30 @@
             "카드로 돈 내기"
           ],
           "alias_origin": "curated_by_d",
-          "status": "prototype",
-          "source": {
-            "branch": "jib",
-            "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
-          },
           "related_action_ids": [
             "open_kiosk_course"
+          ],
+          "level_id": 5,
+          "summary": "모의 카드 결제를 연습해요.",
+          "task": "카드 결제를 선택하고 모의 결제를 완료하세요.",
+          "start": "payment",
+          "end": "receipt",
+          "checks": [
+            "payment"
           ]
         },
         {
           "id": "course:kiosk:level:6",
-          "level_id": 6,
           "title": "혼자서 주문하기",
-          "summary": "처음부터 끝까지 직접 해봐요.",
           "content": "배운 순서대로 주문해 보세요. 화면 강조 없이 진행합니다. 실패해도 다시 연습할 수 있어요.",
-          "task": "매장에서 먹기 · 불고기 버거 세트 1개 · 감자튀김 · 콜라 · 카드 결제",
-          "start": "start",
-          "end": "receipt",
-          "checks": [
-            "dining",
-            "set",
-            "cart",
-            "payment"
-          ],
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
           "keywords": [
             "전체 주문",
             "실전 연습",
@@ -216,28 +234,213 @@
             "혼자 해보기"
           ],
           "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "level_id": 6,
+          "summary": "처음부터 끝까지 직접 해봐요.",
+          "task": "매장에서 먹기 · 불고기 버거 세트 1개 · 감자튀김 · 콜라 · 카드 결제",
+          "start": "start",
+          "end": "receipt",
+          "checks": [
+            "dining",
+            "set",
+            "cart",
+            "payment"
+          ]
+        }
+      ],
+      "guides": [
+        {
+          "id": "course:kiosk:guide:start",
+          "title": "키오스크 안내: start",
+          "content": "주문 시작하기를 눌러 주세요.",
           "status": "prototype",
           "source": {
             "branch": "jib",
             "path": "silver-ringo-c/web/content.json",
-            "kind": "code"
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
           },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
           "related_action_ids": [
             "open_kiosk_course"
-          ]
+          ],
+          "step_id": "start",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:dining",
+          "title": "키오스크 안내: dining",
+          "content": "매장에서 먹기를 선택해 보세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "dining",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:menu",
+          "title": "키오스크 안내: menu",
+          "content": "햄버거 탭에서 불고기 버거를 찾아 주세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "menu",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:options",
+          "title": "키오스크 안내: options",
+          "content": "세트, 감자튀김, 콜라를 확인한 뒤 장바구니에 담으세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "options",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:cart",
+          "title": "키오스크 안내: cart",
+          "content": "세트 1개와 합계를 확인하고 주문 확인을 누르세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "cart",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:review",
+          "title": "키오스크 안내: review",
+          "content": "주문 내역과 식사 장소를 확인하고 결제 수단 선택을 누르세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "review",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:payment",
+          "title": "키오스크 안내: payment",
+          "content": "카드 결제를 선택하세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "payment",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:card",
+          "title": "키오스크 안내: card",
+          "content": "모의 카드로 결제하기를 누르세요. 실제 카드는 필요 없어요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "card",
+          "title_origin": "curated_by_d"
+        },
+        {
+          "id": "course:kiosk:guide:receipt",
+          "title": "키오스크 안내: receipt",
+          "content": "주문번호를 확인하세요.",
+          "status": "prototype",
+          "source": {
+            "branch": "jib",
+            "path": "silver-ringo-c/web/content.json",
+            "kind": "code",
+            "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7",
+            "sha256": "ce77816c26ffb89ffbb6c647217fa46e8750b2c9800c909932d32a2829eda743"
+          },
+          "keywords": [],
+          "aliases": [],
+          "alias_origin": "curated_by_d",
+          "related_action_ids": [
+            "open_kiosk_course"
+          ],
+          "step_id": "receipt",
+          "title_origin": "curated_by_d"
         }
-      ],
-      "guides": {
-        "start": "주문 시작하기를 눌러 주세요.",
-        "dining": "매장에서 먹기를 선택해 보세요.",
-        "menu": "햄버거 탭에서 불고기 버거를 찾아 주세요.",
-        "options": "세트, 감자튀김, 콜라를 확인한 뒤 장바구니에 담으세요.",
-        "cart": "세트 1개와 합계를 확인하고 주문 확인을 누르세요.",
-        "review": "주문 내역과 식사 장소를 확인하고 결제 수단 선택을 누르세요.",
-        "payment": "카드 결제를 선택하세요.",
-        "card": "모의 카드로 결제하기를 누르세요. 실제 카드는 필요 없어요.",
-        "receipt": "주문번호를 확인하세요."
-      }
+      ]
     }
   ]
 }

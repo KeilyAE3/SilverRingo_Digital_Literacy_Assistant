@@ -22,7 +22,7 @@
         "화면 위에서 알려줘"
       ],
       "alias_origin": "curated_by_d",
-      "status": "implemented",
+      "status": "prototype",
       "integration_status": "B 브랜치 구현 존재. A 앱과 통합 및 기기 검증 상태 별도 확인 필요.",
       "package_name": "com.bbros.sayup",
       "web_fallback_url": "https://www.ddocdoc.com/",
@@ -33,7 +33,8 @@
       "source": {
         "branch": "Juno",
         "path": "android/app/src/main/java/com/silverlingo/app/ui/screens/MainDashboardScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       },
       "related_action_ids": [
         "start_ddocdoc_companion"
@@ -46,13 +47,16 @@
           "content": "먼저 맨 위 검색창을 눌러주세요. 아픈 곳, 진료과, 병원 이름으로 찾을 수 있어요.",
           "target_keywords": [
             "질병, 진료과",
-            "병원 검색"
+            "질병",
+            "병원 검색",
+            "병원검색"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -63,12 +67,14 @@
           "target_keywords": [
             "입력창"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
-          }
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
+          },
+          "target_rule": "FOCUS_INPUT + isEditable; target_keywords는 설명용 D 편집값"
         },
         {
           "id": "guide:ddocdoc:native:3",
@@ -77,13 +83,16 @@
           "content": "원하시는 병원 하나를 눌러 들어가 보세요.",
           "target_keywords": [
             "진료중",
-            "접수가능"
+            "진료 중",
+            "접수가능",
+            "접수 가능"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -95,11 +104,12 @@
             "후기",
             "리뷰"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -108,14 +118,18 @@
           "title": "바로 접수",
           "content": "이 병원으로 접수하시려면 [바로 접수]를 눌러주세요.",
           "target_keywords": [
+            "바로접수",
             "바로 접수",
+            "진료접수",
+            "진료 접수",
             "접수하기"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -125,13 +139,16 @@
           "content": "진료받으실 분으로 [본인]을 선택해주세요.",
           "target_keywords": [
             "본인",
+            "진료받을 분",
+            "진료 받을 분",
             "진료 대상자"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -141,13 +158,15 @@
           "content": "마지막 단계예요. [접수 신청]을 눌러주세요.",
           "target_keywords": [
             "접수 신청",
+            "접수신청",
             "접수 요청하기"
           ],
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         }
       ],
@@ -157,11 +176,12 @@
           "step_id": "ddocdoc-step-1",
           "title": "병원 찾기 / 진료 접수",
           "content": "진료받으실 병원을 선택하시려면 화면에 표시된 버튼을 눌러주세요.",
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -169,11 +189,12 @@
           "step_id": "ddocdoc-step-2",
           "title": "진료 접수하기",
           "content": "당일 진료를 신청하시려면 접수하기 버튼을 눌러주세요.",
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -181,11 +202,12 @@
           "step_id": "ddocdoc-step-3",
           "title": "진료 대상자 (본인)",
           "content": "진료받으실 분으로 본인을 선택해 주세요.",
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         },
         {
@@ -193,11 +215,12 @@
           "step_id": "ddocdoc-step-4",
           "title": "접수 신청 완료",
           "content": "접수 신청을 완료하시려면 이 버튼을 눌러주세요.",
-          "status": "implemented",
+          "status": "prototype",
           "source": {
             "branch": "Juno",
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
-            "kind": "code"
+            "kind": "code",
+            "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           }
         }
       ]
@@ -222,9 +245,11 @@
       "source": {
         "branch": "Juno",
         "path": "docs/ideas_and_design.md",
-        "kind": "design_doc"
+        "kind": "design_doc",
+        "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       },
-      "related_action_ids": []
+      "related_action_ids": [],
+      "is_executable": false
     }
   ],
   "retired": [
@@ -245,9 +270,11 @@
       "source": {
         "branch": "Juno",
         "path": "AGENTS.md",
-        "kind": "design_doc"
+        "kind": "design_doc",
+        "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       },
-      "related_action_ids": []
+      "related_action_ids": [],
+      "is_executable": false
     },
     {
       "id": "guide:retired:kakao_t",
@@ -266,9 +293,11 @@
       "source": {
         "branch": "Juno",
         "path": "AGENTS.md",
-        "kind": "design_doc"
+        "kind": "design_doc",
+        "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       },
-      "related_action_ids": []
+      "related_action_ids": [],
+      "is_executable": false
     }
   ]
 }

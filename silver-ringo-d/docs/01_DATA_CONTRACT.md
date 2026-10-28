@@ -80,3 +80,16 @@
 
 ## 7. 지식 표본 확보 정책
 실제로 확인된 정보만 `implemented`/`prototype`으로 등록한다. 임의 아이디어가 필요하면 사용자의 승인을 받거나 이미 B 설계 문서에 명시된 것만 `idea`로 추가한다. 아이디어를 넣더라도 검색·액션 검증 테스트에서 실제 기능과 혼동되지 않도록 검증한다.
+
+## 8. M01 구현 구체화 (실행 수락 보류)
+
+- source에 40자리 commit SHA를 필수 기록한다. C 변환 결과에는 입력 바이트의 sha256도 기록한다.
+- learning_courses.courses[].guides는 기존 초안의 문자열 사전 대신 레코드 배열이다.
+  각 항목은 공통 필드와 원본 키 step_id를 가지며 ID는 course:kiosk:guide:<step_id>다.
+- 코스 unlock_policy_source는 잠금 정책의 실제 LearningEntry 코드 출처를 별도 기록한다.
+- aliases는 alias_origin=curated_by_d, D 편집 코스 요약/가이드 제목은 각각
+  summary_origin/title_origin=curated_by_d로 표시한다.
+- idea/retired는 is_executable=false와 빈 related_action_ids를 요구한다.
+- M01 validator는 현재 kiosk 코스 1/레벨 6/가이드 9, ddocdoc Native 7/Web 4 구조에 한정한다.
+  신규 코스·서비스는 후속 명세 변경과 검토가 필요하다.
+- M00 SourceRef(branch,path,kind)는 유지한다. commit/hash는 원본 JSON에 보존한다.

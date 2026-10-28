@@ -14,7 +14,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       }
     },
     {
@@ -29,7 +30,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       }
     },
     {
@@ -47,7 +49,8 @@
       "source": {
         "branch": "jib",
         "path": "silver-ringo-c/android/app/src/main/java/kr/silverringo/learning/LearningEntry.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7"
       }
     },
     {
@@ -66,7 +69,8 @@
       "source": {
         "branch": "Juno",
         "path": "android/app/src/main/java/com/silverlingo/app/ui/screens/MainDashboardScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       }
     }
   ]

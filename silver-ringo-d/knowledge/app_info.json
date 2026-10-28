@@ -20,11 +20,12 @@
         "쓸 수 있는 기능"
       ],
       "alias_origin": "curated_by_d",
-      "status": "implemented",
+      "status": "prototype",
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       },
       "related_action_ids": []
     },
@@ -49,7 +50,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/MainActivity.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       },
       "related_action_ids": [
         "open_learning_home"
@@ -74,7 +76,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/MainActivity.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       },
       "related_action_ids": [
         "open_guide_home"
@@ -100,7 +103,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       },
       "related_action_ids": []
     },
@@ -123,7 +127,8 @@
       "source": {
         "branch": "hjh",
         "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code"
+        "kind": "code",
+        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
       },
       "related_action_ids": []
     }
