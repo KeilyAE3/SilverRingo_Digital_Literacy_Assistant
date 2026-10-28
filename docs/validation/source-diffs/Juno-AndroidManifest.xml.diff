@@ -1,0 +1,14 @@
+diff --git "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-AndroidManifest.xml" "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-AndroidManifest.xml"
+index f61d8cf..636ece8 100644
+--- "a/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\before-AndroidManifest.xml"
++++ "b/C:\\study\\swproj\\SilverRingo_Digital_Literacy_Assistant\\.local\\after-AndroidManifest.xml"
+@@ -10,6 +10,9 @@
+ 
+     <!-- 똑닥 앱 실행 + 똑닥 웹 동행의 카카오/네이버 로그인 연동을 위한 패키지 가시성 선언 -->
+     <queries>
++        <intent>
++            <action android:name="android.intent.action.TTS_SERVICE" />
++        </intent>
+         <package android:name="com.bbros.sayup" />
+         <package android:name="com.kakao.talk" />
+         <package android:name="com.nhn.android.search" />

@@ -27,6 +27,9 @@ jobs:
           python-version: '3.12'
 
       # 앱 의존성 설치가 필요해지면 이 위치에 추가합니다.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
 
       - name: Run workflow tests
         run: python Tester/automation/check.py --mode workflow

@@ -1,5 +1,8 @@
 # Silver Ringo Android UI
 
+> 이 폴더는 hjh 원본 UI 참고용입니다. 현재 통합 앱은 저장소의 `android/`에서 빌드합니다.
+> 통합 앱 개발에는 아래 SDK 37/JDK 25 설정 대신 [통합 개발 문서](../docs/ANDROID_INTEGRATION.md)를 따르세요.
+
 Kotlin + Jetpack Compose로 만든 독립 실행 가능한 메인 UI입니다.
 Android Studio에서 이 폴더를 열고 로컬 Android SDK 경로를 설정한 뒤 실행합니다.
 Gradle Wrapper가 포함되어 있으며 SDK 37과 Gradle 데몬용 JDK 25를 사용합니다.
