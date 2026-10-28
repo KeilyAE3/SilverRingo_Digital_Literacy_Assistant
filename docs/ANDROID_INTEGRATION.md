@@ -117,3 +117,6 @@ Android `sr_learning` SharedPreferences: `done_N` 완료 여부, `last_result_N`
 
 담당자별 검토 및 파일별 실제 diff: [ANDROID_FILE_CHANGES.md](ANDROID_FILE_CHANGES.md).
 자동 검사 운영 규칙·문서 차이·원격 실행 결과: [TEAM_SYNC_AUDIT.md](TEAM_SYNC_AUDIT.md).
+
+main 병합 `4acba96266fb75e6df4561658558eb96bddf8ed5`를 Push했고 실제 Team Sync 및 Discord 전송이 성공했다.
+세부 결과·SHA가 일치하는 artifact 및 담당자 확인사항은 위 문서에 기록했다.

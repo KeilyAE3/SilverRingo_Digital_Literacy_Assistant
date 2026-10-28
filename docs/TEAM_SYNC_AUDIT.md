@@ -126,4 +126,30 @@ tracked `.team-sync`/pyc 정리와 TEAM_SYNC.md의 과거 안내 정리는 별�
 업로드 전: main protected=false, 적용된 branch rules=[]를 읽기 전용 API로 확인했다.
 사용자가 APK 설치·실행을 확인하고 이번 main 반영·Commit·Push를 명시적으로 승인했다.
 main 외 원격 브랜치에는 Push하지 않으며 보호 정책 우회/강제 Push를 하지 않는다.
-Push 후 확인한 SHA·run·Discord 증거는 이 절에 후속 기록한다.
+### 실제 Push 및 실행 결과
+
+- 통합 코드 커밋(로컬 hjh): `433b7a79521746fa3fa163e9975d16b37fcf1c3f`.
+- main 병합/첫 Push SHA: `4acba96266fb75e6df4561658558eb96bddf8ed5`.
+- [Team Sync 실제 실행](https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649420675):
+  push 이벤트, completed/success. Python 3.12.15·Node 22.23.3에서 workflow 검사 7/7 통과,
+  failure_events=0, skipped=0, expected_failures=0.
+- [결과 artifact](https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649420675/artifacts/12799151573):
+  `team-sync-40649420675-1`, 세 파일 생성·업로드·다운로드 확인. results.json의 sha가 위 main SHA와 일치한다.
+- [Discord 알림 실행](https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649442529):
+  workflow_run 이벤트, completed/success. 정확한 artifact 다운로드 성공 후
+  `2026-10-28T07:20:38Z` (한국 16:20:38)에 `Discord 전송 성공: message_id=1564901693009825884` 확인.
+- 증거: [실제 원격 결과 JSON](validation/github-main-4acba96/results.json),
+  [원격 summary](validation/github-main-4acba96/summary.md),
+  [원격 tests.log](validation/github-main-4acba96/tests.log),
+  [Team Sync job 로그](validation/github-team-sync.log),
+  [Discord 전송 로그 발췌](validation/github-discord-evidence.log).
+
+실패 분류: 통합 코드 오류는 이번 자동 검사 범위에서 발견되지 않았다.
+local 실패 2개는 의도된 예제, 기기 테스트 실행 불가는 기기 미연결 환경 문제다.
+기기 가이드 버그는 원인 미확정으로 남으며 위 CI가 검증하지 못하는 범위다.
+Actions에는 Node 20 기반 기존 actions의 Node 24 강제 실행/deprecation 및 punycode 경고가 있었다.
+실행은 성공했으나 공통 workflow 담당자가 action 버전 갱신을 별도 검토할 필요가 있다.
+
+이 원격 결과 기록은 문서 후속 커밋으로 main에 추가하며 CI 생략 지시 없이 다시 Push한다.
+후속 문서 커밋은 Android/JS/검사 로직을 변경하지 않는다. 최신 실행은 Actions에서 해당 SHA로 확인한다.
+원격 hjh=`28772a8…`, Juno=`0025219…`, jib=`f011f17…`는 원래 상태임을 Push 후 확인했다.

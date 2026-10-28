@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "total": 7,
+  "passed": 7,
+  "failure_events": 0,
+  "skipped": 0,
+  "expected_failures": 0,
+  "failures": [],
+  "tests": [
+    {
+      "group": "통합 앱: 실제 키오스크 학습 엔진·콘텐츠",
+      "module": "silver-ringo-c/web/engine.js",
+      "test_file": "tests/test_learning_engine.py",
+      "test_id": "Tester.tests.test_learning_engine.LearningEngineTests.test_existing_learning_engine",
+      "description": "실제 JS 엔진: 주문·가격·단계 완료·잠금 등 기존 11개 회귀 검사가 통과한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "통합 앱: 실제 키오스크 학습 엔진·콘텐츠",
+      "module": "silver-ringo-c/web/engine.js",
+      "test_file": "tests/test_learning_engine.py",
+      "test_id": "Tester.tests.test_learning_engine.LearningEngineTests.test_web_and_android_lesson_content_match",
+      "description": "콘텐츠 연결: 웹이 쓰는 content.js와 Android 목록용 content.json이 일치한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-01: 학습 진행률",
+      "module": "Tester/example/Example-01.py",
+      "test_file": "example/tests/test_example_01.py",
+      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_progress_pass",
+      "description": "진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-01: 학습 진행률",
+      "module": "Tester/example/Example-01.py",
+      "test_file": "example/tests/test_example_01.py",
+      "test_id": "Tester.example.tests.test_example_01.ProgressTests.test_remaining_pass",
+      "description": "남은 개수 정상 사례: 4개 중 1개 완료 시 3개가 남는다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_all_correct",
+      "description": "전체 정답: 5문항을 모두 맞히면 100점이다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_correct_answers_exceed_total",
+      "description": "잘못된 입력: 정답 수가 전체 문항 수보다 크면 거부한다.",
+      "status": "passed",
+      "details": []
+    },
+    {
+      "group": "Example-02: 퀴즈 점수",
+      "module": "Tester/example/Example-02.py",
+      "test_file": "example/tests/test_example_02.py",
+      "test_id": "Tester.example.tests.test_example_02.Example02Tests.test_partial_correct",
+      "description": "일부 정답: 5문항 중 3문항을 맞히면 60점이다.",
+      "status": "passed",
+      "details": []
+    }
+  ],
+  "sha": "4acba96266fb75e6df4561658558eb96bddf8ed5",
+  "mode": "workflow",
+  "scope": "main에 반영된 실행 대상 커밋"
+}

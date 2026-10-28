@@ -1,6 +1,6 @@
 # 개발자별 통합 변경 및 파일 목록
 
-기준 main: `4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`. 목록은 실제 `git diff --cached --name-status origin/main`으로 생성했다.
+기준 main: `4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`. 목록은 실제 `git diff --cached --name-status 4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`으로 생성했다.
 통합 앱 소스는 main에 없었으므로 대부분 A(신규)다. 원본 대비 수정 여부는 아래의 별도 비교로 구분한다.
 
 ## Juno: 가이드 담당
@@ -76,8 +76,8 @@ Python 등록 테스트가 Kotlin을 검증하지 않는다. Android 빌드·브
 
 ## 최신 main 대비 신규·수정 파일 전체
 
-자기 자신인 이 목록 및 이후 원격 검증 기록 문서는 별도 신규 문서로 포함된다.
-현재 생성 시점: {'M': 2, 'A': 119}. 삭제 파일 없음.
+아래 목록에는 이 파일과 첫 Push 후 원격 검증 기록 문서·로그도 포함된다.
+현재 생성 시점: {'M': 2, 'A': 131}. 삭제 파일 없음.
 
 | Git 상태 | 파일 |
 | --- | --- |
@@ -126,6 +126,7 @@ Python 등록 테스트가 Kotlin을 검증하지 않는다. Android 빌드·브
 | A | `android/gradlew` |
 | A | `android/gradlew.bat` |
 | A | `android/settings.gradle.kts` |
+| A | `docs/ANDROID_FILE_CHANGES.md` |
 | A | `docs/ANDROID_INTEGRATION.md` |
 | A | `docs/ANDROID_VALIDATION.md` |
 | A | `docs/TEAM_SYNC_AUDIT.md` |
@@ -133,6 +134,17 @@ Python 등록 테스트가 Kotlin을 검증하지 않는다. Android 빌드·브
 | A | `docs/validation/browser-test.log` |
 | A | `docs/validation/device-test.log` |
 | A | `docs/validation/engine-test.log` |
+| A | `docs/validation/github-discord-evidence.log` |
+| A | `docs/validation/github-main-4acba96/results.json` |
+| A | `docs/validation/github-main-4acba96/summary.md` |
+| A | `docs/validation/github-main-4acba96/tests.log` |
+| A | `docs/validation/github-team-sync.log` |
+| A | `docs/validation/source-diffs/Juno-AndroidManifest.xml.diff` |
+| A | `docs/validation/source-diffs/Juno-MainActivity.kt.diff` |
+| A | `docs/validation/source-diffs/Juno-README.md.diff` |
+| A | `docs/validation/source-diffs/Juno-build.gradle.kts.diff` |
+| A | `docs/validation/source-diffs/hjh-HomeScreen.kt.diff` |
+| A | `docs/validation/source-diffs/jib-LearningEntry.kt.diff` |
 | A | `docs/validation/team-sync-local/results.json` |
 | A | `docs/validation/team-sync-local/summary.md` |
 | A | `docs/validation/team-sync-local/tests.log` |

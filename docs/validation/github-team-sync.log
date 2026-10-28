@@ -1,0 +1,262 @@
+﻿2026-10-28T07:20:22.9400389Z Current runner version: '2.338.0'
+2026-10-28T07:20:22.9435585Z ##[group]Runner Image Provisioner
+2026-10-28T07:20:22.9438239Z Hosted Compute Agent
+2026-10-28T07:20:22.9439263Z Version: 20261021.618
+2026-10-28T07:20:22.9440469Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-28T07:20:22.9441674Z Build Date: 2026-10-21T00:45:21Z
+2026-10-28T07:20:22.9442746Z Worker ID: {739c9fd6-1a0a-4c2d-ae97-5f7765c6df52}
+2026-10-28T07:20:22.9444063Z Region: eastus
+2026-10-28T07:20:22.9445091Z Cloud: Azure
+2026-10-28T07:20:22.9447001Z ##[endgroup]
+2026-10-28T07:20:22.9449436Z ##[group]Operating System
+2026-10-28T07:20:22.9450622Z Ubuntu
+2026-10-28T07:20:22.9451538Z 26.04.1
+2026-10-28T07:20:22.9452405Z LTS
+2026-10-28T07:20:22.9453345Z ##[endgroup]
+2026-10-28T07:20:22.9454314Z ##[group]Runner Image
+2026-10-28T07:20:22.9455450Z Image: ubuntu-26.04
+2026-10-28T07:20:22.9456688Z Version: 20261012.163.1
+2026-10-28T07:20:22.9458916Z Included Software: https://github.com/actions/runner-images/blob/ubuntu26/20261012.163/images/ubuntu/Ubuntu2604-Readme.md
+2026-10-28T07:20:22.9461809Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu26%2F20261012.163
+2026-10-28T07:20:22.9463574Z ##[endgroup]
+2026-10-28T07:20:22.9465535Z ##[group]GITHUB_TOKEN Permissions
+2026-10-28T07:20:22.9468930Z Contents: read
+2026-10-28T07:20:22.9470028Z Metadata: read
+2026-10-28T07:20:22.9470987Z ##[endgroup]
+2026-10-28T07:20:22.9474182Z Secret source: Actions
+2026-10-28T07:20:22.9475726Z Cache mode: write
+2026-10-28T07:20:22.9477738Z Prepare workflow directory
+2026-10-28T07:20:22.9965335Z Prepare all required actions
+2026-10-28T07:20:23.0037833Z Getting action download info
+2026-10-28T07:20:23.1871549Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-28T07:20:23.2742594Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-28T07:20:23.3282224Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+2026-10-28T07:20:23.3914606Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-28T07:20:23.5849591Z Complete job name: test
+2026-10-28T07:20:23.6717280Z ##[group]Run actions/checkout@v4
+2026-10-28T07:20:23.6718198Z with:
+2026-10-28T07:20:23.6718682Z   ref: 4acba96266fb75e6df4561658558eb96bddf8ed5
+2026-10-28T07:20:23.6719291Z   persist-credentials: false
+2026-10-28T07:20:23.6719922Z   repository: KeilyAE3/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:23.6724028Z   token: ***
+2026-10-28T07:20:23.6724447Z   ssh-strict: true
+2026-10-28T07:20:23.6724868Z   ssh-user: git
+2026-10-28T07:20:23.6725275Z   clean: true
+2026-10-28T07:20:23.6725708Z   sparse-checkout-cone-mode: true
+2026-10-28T07:20:23.6726406Z   fetch-depth: 1
+2026-10-28T07:20:23.6726833Z   fetch-tags: false
+2026-10-28T07:20:23.6727263Z   show-progress: true
+2026-10-28T07:20:23.6727692Z   lfs: false
+2026-10-28T07:20:23.6728096Z   submodules: false
+2026-10-28T07:20:23.6728553Z   set-safe-directory: true
+2026-10-28T07:20:23.6729046Z   allow-unsafe-pr-checkout: false
+2026-10-28T07:20:23.6729808Z ##[endgroup]
+2026-10-28T07:20:23.9293624Z Syncing repository: KeilyAE3/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:23.9297459Z ##[group]Getting Git version info
+2026-10-28T07:20:23.9299789Z Working directory is '/home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant'
+2026-10-28T07:20:23.9302870Z [command]/usr/bin/git version
+2026-10-28T07:20:23.9304144Z git version 2.55.0
+2026-10-28T07:20:23.9335211Z ##[endgroup]
+2026-10-28T07:20:23.9348474Z Temporarily overriding HOME='/home/runner/work/_temp/42c0a024-4955-4c4b-99bd-b7140d1f42b1' before making global git config changes
+2026-10-28T07:20:23.9358488Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-28T07:20:23.9380699Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:23.9417551Z Deleting the contents of '/home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant'
+2026-10-28T07:20:23.9420813Z ##[group]Initializing the repository
+2026-10-28T07:20:23.9428295Z [command]/usr/bin/git init /home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:23.9563228Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-28T07:20:23.9593425Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-28T07:20:23.9595776Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-28T07:20:23.9598051Z hint: call:
+2026-10-28T07:20:23.9599349Z hint:
+2026-10-28T07:20:23.9600888Z hint: 	git config --global init.defaultBranch <name>
+2026-10-28T07:20:23.9607640Z hint:
+2026-10-28T07:20:23.9609349Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-28T07:20:23.9611822Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-28T07:20:23.9613860Z hint:
+2026-10-28T07:20:23.9615114Z hint: 	git branch -m <name>
+2026-10-28T07:20:23.9616888Z hint:
+2026-10-28T07:20:23.9618570Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-28T07:20:23.9622020Z Initialized empty Git repository in /home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant/.git/
+2026-10-28T07:20:23.9628670Z [command]/usr/bin/git remote add origin https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:23.9642053Z ##[endgroup]
+2026-10-28T07:20:23.9643687Z ##[group]Disabling automatic garbage collection
+2026-10-28T07:20:23.9658628Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-28T07:20:23.9691861Z ##[endgroup]
+2026-10-28T07:20:23.9693340Z ##[group]Setting up auth
+2026-10-28T07:20:23.9711972Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T07:20:23.9760842Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-28T07:20:24.0311981Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T07:20:24.0346535Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-28T07:20:24.0635803Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-28T07:20:24.0675446Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-28T07:20:24.0949768Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-28T07:20:24.0991069Z ##[endgroup]
+2026-10-28T07:20:24.0993102Z ##[group]Fetching the repository
+2026-10-28T07:20:24.1001694Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin 4acba96266fb75e6df4561658558eb96bddf8ed5
+2026-10-28T07:20:24.3196911Z From https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:24.3199581Z  * branch            4acba96266fb75e6df4561658558eb96bddf8ed5 -> FETCH_HEAD
+2026-10-28T07:20:24.3204057Z ##[endgroup]
+2026-10-28T07:20:24.3205399Z ##[group]Determining the checkout info
+2026-10-28T07:20:24.3207131Z ##[endgroup]
+2026-10-28T07:20:24.3214426Z [command]/usr/bin/git sparse-checkout disable
+2026-10-28T07:20:24.3273698Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-28T07:20:24.3311913Z ##[group]Checking out the ref
+2026-10-28T07:20:24.3315486Z [command]/usr/bin/git checkout --progress --force 4acba96266fb75e6df4561658558eb96bddf8ed5
+2026-10-28T07:20:24.3461346Z Note: switching to '4acba96266fb75e6df4561658558eb96bddf8ed5'.
+2026-10-28T07:20:24.3463344Z 
+2026-10-28T07:20:24.3465090Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-28T07:20:24.3469400Z changes and commit them, and you can discard any commits you make in this
+2026-10-28T07:20:24.3473957Z state without impacting any branches by switching back to a branch.
+2026-10-28T07:20:24.3476591Z 
+2026-10-28T07:20:24.3477873Z If you want to create a new branch to retain commits you create, you may
+2026-10-28T07:20:24.3480605Z do so (now or later) by using -c with the switch command. Example:
+2026-10-28T07:20:24.3482165Z 
+2026-10-28T07:20:24.3482766Z   git switch -c <new-branch-name>
+2026-10-28T07:20:24.3483761Z 
+2026-10-28T07:20:24.3484357Z Or undo this operation with:
+2026-10-28T07:20:24.3485398Z 
+2026-10-28T07:20:24.3486000Z   git switch -
+2026-10-28T07:20:24.3486729Z 
+2026-10-28T07:20:24.3487476Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-28T07:20:24.3488492Z 
+2026-10-28T07:20:24.3489164Z HEAD is now at 4acba96 Merge integrated Silver Ringo Android app into main
+2026-10-28T07:20:24.3491955Z ##[endgroup]
+2026-10-28T07:20:24.3521880Z [command]/usr/bin/git log -1 --format=%H
+2026-10-28T07:20:24.3546821Z 4acba96266fb75e6df4561658558eb96bddf8ed5
+2026-10-28T07:20:24.3557172Z ##[group]Removing auth
+2026-10-28T07:20:24.3560928Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T07:20:24.3593938Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-28T07:20:24.3868105Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T07:20:24.3891777Z http.https://github.com/.extraheader
+2026-10-28T07:20:24.3899850Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-28T07:20:24.3933024Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-28T07:20:24.4196904Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-28T07:20:24.4228074Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-28T07:20:24.4494349Z ##[endgroup]
+2026-10-28T07:20:24.4849595Z ##[group]Run actions/setup-python@v5
+2026-10-28T07:20:24.4850620Z with:
+2026-10-28T07:20:24.4851309Z   python-version: 3.12
+2026-10-28T07:20:24.4852110Z   check-latest: false
+2026-10-28T07:20:24.4862328Z   token: ***
+2026-10-28T07:20:24.4863076Z   update-environment: true
+2026-10-28T07:20:24.4863966Z   allow-prereleases: false
+2026-10-28T07:20:24.4864827Z   freethreaded: false
+2026-10-28T07:20:24.4865592Z ##[endgroup]
+2026-10-28T07:20:24.6233410Z ##[group]Installed versions
+2026-10-28T07:20:24.6335370Z (node:2482) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T07:20:24.6339970Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T07:20:24.6342621Z Successfully set up CPython (3.12.15)
+2026-10-28T07:20:24.6356775Z ##[endgroup]
+2026-10-28T07:20:24.6621773Z ##[group]Run actions/setup-node@v4
+2026-10-28T07:20:24.6623819Z with:
+2026-10-28T07:20:24.6625237Z   node-version: 22
+2026-10-28T07:20:24.6627100Z   always-auth: false
+2026-10-28T07:20:24.6628915Z   check-latest: false
+2026-10-28T07:20:24.6646564Z   token: ***
+2026-10-28T07:20:24.6647761Z env:
+2026-10-28T07:20:24.6649170Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:24.6651867Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-28T07:20:24.6654536Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:24.6657217Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:24.6659992Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:24.6662436Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-28T07:20:24.6664496Z ##[endgroup]
+2026-10-28T07:20:24.8184893Z (node:2490) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T07:20:24.8189180Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T07:20:24.8191551Z Found in cache @ /opt/hostedtoolcache/node/22.23.3/x64
+2026-10-28T07:20:24.8193969Z ##[group]Environment details
+2026-10-28T07:20:25.2568079Z node: v22.23.3
+2026-10-28T07:20:25.2570662Z npm: 10.9.9
+2026-10-28T07:20:25.2572292Z yarn: 1.22.22
+2026-10-28T07:20:25.2575483Z ##[endgroup]
+2026-10-28T07:20:25.2762833Z ##[group]Run python Tester/automation/check.py --mode workflow
+2026-10-28T07:20:25.2764631Z [36;1mpython Tester/automation/check.py --mode workflow[0m
+2026-10-28T07:20:25.2956351Z shell: /usr/bin/bash -e {0}
+2026-10-28T07:20:25.2957631Z env:
+2026-10-28T07:20:25.2958933Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.2961093Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-28T07:20:25.2963257Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.2964998Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.2966763Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.2968421Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-28T07:20:25.2969825Z ##[endgroup]
+2026-10-28T07:20:25.5998165Z # Team Sync
+2026-10-28T07:20:25.5998763Z 
+2026-10-28T07:20:25.5999272Z Status: **passed**
+2026-10-28T07:20:25.5999849Z 
+2026-10-28T07:20:25.6000995Z Tests: 7 / Passed: 7 / Failure events: 0 / Skipped: 0 / Expected failures: 0
+2026-10-28T07:20:25.6002171Z 
+2026-10-28T07:20:25.6002815Z 선택 설정: workflow
+2026-10-28T07:20:25.6003930Z 검사 범위: main에 반영된 실행 대상 커밋
+2026-10-28T07:20:25.6004585Z 
+2026-10-28T07:20:25.6005018Z ## 이번 실행의 검사 목록
+2026-10-28T07:20:25.6005517Z 
+2026-10-28T07:20:25.6006102Z config.json에서 활성화·선택한 항목만 실행했습니다.
+2026-10-28T07:20:25.6008275Z 설정으로 제외한 항목은 테스트 수와 Skipped에 포함하지 않습니다.
+2026-10-28T07:20:25.6009054Z 
+2026-10-28T07:20:25.6009663Z | 검사 묶음 | 기능 모듈 식별명 | 테스트 항목 식별명 | 명세 | 결과 |
+2026-10-28T07:20:25.6010841Z |---|---|---|---|---|
+2026-10-28T07:20:25.6014146Z | 통합 앱: 실제 키오스크 학습 엔진·콘텐츠 | silver-ringo-c/web/engine.js | Tester.tests.test_learning_engine.LearningEngineTests.test_existing_learning_engine | 실제 JS 엔진: 주문·가격·단계 완료·잠금 등 기존 11개 회귀 검사가 통과한다. | passed |
+2026-10-28T07:20:25.6020151Z | 통합 앱: 실제 키오스크 학습 엔진·콘텐츠 | silver-ringo-c/web/engine.js | Tester.tests.test_learning_engine.LearningEngineTests.test_web_and_android_lesson_content_match | 콘텐츠 연결: 웹이 쓰는 content.js와 Android 목록용 content.json이 일치한다. | passed |
+2026-10-28T07:20:25.6025385Z | Example-01: 학습 진행률 | Tester/example/Example-01.py | Tester.example.tests.test_example_01.ProgressTests.test_progress_pass | 진행률 정상 사례: 4개 중 1개 완료 시 25%를 반환한다. | passed |
+2026-10-28T07:20:25.6030373Z | Example-01: 학습 진행률 | Tester/example/Example-01.py | Tester.example.tests.test_example_01.ProgressTests.test_remaining_pass | 남은 개수 정상 사례: 4개 중 1개 완료 시 3개가 남는다. | passed |
+2026-10-28T07:20:25.6034938Z | Example-02: 퀴즈 점수 | Tester/example/Example-02.py | Tester.example.tests.test_example_02.Example02Tests.test_all_correct | 전체 정답: 5문항을 모두 맞히면 100점이다. | passed |
+2026-10-28T07:20:25.6039945Z | Example-02: 퀴즈 점수 | Tester/example/Example-02.py | Tester.example.tests.test_example_02.Example02Tests.test_correct_answers_exceed_total | 잘못된 입력: 정답 수가 전체 문항 수보다 크면 거부한다. | passed |
+2026-10-28T07:20:25.6044781Z | Example-02: 퀴즈 점수 | Tester/example/Example-02.py | Tester.example.tests.test_example_02.Example02Tests.test_partial_correct | 일부 정답: 5문항 중 3문항을 맞히면 60점이다. | passed |
+2026-10-28T07:20:25.6047346Z 
+2026-10-28T07:20:25.6047801Z ## 실패 및 미통과 상세
+2026-10-28T07:20:25.6048298Z 
+2026-10-28T07:20:25.6048689Z 없음
+2026-10-28T07:20:25.6049424Z 
+2026-10-28T07:20:25.6261995Z ##[group]Run actions/upload-artifact@v4
+2026-10-28T07:20:25.6263124Z with:
+2026-10-28T07:20:25.6263960Z   name: team-sync-40649420675-1
+2026-10-28T07:20:25.6264979Z   path: Tester/.team-sync/
+2026-10-28T07:20:25.6265970Z   include-hidden-files: true
+2026-10-28T07:20:25.6267263Z   retention-days: 14
+2026-10-28T07:20:25.6268176Z   if-no-files-found: warn
+2026-10-28T07:20:25.6269131Z   compression-level: 6
+2026-10-28T07:20:25.6270044Z   overwrite: false
+2026-10-28T07:20:25.6270884Z env:
+2026-10-28T07:20:25.6271872Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.6273515Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-28T07:20:25.6275198Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.6276916Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.6278444Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-28T07:20:25.6280055Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-28T07:20:25.6281367Z ##[endgroup]
+2026-10-28T07:20:25.7975787Z (node:2544) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T07:20:25.7979583Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T07:20:25.8074423Z With the provided path, there will be 3 files uploaded
+2026-10-28T07:20:25.8078823Z Artifact name is valid!
+2026-10-28T07:20:25.8081042Z Root directory input is valid!
+2026-10-28T07:20:26.0766041Z Beginning upload of artifact content to blob storage
+2026-10-28T07:20:26.0992238Z (node:2544) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-28T07:20:26.1501934Z Uploaded bytes 2971
+2026-10-28T07:20:26.1700557Z Finished uploading artifact content to blob storage!
+2026-10-28T07:20:26.1702578Z SHA256 digest of uploaded artifact zip is 43a5343797c2cd6800a157188b868e94b3867ab43d4b18385c75a1471b9fd6d3
+2026-10-28T07:20:26.1704195Z Finalizing artifact upload
+2026-10-28T07:20:26.6366063Z Artifact team-sync-40649420675-1.zip successfully finalized. Artifact ID 12799151573
+2026-10-28T07:20:26.6369542Z Artifact team-sync-40649420675-1 has been successfully uploaded! Final size is 2971 bytes. Artifact ID is 12799151573
+2026-10-28T07:20:26.6375523Z Artifact download URL: https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649420675/artifacts/12799151573
+2026-10-28T07:20:26.6634583Z Post job cleanup.
+2026-10-28T07:20:26.7867753Z (node:2557) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T07:20:26.7870785Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T07:20:26.8074410Z Post job cleanup.
+2026-10-28T07:20:26.9334028Z (node:2565) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-28T07:20:26.9335602Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-28T07:20:26.9553202Z Post job cleanup.
+2026-10-28T07:20:27.0443919Z [command]/usr/bin/git version
+2026-10-28T07:20:27.0489451Z git version 2.55.0
+2026-10-28T07:20:27.0531367Z Temporarily overriding HOME='/home/runner/work/_temp/a20d651c-09ae-4b20-aba6-09cdb64c7c6b' before making global git config changes
+2026-10-28T07:20:27.0535549Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-28T07:20:27.0539349Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/SilverRingo_Digital_Literacy_Assistant/SilverRingo_Digital_Literacy_Assistant
+2026-10-28T07:20:27.0580034Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-28T07:20:27.0620864Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-28T07:20:27.0949252Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-28T07:20:27.1001724Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-28T07:20:27.1307498Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-28T07:20:27.1342612Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-28T07:20:27.1770278Z Cleaning up orphan processes
+2026-10-28T07:20:27.2167797Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

@@ -1,6 +1,6 @@
 # 통합 APK 검수
 
-검수일: 2026-10-28. 통합 앱은 `android/`, 브랜치는 로컬 `hjh`다.
+검수일: 2026-10-28. 통합 앱은 `android/`, 개발 브랜치는 `hjh`, 승인된 팀 공용 반영 브랜치는 `main`이다.
 원본 브랜치에 있던 과거 로그/APK는 이번 결과에 포함하지 않는다.
 
 ## main 반영 전 재검증 및 사용자 확인
@@ -12,6 +12,11 @@ JS 엔진 11개와 브라우저 회귀 검사도 재실행해 전부 통과했�
 Team Sync local은 9개 중 7개 통과·기존 의도된 실패 2개, workflow 모드는 7개 전부 통과했다.
 운영 분석·Actions/Discord 실제 결과는 [TEAM_SYNC_AUDIT.md](TEAM_SYNC_AUDIT.md),
 개발자별 변경은 [ANDROID_FILE_CHANGES.md](ANDROID_FILE_CHANGES.md)를 확인한다.
+
+main 병합 SHA `4acba96266fb75e6df4561658558eb96bddf8ed5` Push 완료.
+[실제 Team Sync](https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649420675)는 7/7 통과,
+[Discord 알림](https://github.com/KeilyAE3/SilverRingo_Digital_Literacy_Assistant/actions/runs/40649442529)은 메시지 생성 응답까지 확인했다.
+다운로드한 artifact SHA도 일치한다. Android 앱 전체의 호환성이나 가이드 버그 해결을 의미하지 않는다.
 
 ## 자동 검증
 
