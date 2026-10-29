@@ -19,7 +19,7 @@ import org.json.JSONObject
 
 /** A파트 진입점. A의 메뉴/내비게이션 구현 없이 이 화면만 호출한다. */
 @Composable
-fun LearningEntry(onExit: () -> Unit, onResult: (String) -> Unit = {}) {
+fun KioskLearningEntry(onExit: () -> Unit, onResult: (String) -> Unit = {}) {
     val context = LocalContext.current
     val lessons = remember {
         val json = JSONObject(context.assets.open("kiosk/content.json").bufferedReader().use { it.readText() })

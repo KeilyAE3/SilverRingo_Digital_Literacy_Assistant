@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="kr.silverringo.learning.PhoneEngineTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-29T08:43:54" hostname="8852bbed7c12" time="0.017">
+  <properties/>
+  <testcase name="wrongInputsAllowCorrectionAndRecordFeedback" classname="kr.silverringo.learning.PhoneEngineTest" time="0.012"/>
+  <testcase name="backHintAndRestartDoNotAwardCompletion" classname="kr.silverringo.learning.PhoneEngineTest" time="0.0"/>
+  <testcase name="contactMustBeSavedThenFound" classname="kr.silverringo.learning.PhoneEngineTest" time="0.001"/>
+  <testcase name="brightnessAndSoundRequireBothTargets" classname="kr.silverringo.learning.PhoneEngineTest" time="0.0"/>
+  <testcase name="messageChecksRecipientBodyAndReplyRead" classname="kr.silverringo.learning.PhoneEngineTest" time="0.0"/>
+  <testcase name="outgoingAndIncomingCallsMustBothFinish" classname="kr.silverringo.learning.PhoneEngineTest" time="0.0"/>
+  <testcase name="wrongScreenActionsAreIgnoredAndValuesAreBounded" classname="kr.silverringo.learning.PhoneEngineTest" time="0.0"/>
+  <testcase name="curriculumHasSixWeeksAndFourDistinctWeekOneLessons" classname="kr.silverringo.learning.PhoneEngineTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

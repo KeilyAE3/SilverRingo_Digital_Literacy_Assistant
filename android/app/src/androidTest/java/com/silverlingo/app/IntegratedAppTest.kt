@@ -28,6 +28,7 @@ class IntegratedAppTest {
         val prefs = compose.activity.getSharedPreferences("sr_learning", Context.MODE_PRIVATE)
         val previous = prefs.getString("latest_result", null)
         compose.onAllNodesWithText("IT 기능 배우기")[0].performClick()
+        compose.onNodeWithText("키오스크 배우기").performClick()
         compose.onNodeWithText("키오스크 시작하기", substring = true).performClick()
         val ready = AtomicBoolean(false)
         compose.waitUntil(20_000) {

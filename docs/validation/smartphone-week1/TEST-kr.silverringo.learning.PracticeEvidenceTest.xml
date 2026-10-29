@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="kr.silverringo.learning.PracticeEvidenceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-29T08:43:54" hostname="8852bbed7c12" time="0.003">
+  <properties/>
+  <testcase name="teachingCoversEveryLessonAndUsesConfiguredNumber" classname="kr.silverringo.learning.PracticeEvidenceTest" time="0.001"/>
+  <testcase name="unchangedVolumeIsNotAnAction" classname="kr.silverringo.learning.PracticeEvidenceTest" time="0.0"/>
+  <testcase name="settingsNeedBothVolumeDirectionsAndBrightnessButNotFontChange" classname="kr.silverringo.learning.PracticeEvidenceTest" time="0.0"/>
+  <testcase name="launchingAppDoesNotAwardSuccess" classname="kr.silverringo.learning.PracticeEvidenceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

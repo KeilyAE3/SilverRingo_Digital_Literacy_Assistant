@@ -1,0 +1,7 @@
+2026-10-29: retained v2 build outputs inspected after continuation.
+app-debug.apk: 17708805 bytes; built 2026-10-29 08:43:53 UTC.
+androidTest APK built 08:43:58 UTC; not executed on device.
+JUnit XML at 08:43:54 UTC: 13 tests, zero failures/errors/skipped.
+The temporary v2 Gradle console log and SDK were not retained across environment restart. No new Gradle run was performed after continuation.
+APK v2 signature verified with Google apksig 8.6.1; certificate matches delivered v1.
+Kiosk assets: 11 files byte-identical to web source.
