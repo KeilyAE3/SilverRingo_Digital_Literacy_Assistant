@@ -1,0 +1,19 @@
+✔ whole target order passes, with correct price and receipt (1.720372ms)
+✔ single item bypasses set options and costs 5000 (0.257398ms)
+✔ side surcharge and quantity change exact total (0.222395ms)
+✔ empty cart cannot check out or pay (0.164868ms)
+✔ multiple items add, delete, and total independently (0.208084ms)
+✔ wrong dining and payment do not pass final assessment (0.197858ms)
+✔ back from review preserves cart, can correct quantity (0.251048ms)
+✔ every short level has an achievable completion (0.337729ms)
+✔ quantity bound 1..9, invalid action and duplicate pay are rejected (0.52435ms)
+✔ transition is pure and standalone sides cannot become sets (0.310327ms)
+✔ unlock needs a completed previous level, free mode never unlocks (0.151829ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 85.208887
