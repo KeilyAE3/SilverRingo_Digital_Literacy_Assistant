@@ -195,6 +195,12 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                 ?.let { it to "시작하기 전에 화면의 [허용] 또는 [건너뛰기]를 눌러주세요." }
         }
 
+        // 홈에는 자주 찾은 병원 카드의 "후기"·"예약" 글자도 보여 4·5단계가 검색창을 가로챔 → 검색창이 보이면 1·2단계 우선
+        if (homeSearch != null) {
+            resetReviewTimer()
+            return searchInputStep(root) ?: (homeSearch to "1단계: 먼저 맨 위 검색창을 눌러주세요. 아픈 곳, 진료과, 병원 이름으로 찾을 수 있어요.")
+        }
+
         findNodeByKeywords(root, listOf("접수 신청", "접수신청", "접수 요청하기"))
             ?.let { return it to "7단계: 마지막 단계예요. [접수 신청]을 눌러주세요." }
         // "본인 인증하기", "본인 확인을 하기 위해" 같은 문구의 "본인"은 제외
@@ -218,19 +224,26 @@ class SilverAccessibilityService : AccessibilityService(), TextToSpeech.OnInitLi
                 applyBtn!! to "5단계: 이 병원으로 접수하시려면 노란색으로 표시된 [접수/예약] 버튼을 눌러주세요."
             }
         }
-        // 다른 병원을 고르면 후기 확인부터 다시 시작
-        reviewStartedAt = 0L
-        handler.removeCallbacks(reviewTimeout)
+        resetReviewTimer()
 
-        // 병원 검색창일 때만 2단계 (PASS 이름·휴대폰번호·인증번호 입력창 등은 제외)
-        val guidingSearch = shownLabel?.let { it.startsWith("1단계") || it.startsWith("2단계") } == true
-        root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
-            ?.takeIf { it.isEditable && (guidingSearch || SEARCH_INPUT_KEYWORDS.any { kw -> nodeText(it).contains(kw) }) }
-            ?.let { return it to "2단계: 아픈 곳(예: 감기)이나 진료과(예: 내과), 병원 이름을 적고 검색해주세요." }
-        homeSearch?.let { return it to "1단계: 먼저 맨 위 검색창을 눌러주세요. 아픈 곳, 진료과, 병원 이름으로 찾을 수 있어요." }
+        searchInputStep(root)?.let { return it }
         findNodeByKeywords(root, listOf("진료중", "진료 중", "접수가능", "접수 가능"))
             ?.let { return it to "3단계: 원하시는 병원 하나를 눌러 들어가 보세요." }
         return null
+    }
+
+    // 다른 병원을 고르면 후기 확인부터 다시 시작
+    private fun resetReviewTimer() {
+        reviewStartedAt = 0L
+        handler.removeCallbacks(reviewTimeout)
+    }
+
+    // 병원 검색창일 때만 2단계 (PASS 이름·휴대폰번호·인증번호 입력창 등은 제외)
+    private fun searchInputStep(root: AccessibilityNodeInfo): Pair<AccessibilityNodeInfo, String>? {
+        val guidingSearch = shownLabel?.let { it.startsWith("1단계") || it.startsWith("2단계") } == true
+        return root.findFocus(AccessibilityNodeInfo.FOCUS_INPUT)
+            ?.takeIf { it.isEditable && (guidingSearch || SEARCH_INPUT_KEYWORDS.any { kw -> nodeText(it).contains(kw) }) }
+            ?.let { it to "2단계: 아픈 곳(예: 감기)이나 진료과(예: 내과), 병원 이름을 적고 검색해주세요." }
     }
 
     private fun nodeText(node: AccessibilityNodeInfo): String {
