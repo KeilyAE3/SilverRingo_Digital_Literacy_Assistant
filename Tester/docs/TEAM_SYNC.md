@@ -1,106 +1,26 @@
-# Team Sync: 최소 사용 안내
+# Team Sync 운영 기준
 
-## 목적과 범위
+## 실행과 등록
 
-현재 작업 파일의 Python 기능 테스트를 모두 실행합니다. 로컬과 GitHub에서 같은 명령을 씁니다.
-문서 링크, 간트 차트, 계약 JSON, 변경 보고서 검사는 없습니다. config.json도 없습니다.
-등록한 테스트가 다루는 동작만 검증합니다. 테스트 성공이 프로그램 전체의 무결성을 보장하지는 않습니다.
-main과의 가상 병합 검사는 이번 판에서 제외했습니다. 각 브랜치 push는 그 브랜치,
-main push는 통합된 main을 검사합니다. 실패해도 이미 이루어진 push를 취소하지 않습니다.
+현재 실제 실행 코드는 Tester/automation/check.py이며 Tester/config.json의 checks를 읽는다. 문서보다 실행 코드를 기준으로 판단한다. 테스트 자동 검색 방식이나 저장소 루트 automation/check.py는 사용하지 않는다.
 
-## 로컬 실행
+- 기능 테스트: Tester/tests/test_<기능명>.py. 실제 함수를 import해 unittest로 정상·경계·실패 동작을 검사하고 test_ 메서드에 명세 docstring을 적는다.
+- 등록: config.json에 name, module, test와 local/workflow의 enabled를 지정한다. include가 있으면 해당 메서드만, 생략하면 등록 파일 전체를 실행한다.
+- 로컬: `python Tester/automation/check.py --mode local`
+- CI 범위 재현: `python Tester/automation/check.py --mode workflow`
+- Python 3.12+와 Node가 필요하다. HTTP 검사에는 `python -m pip install -e './SilverRingo_Chat-bot[api,test]'`가 필요하며 실제 Gemini 키는 쓰지 않는다.
+- 결과: Tester/.team-sync/{results.json,summary.md,tests.log}. Git에서 제외한다.
 
-저장소 루트에서 Python 3.12로 실행:
+모든 선택 검사를 실행하며 실패·생략·expectedFailure 또는 0개이면 종료 코드 1이다. local에는 기존 Example-01의 의도적 실패 2개가 포함된다. workflow는 기존 config의 선택 범위를 유지하며 예제는 원래 비활성이다. 실제 오류와 예제 실패를 구분하고 통과를 위해 검사를 삭제하거나 끄지 않는다.
 
-```sh
-python automation/check.py
-```
-
-결과는 콘솔과 `.team-sync/`에 생성됩니다.
-
-| 결과 파일 | 용도 |
-|---|---|
-| tests.log | 모든 테스트 이름, 설명, 성공/실패, 실패 원인 traceback |
-| summary.md | 전체 상태와 개수 |
-| results.json | Discord 전달용 결과 |
-
-모두 통과하면 종료 코드 0. 실패·생략·expectedFailure가 있거나 테스트가 0개이면 종료 코드 1입니다.
-0개는 `not_configured`입니다. 시범 테스트로 성공처럼 꾸미지 않기 위해 실제 기능 테스트는 동봉하지 않았습니다.
-`failure_events`는 실패 사건 수입니다. 한 테스트의 여러 subTest 실패가 각각 집계될 수 있습니다.
-모든 테스트를 수집해서 실행하며, 일반적인 assertion 실패 후에도 다음 테스트를 계속합니다.
-무한 대기나 프로세스 강제 종료 시에는 완전한 보고서가 없을 수 있습니다. GitHub 실행 제한은 10분입니다.
-
-## 기능을 추가하는 에이전트의 작업
-
-1. 실제 기능 코드를 작성하거나 수정합니다.
-2. `tests/test_<기능명>.py`에 `unittest.TestCase`를 작성합니다.
-3. `test_`로 시작하는 메서드마다 요구사항과 기대 결과를 docstring으로 적습니다.
-4. 실제 함수를 import해서 정상 입력, 경계값·잘못된 입력, 필요한 모듈 간 연결을 검증합니다.
-5. 위 전체 실행 명령으로 기존 기능까지 확인하고 코드와 테스트를 함께 커밋합니다.
-
-새 테스트 등록을 위해 check.py나 워크플로우를 수정하지 않습니다.
-초기에는 모든 테스트 파일을 tests/ 바로 아래에 두세요. 하위 폴더를 만들면 각 폴더에 __init__.py가 필요합니다.
-외부 API·비밀키·인터넷 없이 반복 가능한 테스트를 우선하며 외부 호출은 unittest.mock으로 대체할 수 있습니다.
-필요한 실제 모듈 연결은 mock 대신 실제 객체를 연결한 테스트로 검증합니다.
-
-다음은 형식 설명이며 실제 모듈 이름과 기대값으로 바꿔야 합니다:
-
-```python
-import unittest
-from your_module import calculate_progress
-
-class ProgressTests(unittest.TestCase):
-    def test_quarter_completed(self):
-        """진행률: 4개 중 1개를 완료하면 25를 반환한다."""
-        self.assertEqual(calculate_progress(completed=1, total=4), 25)
-```
+현재 workflow는 학습 Node 엔진, 지식 적재, 선택된 챗봇 서비스, 새 HTTP 계약·안전한 오류를 검사한다. Android APK·Kotlin·기기·브라우저 검사는 별도 실행이며 CI 통과가 해당 검사의 자동 수행을 뜻하지 않는다. 새 의존성은 기존 프로젝트 파일과 공통 workflow의 설치 단계에 추가한다. 새 검사마다 workflow를 만들지 않는다.
 
 ## Push와 Discord
 
-team-sync.yml → check.py → 결과 artifact → discord-notify.yml → notify.py → Discord.
-테스트마다 별도 workflow를 만들지 않습니다. 두 workflow는 공통으로 유지합니다.
-Discord에는 전체 상태·테스트 수·실패 테스트 이름 최대 3개·GitHub 실행 링크를 보냅니다.
-성공한 개별 테스트의 이름과 설명, 긴 오류 원문은 artifact의 tests.log에서 확인합니다.
-작성자 GitHub 이름은 표시하지만 사용자 매핑·멘션·DM은 이번 판에 포함하지 않았습니다.
-취소된 실행은 알림을 생략하며, 결과 artifact가 없으면 실행 로그 확인 안내를 보냅니다.
+main push 또는 main의 수동 실행 → Team Sync → 검사 결과 artifact → Discord Sync Notification → 기존 Tester/automation/notify.py 순서다. 개발 브랜치 push는 현재 workflow 트리거가 아니다. main 가상 병합 검사는 없으며 이미 이뤄진 push를 실패 시 취소하지 않는다.
 
-설정: GitHub 저장소 Settings → Secrets and variables → Actions에
-`DISCORD_WEBHOOK_URL`을 등록합니다. 값은 Discord 채널의 Webhook URL입니다. 서버 초대 URL이 아닙니다.
-알림 workflow와 automation/notify.py는 기본 브랜치 main에도 있어야 합니다.
-Webhook이 없으면 테스트는 실행하고 알림만 생략합니다.
+team-sync.yml은 해당 github.sha를 checkout한다. 알림은 같은 저장소의 main 실행 완료에만 반응하고 취소된 실행은 생략한다. 트리거 run/attempt의 artifact만 내려받으며 notifier는 결과 SHA를 확인한다. 전체 상태·개수·실패 상세 최대 2개·실행 링크를 전송한다. 긴 상세는 artifact에서 본다.
 
-의존성이 생기면 앱의 기존 의존성 파일을 사용하고 team-sync.yml의 테스트 실행 앞에
-설치 단계(예: `python -m pip install -r requirements.txt`)를 추가하세요.
-지금은 표준 라이브러리만 사용하므로 setup_commands나 별도 의존성 파일이 없습니다.
+GitHub Secret DISCORD_WEBHOOK_URL이 필요하다. 값은 서버 초대 링크가 아닌 Discord 채널 Webhook이다. 현재 notify.py는 Secret이 없으면 종료 코드 1로 실패한다(성공 처리/조용한 생략이 아님). 전송 성공은 Discord 메시지 생성 응답의 id까지 확인한다. Secret 값은 로그·Git에 적지 않는다. 두 공통 workflow와 notifier를 보존한다.
 
-## 이전 판에서 교체하기
-
-이 패키지는 앱 전체가 아니라 자동화 교체 파일입니다. GitHub 원격 또는 PC 파일은 자동 수정되지 않습니다.
-먼저 기존 변경사항을 커밋하거나 백업하세요. 압축 안의 폴더들을 저장소 최상위에 배치합니다.
-
-- 두 workflow와 automation/check.py를 새 파일로 교체하고 automation/notify.py를 추가/교체합니다.
-- 기존 실제 앱 코드와 실제 기능 테스트는 보존합니다. 실제 테스트가 있다면 tests/로 옮기고 import를 맞춥니다.
-- 이전 자동화 전용 config.json, collaboration.py, run.py, unittest_runner.py, schedule.json,
-  discord-map.json, CONFIG_REFERENCE.md, automation/tests/는 이 판에서 사용하지 않습니다.
-  변경 여부를 확인한 후 제거할 수 있습니다.
-- 이전에 제공한 examples/learning_demo와 자동화 전용 docs/contracts, reports, schedule, templates,
-  testing 등의 문서는 실행에 필요 없습니다. 팀이 작성한 내용이 있으면 보존하고 재사용 여부를 결정하세요.
-- 기존 AGENTS.md와 .github/copilot-instructions.md에 남아 있는 구버전 등록·계약·보고서 의무를
-  제거하고, 아래 문장으로 안내를 통일하세요. 다른 프로젝트 지침은 유지합니다.
-
-> 기능을 추가·수정할 때 docs/TEAM_SYNC.md를 읽고 tests/test_<기능명>.py에 실제 동작 테스트를 추가한 뒤 python automation/check.py로 전체 검사를 실행한다.
-
-- .gitignore에 `.team-sync/`, `__pycache__/`, `*.pyc`를 추가합니다. 기존 .gitignore를 통째로 덮어쓰지 않습니다.
-- files/나 examples/ 아래에 새 automation 폴더를 넣지 않습니다.
-
-최초 실행에서 테스트 미등록이 나오는 것은 의도된 동작입니다. 실제 기능 테스트를 추가하면 전체 실행에 자동 포함됩니다.
-
-## 실행 규칙
-
-- 실행 명령: python Tester/automation/check.py
-- 실제 기능 테스트 위치: Tester/tests/test_<기능명>.py
-- 예시와 예시 테스트 위치: Tester/example/
-- 검사 등록: Tester/config.json의 checks에 name, module, test 추가
-- 결과 위치: Tester/.team-sync/
-- 기능 개발 시 작업: 기능 코드 수정 → 테스트 작성 → config 등록 → 전체 검사
-- 문서 링크 검사는 추가하지 않음
+2차 통합의 실행 결과와 기기 검증 제한은 [릴리스 기록](../../docs/RELEASE_1_1_1.md)을 따른다.

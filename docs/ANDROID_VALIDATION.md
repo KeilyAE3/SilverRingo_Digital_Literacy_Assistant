@@ -1,3 +1,86 @@
+> 현재 팀 기준: [1.1.1 main 반영 기록](RELEASE_1_1_1.md). 아래 날짜별 내용은 과거 작업 당시 기록도 포함한다.
+
+# 챗봇 연결 설정 수정 검증 — 2026-10-30
+
+현재 검수판은 1.1.1/code3이며 사용자 주소 설정 화면이 없다. 아래 1.1.0의 주소 입력 검증은 과거 기록이다. [새 연결·운영 기준](CHATBOT_DEPLOYMENT.md)을 따른다.
+
+| 검사 | 결과 |
+|---|---|
+| 기본 debug/release 빌드 | 성공. 두 CHAT_BASE_URL이 모두 빈 문자열. 임의 운영 주소 없음 |
+| Kotlin 단위 테스트 | 기존 HTTP 클라이언트 4개 + 학습 완료 판정 1개 통과 |
+| lint | 오류 0 / 기존 경고 51 |
+| API37 기기 테스트 | 4개 통과. 미설정 준비 중/설정 UI 없음, 실패 시 질문·재시도, 기존 가이드/학습 왕복, 실제 WebView 완료·진도 보존 |
+| 개발 자동 연결 | CHAT_DEV_BASE_URL=http://10.0.2.2:8000으로 빌드한 앱에서 주소 입력 없이 기존 FastAPI 응답 표시 확인 |
+| 개발·배포 분리 | 개발 URL을 지정해 두 빌드를 만들었을 때 release CHAT_BASE_URL은 빈 값 유지 |
+| release HTTPS | HTTP 운영 주소를 지정한 빌드가 명시적으로 거절됨. 의도한 보안 검사이며 앱 빌드 오류가 아님 |
+| Python 환경 전달 | 자식 Python 프로세스에서 기본값과 다른 SR_D_TOP_K=3을 읽는 것과 기존 서버의 한국어 fake HTTP 응답을 확인. 새 로더 없음 |
+| Team Sync workflow | 기존 계약·지식·학습 검사 포함 10/10 통과 |
+| 최종 기본 APK 실제 실행 | 챗봇 서비스 준비 중과 주소 UI 부재 확인, 전송 비활성화. API 키·모델은 앱에 없음 |
+
+일반 검수용 APK: `.local/artifacts/SilverRingo-v2-1.1.1-debug.apk` (17,668,021 bytes).
+SHA-256: `8CC8A2EC0669B927C070947C7D1673953F0DF84FC9F8ABF4EC8A84D1461E1CD7`. APK 서명 검증 성공.
+별도 개발용 APK: `.local/artifacts/SilverRingo-v2-1.1.1-dev-chat-debug.apk` — 에뮬레이터 개발 주소 포함, 실제 서비스 배포용 아님.
+
+기본 `android/app/build/outputs/apk/debug/app-debug.apk`도 미설정 상태로 다시 빌드했다. 교수님 HTTPS URL을 받으면 개발자가 CHAT_PROD_BASE_URL로 release를 재빌드한다. 테스트 서버는 검증 후 종료했다. 실제 운영 HTTPS·Gemini 키/모델 실호출은 미검증이다. 이번 작업은 기존 로컬 변경을 보존했으며 Commit·Push·main 병합을 하지 않았다.
+
+로그: `.local/chat-config-build.log`, `chat-config-device-tests.log`, `chat-dev-build.log`, `chat-default-final-build.log`, `chat-release-http-rejection.log`, `chat-config-team-sync.log`, `chat-config-http-response.json`. 화면 캡처는 `.local/artifacts/chat-auto-connect.png`, `chat-preparing.png`다. 기기 앱 업데이트 전환 중 첫 UI 덤프가 일시 실패했으나 재실행하여 위 최종 화면을 확인했다.
+
+---
+
+# 2차 통합 최종 검증 — 2026-10-29
+
+로컬 `hjh-integration-v2`, 기준 main `2e8f75e517b09770f1629ce04bc579f691863cc0`.
+버전 1.1.0 (code 2), 단일 applicationId `com.silverlingo.app`.
+이번에는 커밋·Push·main 병합을 하지 않았다. 아래 1차 검수 기록은 과거 결과다.
+
+## 실제 실행 결과
+
+| 검사 | 결과 |
+|---|---|
+| 수정 전 main APK·기존 Kotlin 검사 | 성공. 이 PC의 JDK17·SDK35/Build Tools34 사용 |
+| 최종 APK / Kotlin / lint | 성공. 단위 테스트 5개(HTTP 4 + 기존 학습 완료 판정 1), 실패 0. lint 오류 0 / 경고 51 |
+| API37 에뮬레이터 기기 검사 | 3개 모두 통과: 기존 홈·가이드·학습 왕복, 실제 WebView 완료/Activity 재생성 후 진도 유지, 신규 챗봇 연결 실패/질문 유지/홈 복귀 |
+| 최초 기기 검사 | 구형 Espresso의 InputManager.getInstance 호환성 오류로 3개 중단. 테스트 의존성 수정 후 최종 재실행은 성공 |
+| 학습 JavaScript 엔진 | 기존 11개 통과(Team Sync가 실제 Node 테스트를 호출) |
+| 기존 Chrome 브라우저 회귀 | 6단계, 진도, 가격·옵션·수량·수정·오답, 작은 화면·확대 글꼴, embedded 메시지, 저장 차단, 단일 HTML 전체 통과 |
+| Team Sync workflow 모드 | 10/10 통과. 기존 8개와 새 FastAPI HTTP 검사 2개 |
+| Team Sync local 모드 | 25개 중 23개 통과. 기존 Example-01 의도된 실패 test_progress_fail_demo / test_remaining_fail_demo 2개만 실패. 실패를 숨기거나 예제를 변경하지 않음 |
+| 실제 앱 → 서버 HTTP | 에뮬레이터에서 주소 저장 → 질문 전송 → 기존 FastAPI 답변 표시 확인. 로컬 fake 모드이며 원격 Gemini 성공이 아님 |
+| 한국어 HTTP 응답 | 실제 로컬 API에 카드 결제 질문 전송, course:kiosk:level:5 근거와 [모의 응답] 확인 |
+| APK 무결성 | debug APK v2 서명 검증 통과, 학습 자산 11개 모두 원본과 바이트 일치 |
+| 원본 보존 | 가져온 서비스·XML은 최신 Juno blob과 일치. 기존 학습 Kotlin·완료 테스트·IntegratedAppTest·웹 원본은 main과 차이 없음 |
+
+검수 APK: `.local/artifacts/SilverRingo-v2-1.1.0-debug.apk` (17,672,362 bytes).
+SHA-256: `F34D82A202490A011BF17D7658EA800DD0C53C5DE767268F31BFCEFF87CFF9DE`.
+기본 빌드 출력은 `android/app/build/outputs/apk/debug/app-debug.apk`다.
+두 APK는 같은 파일 내용이며 Git에서 제외된다. 실제 기기에는 검수 APK를 직접 전달한다.
+
+## 이 데스크톱에서 재실행
+
+```powershell
+$env:JAVA_HOME = 'C:\Program Files\Java\jdk-17'
+$env:ANDROID_HOME = 'C:\Users\Home\AppData\Local\Android\Sdk'
+.\android\gradlew.bat -p android :app:assembleDebug :app:testDebugUnitTest :app:lintDebug :app:connectedDebugAndroidTest
+.\.local\chat-venv\Scripts\python.exe Tester/automation/check.py --mode workflow
+.\.local\chat-venv\Scripts\python.exe Tester/automation/check.py --mode local
+```
+
+브라우저는 `silver-ringo-c`에서 `npm ci --ignore-scripts`, Chrome 경로를 SR_BROWSER_PATH로 지정한 뒤 `npm run test:browser`를 실행한다. Python은 3.12.14 로컬 가상환경, Node 24.15.0을 사용했다. API 테스트 환경은 FastAPI 0.162.0, uvicorn 0.54.0, httpx 0.28.1이다. API extra 설치는 [2차 통합 기준](ANDROID_INTEGRATION_V2.md)을 따른다.
+
+실행 로그는 이 PC의 `.local/`에 있다: `baseline-build.log`, `final-verification.log`, `device-tests.log`(최초 오류), `device-tests-updated.log`, `browser-test.log`, `team-sync-workflow.log`, `team-sync-local.log`, 각 `*-results.json`, `live-chat-response.json`.
+Android JUnit XML·HTML은 `android/app/build/`에 있으며 모두 로컬 산출물이다. 이번 결과를 이전 Actions·Discord 실행 성공으로 표시하지 않는다.
+
+## 스마트폰 설치 전/설치 후 남은 확인
+
+1. 기존 Juno 설치본과 debug 서명이 다르면 업데이트 설치가 거절될 수 있다. 사용자 데이터/기존 앱을 자동 삭제하지 않았다. 이전 서명 또는 별도 테스트 기기로 검수한다.
+2. 교수님이 서버 제공 예정이라고 했으며 AWS는 예시로만 언급됐다. 아직 운영 URL·배포 방식·인증·모델·키가 없다. 앱 설정에 최종 HTTPS 기본 URL을 입력하고 실제 인증/인증서/방화벽/시간 제한을 검수해야 한다.
+3. 실제 서버가 없을 때 홈·학습은 사용 가능하고, 가이드는 외부 서비스의 자체 네트워크 요구를 따른다. 챗봇은 오류와 재시도를 표시한다. 음성 입력은 기존 준비 중 안내 상태다.
+4. 실제 ARM64 기기에서 똑닥 로그인/PASS/회원가입 화면 오버레이 차단, 스크롤 후 위치 추적, 후기 8초 전환, 접수/예약 안내, 버블 종료·재시작을 확인한다. 자동 테스트에서 실제 병원 접수는 실행하지 않았다.
+5. 한국어 TTS 설치/미설치, 접근성·오버레이 권한 거부/복귀, 큰 글꼴·TalkBack·태블릿·가로 화면은 실기기 추가 검수가 필요하다.
+6. Gemini 실호출과 앱-운영서버 HTTPS 왕복은 미검증이다. fake 테스트 통과가 모델 품질·운영 배포 성공을 뜻하지 않는다.
+
+---
+
 # 통합 APK 검수
 
 검수일: 2026-10-28. 통합 앱은 `android/`, 개발 브랜치는 `hjh`, 승인된 팀 공용 반영 브랜치는 `main`이다.

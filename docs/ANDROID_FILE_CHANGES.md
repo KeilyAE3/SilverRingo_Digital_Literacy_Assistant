@@ -1,3 +1,61 @@
+> 현재 팀 기준: [1.1.1 main 반영 기록](RELEASE_1_1_1.md). 아래 날짜별 내용은 과거 작업 당시 기록도 포함한다.
+
+# 챗봇 연결 설정 수정 — 2026-10-30
+
+일반 사용자용 주소 입력·저장 UI를 제거했다. 개발자 빌드 주소 자동 연결, 미설정 준비 중 안내, 쉬운 오류·재시도로 변경했다. 기존 Python 환경변수 로더가 실제 자식 프로세스 환경을 받으므로 새 로더와 API 변경은 추가하지 않았다. [운영 설정·검증](CHATBOT_DEPLOYMENT.md)을 따른다.
+
+| 변경 파일 | 내용 |
+|---|---|
+| android/app/build.gradle.kts | debug/release 주소 property 분리, 빈 기본값, release HTTPS 검증, 앱 1.1.1/code3 |
+| android/.../chat/ChatScreen.kt | 주소 UI·SharedPreferences 읽기 제거, BuildConfig 주소 자동 사용, 준비 중·일반 오류·재시도 |
+| android/app/src/androidTest/.../ChatUiTest.kt | 미설정·설정 UI 부재·연결 실패와 재시도 검사. 기존 가이드·학습 테스트는 유지 |
+| docs/CHATBOT_DEPLOYMENT.md | 개발·운영 빌드, 서버 환경변수·.env 동작, 교수님 서버 필수 값 |
+| docs/ANDROID_INTEGRATION_V2.md, docs/ANDROID_VALIDATION.md | 최신 연결 방식과 검증 결과 반영 |
+
+아래는 이전 통합 작업 기록이다.
+
+---
+
+# 2차 통합 변경과 담당자 검토 — 2026-10-29
+
+핵심 변경은 최신 가이드 버그 수정과 실제 챗봇 HTTP/UI 연결이다. 학습을 새로 작성하거나 세 개의 앱을 묶은 것이 아니다. 기존 main의 단일 앱·화면 복귀·학습 완료 판정을 유지했다. [전체 구조/실행 규격](ANDROID_INTEGRATION_V2.md), [실제 검증](ANDROID_VALIDATION.md)을 먼저 읽는다.
+
+## 개발 담당자별 확인사항
+
+| 담당자 | 이번 변경 및 검토 요청 |
+|---|---|
+| 가이드 | 최신 Juno의 서비스·XML 2개만 반영했다. 실제 기기 인증/PASS 오인식 차단·스크롤·8초 전환을 확인하고 현재 키워드가 똑닥 버전과 맞는지 검토한다. 대시보드/브라우저/플로팅/홈 복귀는 통합본 유지 |
+| 마이크로러닝 | jib 최신 커밋에 추가 업데이트가 없어 웹·콘텐츠·브리지·완료 판정을 보존했다. 기존 실제 WebView 완료/회전 진도 검사가 통과했다. 새 콘텐츠는 기존 sync/engine/browser 절차를 사용 |
+| 메인 UI | 홈 입력/메뉴에서 실제 ChatScreen으로 이동한다. 서버 설정, 로딩/실패/재시도, 복귀, 상태 표시줄 대비를 추가했다. 실제 고령층 기기/큰 글자에서 화면 여백과 입력창을 검수한다 |
+| 챗봇 | 릴리스가 이미 main에 있어 재복사하지 않았다. HTTP 계약 유지, 과거 홈 지식만 현재 main 연결 상태로 정정했다. 교수님 서버 URL·실행/배포·HTTPS·인증·Gemini 환경변수와 source/액션 정책을 확정해야 한다 |
+| 자동 테스트 | 기존 check.py와 Discord 알림을 보존했다. HTTP 2개를 config에 등록하고 기존 workflow에 api/test extra 설치를 추가했다. Android·브라우저 실행은 현재 로컬 검증이며 CI 자동 수행 범위가 아님. 의도된 local 실패 2개 정책 검토 필요 |
+
+## 실제 변경 파일
+
+| 파일 (저장소 기준) | 변경 |
+|---|---|
+| android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt | 최신 Juno의 스크롤 추적·인증 화면 차단·잔류 말풍선 정리 |
+| android/app/src/main/res/xml/accessibility_service_config.xml | 스크롤 이벤트·50ms notificationTimeout |
+| android/app/src/main/java/com/silverlingo/app/chat/ChatClient.kt | 표준 HTTP 요청·응답·주소 검증·타임아웃·안전한 오류 |
+| android/app/src/main/java/com/silverlingo/app/chat/ChatScreen.kt | 주소 설정·채팅·최근 문맥·근거 상태·오류/재시도·복귀 |
+| android/app/src/main/java/com/silverlingo/app/MainActivity.kt | 기존 목적지 유지, chat 분기·서비스 종료·밝은 화면의 상태 표시줄 대비 |
+| android/app/src/main/java/com/silverringo/app/HomeScreen.kt | 실제 챗봇 콜백과 메뉴/진입 버튼. 음성 입력 구현은 추가하지 않음 |
+| android/app/src/debug/AndroidManifest.xml | debug 로컬 HTTP 허용, release 설정은 유지 |
+| android/app/build.gradle.kts | 앱 1.1.0/code2, BuildConfig 생성, 테스트 라이브러리 호환성 수정. 런타임 스택·라이브러리는 유지 |
+| android/app/src/test/java/com/silverlingo/app/chat/ChatClientTest.kt | 실제 로컬 HTTP 교환, 최근 6개, JSON 오류, 서버 실패·타임아웃·주소 보안 검사 |
+| android/app/src/androidTest/java/com/silverlingo/app/ChatUiTest.kt | 연결 실패 후 질문·재시도 유지와 시스템 뒤로가기 |
+| Tester/tests/test_d_http.py | 기존 FastAPI 라우트의 정상/입력 오류/LLM 실패 검사 |
+| Tester/config.json | 기존 등록 그대로 + HTTP 검사 묶음 추가 |
+| .github/workflows/team-sync.yml | 기존 실행/브랜치/알림 흐름 유지, HTTP 테스트 의존성 설치만 추가 |
+| SilverRingo_Chat-bot/pyproject.toml | test extra에 HTTP 테스트 도구 추가 |
+| SilverRingo_Chat-bot/knowledge/app_info.json | 학습·가이드의 오래된 미통합 설명과 채팅 통신 설명 정정 |
+| SilverRingo_Chat-bot/.gitignore | 로컬 pip 설치의 egg-info 제외 |
+| README.md, docs/ANDROID_INTEGRATION*.md, docs/ANDROID_VALIDATION.md, docs/ANDROID_FILE_CHANGES.md, docs/TEAM_SYNC_AUDIT.md | 현재 기준·실행/기기 주소·결과·담당자 확인. 과거 기록은 아래 보존 |
+
+테스트 의존성 수정 근거: [AndroidX Test 공식 릴리스](https://developer.android.com/jetpack/androidx/releases/test)의 Espresso 3.7.0에는 반사 InputManager.getInstance 대신 getSystemService를 사용하는 수정이 포함된다. 실제 이 PC의 API37 에뮬레이터에서 수정 전 오류와 수정 후 3개 통과를 모두 확인했다. Kotlin/Compose/SDK 업그레이드로 해결한 것이 아니다.
+
+---
+
 # 개발자별 통합 변경 및 파일 목록
 
 기준 main: `4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`. 목록은 실제 `git diff --cached --name-status 4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`으로 생성했다.

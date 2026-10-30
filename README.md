@@ -1,8 +1,16 @@
+## 2차 통합 기준 버전 — 1.1.1 (2026-10-30)
+
+Android 개발 진입점은 `android/` 하나다. 최신 Juno 가이드 수정, 기존 키오스크 학습, 홈 UI, FastAPI 챗봇 연결을 포함한다. 일반 사용자용 서버 주소 설정은 없으며 개발자는 빌드 설정으로 주소를 지정한다. 운영 주소가 비어 있으면 '챗봇 서비스 준비 중'으로 표시한다.
+
+- [2차 통합 구조](docs/ANDROID_INTEGRATION_V2.md)
+- [이번 main 반영·담당자 확인사항](docs/RELEASE_1_1_1.md)
+- [챗봇 서버 배포 기준](docs/CHATBOT_DEPLOYMENT.md): DHub 승인 대기 중이며 VM 배포·실제 Gemini 연결은 별도 작업이다.
+
 # Silver Ringo 통합 Android 앱
 
 개발 기준 앱은 **`android/`** 입니다. Android Studio에서는 이 폴더를 여세요.
 Juno의 가이드 앱에 hjh의 홈 UI와 jib의 키오스크 마이크로러닝을 연결합니다.
-챗봇은 구현하지 않았으며 홈의 입력란은 기존 준비 중 안내만 표시합니다.
+챗봇 화면은 기존 Python FastAPI의 POST /v1/chat에 연결합니다. 운영 서버 미설정 안내와 연결 실패 재시도를 제공합니다.
 
 - 개발·통합 방법 및 원본 기록: [docs/ANDROID_INTEGRATION.md](docs/ANDROID_INTEGRATION.md)
 - 실행·검수 방법과 검증 결과: [docs/ANDROID_VALIDATION.md](docs/ANDROID_VALIDATION.md)

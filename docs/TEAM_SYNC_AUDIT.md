@@ -1,3 +1,18 @@
+> 현재 팀 기준: [1.1.1 main 반영 기록](RELEASE_1_1_1.md). 아래 날짜별 내용은 과거 작업 당시 기록도 포함한다.
+
+# 2차 통합 Team Sync 점검 — 2026-10-29
+
+현재 코드는 docs의 과거 '자동 수집/표준 라이브러리만 사용' 설명과 다르다. 실제 진입점은 Tester/config.json → check.py의 local/workflow 선택 실행이다. 기존 등록을 유지하고 D HTTP 검사 묶음 1개(테스트 2개)를 추가했다. FastAPI·uvicorn·httpx가 필요하므로 기존 workflow에 `pip install -e "./SilverRingo_Chat-bot[api,test]"` 단계만 추가했다. 원래 Python/Node 설정·main 전용 실행·artifact·Discord 흐름을 보존했다.
+
+- 실제 로컬 workflow 모드: 10/10 통과. Node 엔진 11개를 실행하는 검사와 JSON 콘텐츠 일치 검사, D 대표 QA 6개, HTTP 2개를 포함한다.
+- 실제 local 모드: 25개 중 23개 통과. Example-01의 기존 의도된 실패 2개만 실패. 검사 숫자를 맞추기 위해 비활성화하거나 기대값을 바꾸지 않았다.
+- Android 단위 5개·기기 3개·APK/lint·브라우저 회귀는 별도로 실행했다. config의 HTTP 검사가 Android UI를 자동 실행하는 것은 아니다.
+- 기존 main workflow는 main push/dispatch만 실행한다. 이번에는 Push·Actions 실행·Discord 메시지 발송을 하지 않았다. 아래 과거 Actions/Discord 증거는 이번 v2 검증이 아니다.
+- Android/브라우저 CI 확대 및 local 실패 예제 정책은 자동 테스트 담당자가 별도 승인 후 정한다. check.py/notify.py 구현을 변경하지 않았다.
+- 상세 실행 파일은 .local/team-sync-workflow-results.json, .local/team-sync-local-results.json 및 .local/의 로그이며 원격에 올리지 않는다.
+
+---
+
 # Team Sync 운영 분석 및 통합 앱 검사
 
 분석 기준: 업로드 전 `origin/main` `4a3b52ee2a6ab85df99d7f4922f2f752b8bab3da`.

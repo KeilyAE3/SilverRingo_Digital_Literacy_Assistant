@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "notes": "2026-10-28 A hjh 브랜치 스냅샷. 메뉴 존재와 목적지 기능 완성을 구분해야 함.",
+  "notes": "2026-10-29: main 1차 통합의 실제 화면 연결 및 기존 D HTTP 계약을 반영. 액션 자동 실행과 실기기 전체 검증은 별도다.",
   "entries": [
     {
       "id": "app:overview",
@@ -32,8 +32,8 @@
     {
       "id": "app:learning_menu",
       "title": "IT 기능 배우기",
-      "summary": "홈에서 IT 기능 배우기 메뉴를 선택할 수 있습니다. 현재 A 브랜치에서는 버튼을 누르면 임시 안내 화면으로 이동하며, 실제 C 학습 모듈은 아직 연결되지 않았습니다.",
-      "content": "홈에서 IT 기능 배우기 메뉴를 선택할 수 있습니다. 현재 A 브랜치에서는 버튼을 누르면 임시 안내 화면으로 이동하며, 실제 C 학습 모듈은 아직 연결되지 않았습니다.",
+      "summary": "홈의 IT 기능 배우기에서 키오스크 학습 목록으로 이동합니다. 1~6단계를 연습하며 앞 단계를 통과하면 다음 단계가 열립니다. 실제 주문이나 결제는 하지 않습니다.",
+      "content": "홈의 IT 기능 배우기에서 키오스크 학습 목록으로 이동합니다. 1~6단계를 연습하며 앞 단계를 통과하면 다음 단계가 열립니다. 실제 주문이나 결제는 하지 않습니다.",
       "keywords": [
         "학습",
         "배우기",
@@ -46,12 +46,12 @@
         "키오스크 배우기 메뉴"
       ],
       "alias_origin": "curated_by_d",
-      "status": "placeholder",
+      "status": "prototype",
       "source": {
-        "branch": "hjh",
-        "path": "silverRingo/app/src/main/java/com/silverringo/app/MainActivity.kt",
+        "branch": "main",
+        "path": "android/app/src/main/java/com/silverlingo/app/MainActivity.kt",
         "kind": "code",
-        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
+        "commit": "2e8f75e517b09770f1629ce04bc579f691863cc0"
       },
       "related_action_ids": [
         "open_learning_home"
@@ -60,8 +60,8 @@
     {
       "id": "app:guide_menu",
       "title": "생활 가이드",
-      "summary": "홈에서 생활 가이드 메뉴를 선택할 수 있습니다. 현재 A 브랜치에서는 버튼을 누르면 임시 안내 화면으로 이동하며 B 오버레이와의 통합은 아직 확인되지 않았습니다.",
-      "content": "홈에서 생활 가이드 메뉴를 선택할 수 있습니다. 현재 A 브랜치에서는 버튼을 누르면 임시 안내 화면으로 이동하며 B 오버레이와의 통합은 아직 확인되지 않았습니다.",
+      "summary": "홈의 생활 가이드에서 똑닥 병원 접수 안내 화면으로 이동합니다. 외부 앱 안내에는 필요한 권한과 똑닥 설치 여부 확인이 필요하며 웹 동행 경로도 있습니다. 실제 접수 성공을 보장하지 않습니다.",
+      "content": "홈의 생활 가이드에서 똑닥 병원 접수 안내 화면으로 이동합니다. 외부 앱 안내에는 필요한 권한과 똑닥 설치 여부 확인이 필요하며 웹 동행 경로도 있습니다. 실제 접수 성공을 보장하지 않습니다.",
       "keywords": [
         "생활 가이드",
         "도움",
@@ -72,12 +72,12 @@
         "어디서 안내받아"
       ],
       "alias_origin": "curated_by_d",
-      "status": "placeholder",
+      "status": "prototype",
       "source": {
-        "branch": "hjh",
-        "path": "silverRingo/app/src/main/java/com/silverringo/app/MainActivity.kt",
+        "branch": "main",
+        "path": "android/app/src/main/java/com/silverlingo/app/MainActivity.kt",
         "kind": "code",
-        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
+        "commit": "2e8f75e517b09770f1629ce04bc579f691863cc0"
       },
       "related_action_ids": [
         "open_guide_home"
@@ -86,8 +86,8 @@
     {
       "id": "app:chat_input",
       "title": "AI 채팅 입력",
-      "summary": "홈 화면에 글을 입력하는 채팅 입력창이 있지만 현재 입력 시 AI 대화는 준비 중이라는 알림을 표시합니다. D파트 API 연결 전에는 실제 챗봇이 아닙니다.",
-      "content": "홈 화면에 글을 입력하는 채팅 입력창이 있지만 현재 입력 시 AI 대화는 준비 중이라는 알림을 표시합니다. D파트 API 연결 전에는 실제 챗봇이 아닙니다.",
+      "summary": "챗봇은 질문과 최근 대화를 별도 D HTTP 서버에 보내 답변과 참고 자료를 받습니다. 서버 주소와 서버 실행이 필요합니다. fake 모드는 모의 응답이며 실제 Gemini에는 서버 쪽 설정이 필요합니다.",
+      "content": "챗봇은 질문과 최근 대화를 별도 D HTTP 서버에 보내 답변과 참고 자료를 받습니다. 서버 주소와 서버 실행이 필요합니다. fake 모드는 모의 응답이며 실제 Gemini에는 서버 쪽 설정이 필요합니다.",
       "keywords": [
         "채팅",
         "AI 대화",
@@ -99,12 +99,12 @@
         "챗봇 대화"
       ],
       "alias_origin": "curated_by_d",
-      "status": "placeholder",
+      "status": "prototype",
       "source": {
-        "branch": "hjh",
-        "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
-        "kind": "code",
-        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
+        "branch": "main",
+        "path": "SilverRingo_Chat-bot/INTEGRATION_CONTRACT.md",
+        "kind": "integration_doc",
+        "commit": "2e8f75e517b09770f1629ce04bc579f691863cc0"
       },
       "related_action_ids": []
     },

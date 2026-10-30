@@ -4,8 +4,12 @@
       "name": "통합 앱: 실제 키오스크 학습 엔진·콘텐츠",
       "module": "silver-ringo-c/web/engine.js",
       "test": "tests/test_learning_engine.py",
-      "local": { "enabled": true },
-      "workflow": { "enabled": true }
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true
+      }
     },
     {
       "name": "Example-01: 학습 진행률",
@@ -81,6 +85,17 @@
           "test_unsupported_request_has_no_action",
           "test_gemini_failure_becomes_safe_error"
         ]
+      }
+    },
+    {
+      "name": "D: HTTP API contract and safe errors",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/api.py",
+      "test": "tests/test_d_http.py",
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true
       }
     }
   ]
