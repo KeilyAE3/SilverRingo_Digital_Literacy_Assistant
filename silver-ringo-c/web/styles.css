@@ -613,3 +613,40 @@ main {
     gap: 16px;
   }
 }
+
+/* Reference-style kiosk shell; learning engine and coach remain independent. */
+.kiosk{border:12px solid #262626;border-radius:8px;min-height:950px;max-width:562px;position:relative;box-shadow:0 20px 50px #0003;color:#202020}
+.store-head{background:#202020;color:#fff;font-size:16px;padding:12px}
+.store-banner{display:block;width:100%;max-height:160px;object-fit:cover}
+.store-info{background:#fff;color:#555;font-size:15px;border-bottom:1px solid #ddd;padding:8px 14px}
+.order-steps{display:flex;justify-content:space-around;gap:8px;padding:16px 8px;border-bottom:3px solid #e21820;font-size:16px;background:white;color:#333}
+.screen{position:relative;padding:22px 18px;min-height:590px}
+.kiosk button{border-radius:5px;color:#222;border-color:#ddd;background:white;font-size:18px}
+.kiosk .primary{background:#e21820;border-color:#e21820;color:#fff}
+.kiosk .primary:hover{background:#bb141b}
+.kiosk .selected{background:#e21820!important;color:white;border-color:#e21820;box-shadow:none}
+.kiosk .selected .target-label{color:#fff}
+.kiosk .highlight{outline-color:#088394}
+.kiosk .screen h2{font-size:24px;margin-bottom:22px}
+.screen-menu{display:grid;grid-template-columns:108px 1fr;padding:0;align-content:start;background:#f5f5f5}
+.screen-menu h2{grid-column:1/-1;padding:18px;margin:0!important;background:#fff}
+.screen-menu .tabs{display:flex;flex-direction:column;background:#eee;gap:8px;margin:0;padding:8px 0 8px 8px;min-height:420px}
+.screen-menu .tabs button{flex:0 0 auto;min-height:76px;text-align:left;border:0;border-radius:8px 0 0 8px;font-size:17px;padding:16px 8px}
+.screen-menu .products{grid-template-columns:repeat(3,minmax(0,1fr));padding:12px 8px;gap:8px;align-content:start}
+.kiosk .product{border:0;padding:8px 4px;text-align:center;background:white;min-height:170px}
+.product img{height:100px}.product strong{font-size:16px;line-height:1.4}.product .price{color:#e21820;font-weight:800;font-size:16px}
+.screen-menu .cart-bar{grid-column:1/-1;border-radius:0;background:#555252;color:#fff;margin:0;padding:20px;align-self:end}
+.cart-bar strong{color:#ffce00}.cart-bar button{background:#e21820;color:white;border:0}
+.screen-options{background:#0009;padding:24px 12px}.screen-options>h2{color:#fff}
+.dialog{border:0;border-radius:8px;padding:18px;box-shadow:0 10px 30px #0004}
+.option-title{font-size:26px;text-align:center;font-weight:800;border-bottom:2px solid #222;padding:8px 0 20px;margin-bottom:18px}
+.dialog>.row{background:#f6f6f6;padding:12px}.dialog .row img{object-fit:contain;width:130px;height:110px}
+.dialog h3{border-top:1px solid #ddd;padding-top:20px;font-size:20px}.dialog .options button{min-height:72px;border-radius:6px}.dialog .amount{background:#f1f1f1;padding:18px;margin:18px -18px 0}
+.place-image{display:block;max-width:100%;height:160px;object-fit:contain;margin:0 auto 12px}
+.kiosk .splash{background:#f8f8f8;border-radius:0}.splash strong{color:#e21820}.splash img{object-fit:contain}
+.reader-image{display:block;width:180px!important;height:160px;margin:auto}.payment-card{width:100px!important;height:100px;object-fit:contain;display:block;margin:0 auto}
+.bottom-nav{background:#4a4a4a;border:0;padding:12px}.bottom-nav button{background:#088394;color:#fff;border:0}
+.kiosk .receipt{border:0;border-top:4px solid #e21820;background:#fafafa;border-radius:0}.receipt .number{color:#e21820}
+@media(max-width:600px){.kiosk{min-height:850px;border-width:5px}.practice-layout{max-width:562px}.screen-menu{grid-template-columns:88px 1fr}.screen-menu .products{grid-template-columns:repeat(2,minmax(0,1fr))}.store-head{font-size:14px}.order-steps{font-size:14px}.screen-menu .tabs button{font-size:16px}.place-image{height:120px}}
+
+.screen-options{position:relative;min-height:760px;background:#ddd;isolation:isolate}.option-backdrop{position:absolute;inset:0;overflow:hidden;opacity:.22;pointer-events:none;z-index:-1}.screen-options .dialog{margin:16px auto;max-width:480px;position:relative;z-index:1}.screen-options .dialog::before{content:none}.screen-points,.screen-printing,.screen-receipt{text-align:center;padding-top:80px}.screen-card .payment-card{transition:transform .4s}.screen-card:has(button[data-action="pay"]:active) .payment-card{transform:translateY(-80px)}

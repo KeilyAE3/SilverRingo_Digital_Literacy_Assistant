@@ -4,11 +4,11 @@ import org.junit.Assert.*
 import org.junit.Test
 class PracticeEvidenceTest {
     @Test fun unchangedVolumeIsNotAnAction() { assertEquals(false to false, volumeEvidence(4,4));assertEquals(true to false,volumeEvidence(4,5));assertEquals(false to true,volumeEvidence(5,4)) }
-    @Test fun settingsNeedBothVolumeDirectionsAndBrightnessButNotFontChange() {
-        assertFalse(settingsPracticePassed(true,false,true,true))
-        assertFalse(settingsPracticePassed(true,true,false,true))
-        assertFalse(settingsPracticePassed(true,true,true,false))
-        assertTrue(settingsPracticePassed(true,true,true,true))
+    @Test fun settingsNeedVolumeDirectionsAndFontChoiceWithoutBrightness() {
+        assertFalse(settingsPracticePassed(true,false,true))
+        assertFalse(settingsPracticePassed(false,true,true))
+        assertFalse(settingsPracticePassed(true,true,false))
+        assertTrue(settingsPracticePassed(true,true,true))
     }
     @Test fun launchingAppDoesNotAwardSuccess() {
         assertFalse(externalPracticePassed(true,false,false));assertFalse(externalPracticePassed(true,true,false))

@@ -34,7 +34,7 @@ fun KioskLearningEntry(onExit: () -> Unit, onResult: (String) -> Unit = {}) {
     if (current != null) {
         KioskPracticeScreen(levelId = current, onExit = { level = null }, onResult = { text ->
             completedLesson(text, current)?.let { id ->
-                prefs.edit().putBoolean("done_$id", true).putString("last_result_$id", text).apply()
+                prefs.edit().putBoolean("kiosk4_done_$id", true).putString("kiosk4_last_result_$id", text).apply()
                 revision++
             }
             onResult(text)
@@ -54,18 +54,18 @@ fun KioskLearningEntry(onExit: () -> Unit, onResult: (String) -> Unit = {}) {
             }
             items(lessons) { lesson ->
                 val id = lesson.getInt("id")
-                val done = prefs.getBoolean("done_$id", false)
-                val unlocked = id == 1 || prefs.getBoolean("done_${id - 1}", false)
+                val done = prefs.getBoolean("kiosk4_done_$id", false)
+                val unlocked = id == 1 || prefs.getBoolean("kiosk4_done_${id - 1}", false)
                 Button(onClick = { level = id }, enabled = unlocked,
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF211C50)),
+                    colors = learningButtonColors(),
                     shape = RoundedCornerShape(20.dp), modifier = Modifier.fillMaxWidth().heightIn(min = 100.dp)) {
                     Column(Modifier.fillMaxWidth().padding(8.dp)) {
-                        Text("${if (done) "✓" else if (unlocked) "$id" else "잠김"}  ${lesson.getString("title")}", fontSize = 23.sp)
-                        Text(if (unlocked) lesson.getString("description") else "앞 단계를 완료하면 열려요", fontSize = 18.sp)
+                        Text("${if (done) "✓" else if (unlocked) "$id" else "잠김"}  ${lesson.getString("title")}", fontSize = 23.sp, color = LocalContentColor.current)
+                        Text(if (unlocked) lesson.getString("description") else "앞 단계를 완료하면 열려요", fontSize = 18.sp, color = LocalContentColor.current)
                     }
                 }
             }
-            item { OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) { Text("학습 나가기", fontSize = 22.sp) } }
+            item { OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) { Text("학습 나가기", fontSize = 22.sp, color = LocalContentColor.current) } }
         }
     }
 }

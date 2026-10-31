@@ -10,21 +10,22 @@
   ) {
     return {
       productId,
+      bread: "none",
       kind,
       side: kind === "set" ? side : null,
       drink: kind === "set" ? drink : null,
       quantity: 1,
     };
   }
-  function create(level = 6, mode = "learn") {
-    const l = C.levels.find((x) => x.id === level) || C.levels[5];
+  function create(level = 5, mode = "learn") {
+    const l = C.levels.find((x) => x.id === level) || C.levels[4];
     const s = {
       version: 1,
       level: l.id,
-      mode: l.id === 6 && mode !== "free" ? "test" : mode,
+      mode: l.id === 5 && mode !== "free" ? "test" : mode,
       screen: l.start,
       dining: null,
-      category: "burger",
+      category: "recommend",
       draft: null,
       cart: [],
       payment: null,
@@ -33,17 +34,17 @@
       startedAt: Date.now(),
       orderNo: null,
     };
-    if (l.id >= 2 && l.id <= 5) s.dining = "here";
-    if (l.id === 3) s.draft = item();
-    if (l.id === 4 || l.id === 5) s.cart = [item()];
+    if (l.id >= 2 && l.id <= 4) s.dining = "here";
+    if (l.id === 3) s.draft = {...item(), bread:null, kind:null, side:null, drink:null};
+    if (l.id === 4) s.cart = [item()];
     return s;
   }
   function unit(i) {
     const p = C.products.find((x) => x.id === i.productId);
     return (
-      p.price +
+      p.price + (C.breads.find(b=>b.id===i.bread)?.extra||0) +
       (i.kind === "set"
-        ? 2500 + (C.sides.find((x) => x.id === i.side)?.extra || 0)
+        ? 2400 + (C.sides.find((x) => x.id === i.side)?.extra || 0)
         : 0)
     );
   }
@@ -72,22 +73,25 @@
         break;
       case "product": {
         const p = C.products.find((x) => x.id === a.value);
-        if (at !== "menu" || !p) {
+        if (at !== "menu" || !p || p.category !== s.category) {
           accepted = false;
           break;
         }
-        s.draft = item(p.id, p.category === "burger" ? "single" : "single");
+        s.draft = item(p.id, "single");
+        if (p.category === "burger") s.draft = {...s.draft, bread:null, kind:null, side:null, drink:null};
         s.screen = "options";
         break;
       }
+      case "bread":
+        if(at==="options" && C.breads.some(b=>b.id===a.value)) s.draft.bread=a.value; else accepted=false; break;
       case "kind":
         if (
-          at === "options" &&
+          at === "options" && s.draft.bread &&
           C.products.find((x) => x.id === s.draft.productId).category ===
             "burger" &&
           ["single", "set"].includes(a.value)
         )
-          s.draft = item(s.draft.productId, a.value);
+          s.draft = {...s.draft,kind:a.value,side:null,drink:null};
         else accepted = false;
         break;
       case "side":
@@ -103,7 +107,7 @@
         break;
       }
       case "add":
-        if (at === "options" && s.draft) {
+        if (at === "options" && s.draft?.bread && s.draft.kind && (s.draft.kind!=="set" || (s.draft.side && s.draft.drink))) {
           s.cart.push(clone(s.draft));
           s.draft = null;
           s.screen = "cart";
@@ -130,7 +134,7 @@
         else accepted = false;
         break;
       case "checkout":
-        if (at === "review" && s.cart.length) s.screen = "payment";
+        if (at === "review" && s.cart.length) s.payment="card", s.screen = "card";
         else accepted = false;
         break;
       case "payment":
@@ -141,19 +145,23 @@
         break;
       case "pay":
         if (at === "card" && s.cart.length) {
-          s.screen = "receipt";
+          s.screen = "points";
           s.orderNo = String(100 + Math.floor(Math.random() * 900));
         } else accepted = false;
         break;
+      case "points":
+        if(at==="points" && ["skip","earn"].includes(a.value)){s.points=a.value;s.screen="printing";}else accepted=false;break;
+      case "print":
+        if(at==="printing"){s.receiptPrinted=true;s.screen="receipt";}else accepted=false;break;
       case "back": {
         const prev = {
-          dining: "start",
+
           menu: "dining",
           options: "menu",
           cart: "menu",
           review: "cart",
           payment: "review",
-          card: "payment",
+          card: "review",
         };
         if (prev[at]) s.screen = prev[at];
         else accepted = false;
@@ -178,7 +186,7 @@
     const set =
       !!target &&
       target.productId === g.productId &&
-      target.kind === g.kind &&
+      target.bread === "none" && target.kind === g.kind &&
       target.side === g.side &&
       target.drink === g.drink;
     const checks = {
@@ -193,7 +201,7 @@
         "장바구니에는 지정한 세트 1개만 담아 주세요.",
       ],
       payment: [
-        s.payment === g.payment && s.screen === "receipt",
+        s.payment === g.payment && s.receiptPrinted && s.screen === "receipt",
         "카드 결제를 선택하고 모의 결제를 끝내 주세요.",
       ],
     };
@@ -202,6 +210,7 @@
       .map((k) => checks[k][1]);
     return {
       schemaVersion: 1,
+      courseVersion: C.courseVersion,
       topicId: C.topicId,
       levelId: s.level,
       mode: s.mode,

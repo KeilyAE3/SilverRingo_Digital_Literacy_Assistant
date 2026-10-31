@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "sync": "node scripts/sync-content.cjs",
-    "test": "node --test tests/engine.test.cjs",
+    "test": "node --test tests/engine.test.cjs tests/course4.test.cjs",
     "test:browser": "node tests/browser.cjs",
     "demo": "python3 -m http.server 8000 --directory web"
   },

@@ -1,5 +1,6 @@
 package kr.silverringo.learning.phone
 
+import kr.silverringo.learning.learningButtonColors
 import android.speech.tts.TextToSpeech
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
@@ -59,38 +60,38 @@ internal fun GuidedSimulationScreen(lesson: PhoneLesson, onExit: () -> Unit, onC
     BackHandler(onBack = back)
     val act: (PhoneAction) -> Unit = { state = reducePhone(state, it) }
     Column(Modifier.fillMaxSize().verticalScroll(scroll).padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text("스마트폰 교육 › 1주차", fontSize = 18.sp)
-        Text(lesson.title, fontSize = 28.sp, modifier = Modifier.semantics { heading() })
+        Text("스마트폰 교육 › 1주차", fontSize = 18.sp, color = LocalContentColor.current)
+        Text(lesson.title, fontSize = 28.sp, modifier = Modifier.semantics { heading() }, color = LocalContentColor.current)
         if(!started) {
-            Text(lesson.concept, fontSize = 22.sp)
-            Text("이번 목표: ${lesson.task}", fontSize = 22.sp)
-            Text("연습용 가상 스마트폰이에요. 실제 기기의 설정·연락처는 바뀌지 않고 전화·문자도 발송되지 않아요.", fontSize = 18.sp)
+            Text(lesson.concept, fontSize = 22.sp, color = LocalContentColor.current)
+            Text("이번 목표: ${lesson.task}", fontSize = 22.sp, color = LocalContentColor.current)
+            Text("연습용 가상 스마트폰이에요. 실제 기기의 설정·연락처는 바뀌지 않고 전화·문자도 발송되지 않아요.", fontSize = 18.sp, color = LocalContentColor.current)
             PhoneButton(if(state.guided) "✓ 안내와 함께 배우기" else "안내와 함께 배우기") { state = state.copy(guided = true) }
             PhoneButton(if(!state.guided) "✓ 혼자 연습하기" else "혼자 연습하기") { state = state.copy(guided = false) }
             PhoneButton("연습 시작") { started = true }
         } else if(state.complete) {
-            Text("연습을 완료했어요!", fontSize = 28.sp)
-            Text("${lesson.title}의 모든 조작을 직접 해봤어요.", fontSize = 22.sp)
-            Text("힌트 ${state.hints}회 · 다시 확인한 조작 ${state.mistakes}회", fontSize = 19.sp)
+            Text("연습을 완료했어요!", fontSize = 28.sp, color = LocalContentColor.current)
+            Text("${lesson.title}의 모든 조작을 직접 해봤어요.", fontSize = 22.sp, color = LocalContentColor.current)
+            Text("힌트 ${state.hints}회 · 다시 확인한 조작 ${state.mistakes}회", fontSize = 19.sp, color = LocalContentColor.current)
             PhoneButton("다시 연습하기") { state = PhoneState(lesson, guided = state.guided); reported = false; started = false }
             PhoneButton("1주차 학습 목록") { onExit() }
         } else {
-            Text("${state.stage + 1} / ${lesson.guides.size} 단계 · ${if(state.guided) "학습 모드" else "혼자 연습"}", fontSize = 18.sp)
-            Text(lesson.task, fontSize = 20.sp)
-            if(state.guided) Text(lesson.guides[state.stage], fontSize = 23.sp, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+            Text("${state.stage + 1} / ${lesson.guides.size} 단계 · ${if(state.guided) "학습 모드" else "혼자 연습"}", fontSize = 18.sp, color = LocalContentColor.current)
+            Text(lesson.task, fontSize = 20.sp, color = LocalContentColor.current)
+            if(state.guided) Text(lesson.guides[state.stage], fontSize = 23.sp, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }, color = LocalContentColor.current)
             Card(Modifier.fillMaxWidth(), colors = CardDefaults.cardColors(containerColor = Color(0xFFF0F3F8))) {
                 Column(Modifier.padding(20.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                    Text("가상 스마트폰 · 연습용", fontSize = 17.sp)
+                    Text("가상 스마트폰 · 연습용", fontSize = 17.sp, color = LocalContentColor.current)
                     PhoneSimulation(state, act)
                 }
             }
-            if(state.feedback.isNotEmpty()) Text(state.feedback, fontSize = 22.sp, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite })
+            if(state.feedback.isNotEmpty()) Text(state.feedback, fontSize = 22.sp, modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }, color = LocalContentColor.current)
             PhoneButton("힌트 보기") { act(PhoneAction.Hint) }
             PhoneButton("음성 안내 듣기") { act(PhoneAction.Hint); speak(lesson.guides[state.stage]) }
             PhoneButton("처음부터 다시 연습") { state = PhoneState(lesson, guided = state.guided); reported = false }
         }
-        OutlinedButton(onClick = back, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("이전으로", fontSize = 20.sp) }
-        if(started && !state.complete) OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("학습 목록으로", fontSize = 20.sp) }
+        OutlinedButton(onClick = back, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("이전으로", fontSize = 20.sp, color = LocalContentColor.current) }
+        if(started && !state.complete) OutlinedButton(onClick = onExit, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) { Text("학습 목록으로", fontSize = 20.sp, color = LocalContentColor.current) }
     }
 }
 
@@ -99,68 +100,68 @@ private fun PhoneSimulation(s: PhoneState, act: (PhoneAction) -> Unit) {
     val next = { act(PhoneAction.Continue) }
     when(s.lesson) {
         PhoneLesson.SETTINGS -> when(s.stage) {
-            0 -> { Text("홈 화면", fontSize = 25.sp); PhoneButton("설정", next) }
+            0 -> { Text("홈 화면", fontSize = 25.sp, color = LocalContentColor.current); PhoneButton("설정", next) }
             1 -> {
-                Text("화면 밝기 ${s.brightness}%", fontSize = 24.sp)
+                Text("화면 밝기 ${s.brightness}%", fontSize = 24.sp, color = LocalContentColor.current)
                 Box(Modifier.fillMaxWidth().height(70.dp).background(Color.Gray.copy(alpha = 1f - s.brightness / 125f)))
                 Slider(value = s.brightness.toFloat(), onValueChange = { act(PhoneAction.Brightness((it / 10).roundToInt() * 10)) }, valueRange = 0f..100f, steps = 9, modifier = Modifier.semantics { contentDescription = "화면 밝기" })
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) { Button(onClick = { act(PhoneAction.Brightness(s.brightness - 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("− 10%") }; Button(onClick = { act(PhoneAction.Brightness(s.brightness + 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("+ 10%") } }
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) { Button(colors = learningButtonColors(), onClick = { act(PhoneAction.Brightness(s.brightness - 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("− 10%", color = LocalContentColor.current) }; Button(colors = learningButtonColors(), onClick = { act(PhoneAction.Brightness(s.brightness + 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("+ 10%", color = LocalContentColor.current) } }
                 PhoneButton("밝기 확인", next)
             }
             2 -> {
-                Text("소리 크기 ${s.volume}%", fontSize = 24.sp)
+                Text("소리 크기 ${s.volume}%", fontSize = 24.sp, color = LocalContentColor.current)
                 Slider(value = s.volume.toFloat(), onValueChange = { act(PhoneAction.Volume((it / 10).roundToInt() * 10)) }, valueRange = 0f..100f, steps = 9, modifier = Modifier.semantics { contentDescription = "소리 크기" })
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) { Button(onClick = { act(PhoneAction.Volume(s.volume - 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("− 10%") }; Button(onClick = { act(PhoneAction.Volume(s.volume + 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("+ 10%") } }
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) { Button(colors = learningButtonColors(), onClick = { act(PhoneAction.Volume(s.volume - 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("− 10%", color = LocalContentColor.current) }; Button(colors = learningButtonColors(), onClick = { act(PhoneAction.Volume(s.volume + 10)) }, modifier = Modifier.heightIn(min = 56.dp)) { Text("+ 10%", color = LocalContentColor.current) } }
                 PhoneButton("소리 확인", next)
             }
         }
         PhoneLesson.CALLS -> when(s.stage) {
             0 -> PhoneButton("전화", next)
             1 -> {
-                Text(s.number.ifEmpty { "전화번호를 입력하세요" }, fontSize = 24.sp)
+                Text(s.number.ifEmpty { "전화번호를 입력하세요" }, fontSize = 24.sp, color = LocalContentColor.current)
                 listOf("123", "456", "789", "*0#").forEach { row ->
                     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        row.forEach { digit -> Button(onClick = { act(PhoneAction.Number(s.number + digit)) }, modifier = Modifier.weight(1f).heightIn(min = 64.dp)) { Text(digit.toString(), fontSize = 26.sp) } }
+                        row.forEach { digit -> Button(colors = learningButtonColors(), onClick = { act(PhoneAction.Number(s.number + digit)) }, modifier = Modifier.weight(1f).heightIn(min = 64.dp)) { Text(digit.toString(), fontSize = 26.sp, color = LocalContentColor.current) } }
                     }
                 }
                 PhoneButton("한 글자 지우기") { act(PhoneAction.Number(s.number.dropLast(1))) }
                 PhoneButton("전화 걸기", next)
             }
-            2 -> { Text("연습 친구와 모의 통화 중", fontSize = 24.sp); PhoneButton("통화 종료", next) }
-            3 -> { Text("연습 친구에게 전화가 왔어요", fontSize = 24.sp); PhoneButton("받기", next) }
-            4 -> { Text("전화를 받았어요 · 모의 통화 중", fontSize = 24.sp); PhoneButton("통화 종료", next) }
+            2 -> { Text("연습 친구와 모의 통화 중", fontSize = 24.sp, color = LocalContentColor.current); PhoneButton("통화 종료", next) }
+            3 -> { Text("연습 친구에게 전화가 왔어요", fontSize = 24.sp, color = LocalContentColor.current); PhoneButton("받기", next) }
+            4 -> { Text("전화를 받았어요 · 모의 통화 중", fontSize = 24.sp, color = LocalContentColor.current); PhoneButton("통화 종료", next) }
         }
         PhoneLesson.CONTACTS -> when(s.stage) {
             0 -> PhoneButton("연락처", next)
-            1 -> { Text("연락처 목록이 비어 있어요", fontSize = 22.sp); PhoneButton("새 연락처 추가", next) }
+            1 -> { Text("연락처 목록이 비어 있어요", fontSize = 22.sp, color = LocalContentColor.current); PhoneButton("새 연락처 추가", next) }
             2 -> {
                 PhoneField("이름", s.name, { act(PhoneAction.Name(it)) })
                 PhoneField("전화번호", s.number, { act(PhoneAction.Number(it)) }, true)
                 PhoneButton("저장", next)
             }
-            3 -> { Text("${s.name} 연락처를 저장했어요", fontSize = 22.sp); PhoneField("이름 검색", s.query, { act(PhoneAction.Query(it)) }); PhoneButton("검색", next) }
-            4 -> { Text("검색 결과 1개", fontSize = 22.sp); PhoneButton("${s.name}\n${s.number}", next) }
+            3 -> { Text("${s.name} 연락처를 저장했어요", fontSize = 22.sp, color = LocalContentColor.current); PhoneField("이름 검색", s.query, { act(PhoneAction.Query(it)) }); PhoneButton("검색", next) }
+            4 -> { Text("검색 결과 1개", fontSize = 22.sp, color = LocalContentColor.current); PhoneButton("${s.name}\n${s.number}", next) }
         }
         PhoneLesson.MESSAGES -> when(s.stage) {
             0 -> PhoneButton("문자", next)
-            1 -> { Text("받은 문자 1개", fontSize = 22.sp); PhoneButton("연습 친구 · 읽지 않은 문자", next) }
-            2 -> { Text("연습 친구: 잘 지내세요?", fontSize = 24.sp); PhoneButton("새 문자 쓰기", next) }
+            1 -> { Text("받은 문자 1개", fontSize = 22.sp, color = LocalContentColor.current); PhoneButton("연습 친구 · 읽지 않은 문자", next) }
+            2 -> { Text("연습 친구: 잘 지내세요?", fontSize = 24.sp, color = LocalContentColor.current); PhoneButton("새 문자 쓰기", next) }
             3 -> { PhoneField("받는 전화번호", s.number, { act(PhoneAction.Number(it)) }, true); PhoneField("문자 내용", s.message, { act(PhoneAction.Message(it)) }); PhoneButton("보내기", next) }
-            4 -> { Text("나: ${s.message}\n전송 완료 (모의 문자)", fontSize = 22.sp); PhoneButton("연습 친구의 새 답장이 도착했어요", next) }
-            5 -> { Text("연습 친구: 반가워요! 다음에 만나요.", fontSize = 24.sp); PhoneButton("읽음 확인", next) }
+            4 -> { Text("나: ${s.message}\n전송 완료 (모의 문자)", fontSize = 22.sp, color = LocalContentColor.current); PhoneButton("연습 친구의 새 답장이 도착했어요", next) }
+            5 -> { Text("연습 친구: 반가워요! 다음에 만나요.", fontSize = 24.sp, color = LocalContentColor.current); PhoneButton("읽음 확인", next) }
         }
     }
 }
 
 @Composable
 private fun PhoneField(label: String, value: String, onChange: (String) -> Unit, phone: Boolean = false) {
-    OutlinedTextField(value = value, onValueChange = onChange, label = { Text(label, fontSize = 18.sp) },
+    OutlinedTextField(value = value, onValueChange = onChange, label = { Text(label, fontSize = 18.sp, color = LocalContentColor.current) },
         modifier = Modifier.fillMaxWidth(), textStyle = LocalTextStyle.current.copy(fontSize = 22.sp),
         keyboardOptions = KeyboardOptions(keyboardType = if(phone) KeyboardType.Phone else KeyboardType.Text))
 }
 @Composable
 internal fun PhoneButton(label: String, onClick: () -> Unit) {
-    Button(onClick = onClick, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(label, fontSize = 22.sp) }
+    Button(colors = learningButtonColors(), onClick = onClick, modifier = Modifier.fillMaxWidth().heightIn(min = 60.dp)) { Text(label, fontSize = 22.sp, color = LocalContentColor.current) }
 }
 
 @Composable

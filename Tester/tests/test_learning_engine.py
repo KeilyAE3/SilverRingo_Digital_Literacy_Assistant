@@ -15,8 +15,8 @@ class LearningEngineTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
     def test_existing_learning_engine(self):
-        """실제 JS 엔진: 주문·가격·단계 완료·잠금 등 기존 11개 회귀 검사가 통과한다."""
-        self.run_node("--test", "silver-ringo-c/tests/engine.test.cjs")
+        """실제 JS 엔진: 주문·가격·단계 완료·잠금 등 18개 회귀 검사가 통과한다."""
+        self.run_node("--test", "silver-ringo-c/tests/engine.test.cjs", "silver-ringo-c/tests/course4.test.cjs")
 
     def test_web_and_android_lesson_content_match(self):
         """콘텐츠 연결: 웹이 쓰는 content.js와 Android 목록용 content.json이 일치한다."""

@@ -6,18 +6,21 @@ function act(s, type, value, extra = {}) {
   assert.ok(t.accepted, `${s.screen}: ${type}`);
   return t.state;
 }
-function full(dining = "here", kind = "set", payment = "card") {
-  let s = E.create(6);
+function full(dining = "here", kind = "set") {
+  let s = E.create(5);
   for (const [t, v] of [
-    ["start"],
     ["dining", dining],
+    ["category", "burger"],
     ["product", "bulgogi"],
+    ["bread", "none"],
     ["kind", kind],
+    ...(kind === "set" ? [["side","fries"],["drink","cola"]] : []),
     ["add"],
     ["review"],
     ["checkout"],
-    ["payment", payment],
     ["pay"],
+    ["points","skip"],
+    ["print"],
   ])
     s = act(s, t, v);
   return s;
@@ -28,15 +31,18 @@ test("whole target order passes, with correct price and receipt", () => {
   assert.equal(E.evaluate(s).passed, true);
   assert.equal(s.screen, "receipt");
 });
-test("single item bypasses set options and costs 5000", () => {
+test("single item bypasses set options and costs 5100", () => {
   const s = full("here", "single");
   assert.equal(s.cart[0].side, null);
   assert.equal(s.cart[0].drink, null);
-  assert.equal(E.total(s), 5000);
+  assert.equal(E.total(s), 5100);
   assert.equal(E.evaluate(s).passed, false);
 });
 test("side surcharge and quantity change exact total", () => {
   let s = E.create(3);
+  s = act(s,"bread","none");
+  s = act(s,"kind","set");
+  s = act(s,"drink","cola");
   s = act(s, "side", "cheese");
   s = act(s, "add");
   s = act(s, "quantity", null, { index: 0, delta: 1 });
@@ -61,10 +67,10 @@ test("multiple items add, delete, and total independently", () => {
   s = act(s, "remove", null, { index: 0 });
   assert.equal(E.total(s), 2200);
 });
-test("wrong dining and payment do not pass final assessment", () => {
-  const r = E.evaluate(full("takeout", "set", "mobile"));
+test("wrong dining does not pass final assessment", () => {
+  const r = E.evaluate(full("takeout", "set"));
   assert.equal(r.passed, false);
-  assert.equal(r.failures.length, 2);
+  assert.equal(r.failures.length, 1);
 });
 test("back from review preserves cart, can correct quantity", () => {
   let s = E.create(4);
@@ -74,23 +80,9 @@ test("back from review preserves cart, can correct quantity", () => {
   s = act(s, "quantity", null, { index: 0, delta: -1 });
   s = act(s, "review");
   s = act(s, "checkout");
+  s = act(s,"pay");s=act(s,"points","skip");s=act(s,"print");
   assert.ok(E.reached(s));
   assert.ok(E.evaluate(s).passed);
-});
-test("every short level has an achievable completion", () => {
-  const paths = {
-    1: [["start"], ["dining", "here"]],
-    2: [["product", "bulgogi"]],
-    3: [["kind", "set"], ["add"]],
-    4: [["review"], ["checkout"]],
-    5: [["payment", "card"], ["pay"]],
-  };
-  for (const id of [1, 2, 3, 4, 5]) {
-    let s = E.create(id);
-    for (const [t, v] of paths[id]) s = act(s, t, v);
-    assert.ok(E.reached(s));
-    assert.ok(E.evaluate(s).passed, `level ${id}`);
-  }
 });
 test("quantity bound 1..9, invalid action and duplicate pay are rejected", () => {
   let s = E.create(4);
@@ -110,6 +102,7 @@ test("transition is pure and standalone sides cannot become sets", () => {
   E.transition(s, { type: "remove", index: 0 });
   assert.equal(JSON.stringify(s), snapshot);
   let t = E.create(2);
+  t = act(t,"category","side");
   t = act(t, "product", "fries");
   assert.equal(E.transition(t, { type: "kind", value: "set" }).accepted, false);
 });

@@ -1,147 +1,192 @@
-(function (root) {
-  const content = {
-    schemaVersion: 1,
-    topicId: "kiosk",
-    products: [
-      {
-        id: "bulgogi",
-        name: "불고기 버거",
-        category: "burger",
-        price: 5000,
-        image: "burger.svg",
-      },
-      {
-        id: "shrimp",
-        name: "새우 버거",
-        category: "burger",
-        price: 5200,
-        image: "shrimp.svg",
-      },
-      {
-        id: "chicken",
-        name: "치킨 버거",
-        category: "burger",
-        price: 5500,
-        image: "chicken.svg",
-      },
-      {
-        id: "fries",
-        name: "감자튀김",
-        category: "side",
-        price: 2200,
-        image: "fries.svg",
-      },
-      {
-        id: "cola",
-        name: "콜라",
-        category: "drink",
-        price: 1800,
-        image: "cola.svg",
-      },
-    ],
-    categories: [
-      ["burger", "햄버거"],
-      ["side", "사이드"],
-      ["drink", "음료"],
-    ],
-    sides: [
-      { id: "fries", name: "감자튀김", extra: 0 },
-      { id: "cheese", name: "치즈스틱", extra: 500 },
-    ],
-    drinks: [
-      { id: "cola", name: "콜라", extra: 0 },
-      { id: "cider", name: "사이다", extra: 0 },
-      { id: "water", name: "생수", extra: 0 },
-    ],
-    goal: {
-      dining: "here",
-      productId: "bulgogi",
-      kind: "set",
-      side: "fries",
-      drink: "cola",
-      quantity: 1,
-      payment: "card",
+(function(root){const content={
+  "schemaVersion": 1,
+  "topicId": "kiosk",
+  "products": [
+    {
+      "id": "bulgogi",
+      "name": "리아불고기",
+      "category": "burger",
+      "price": 5100,
+      "image": "lotte/bulgogi.png"
     },
-    levels: [
-      {
-        id: 1,
-        title: "키오스크 시작하기",
-        description: "시작 화면과 식사 장소를 배워요.",
-        start: "start",
-        end: "menu",
-        checks: ["dining"],
-        concept:
-          "화면을 눌러 주문을 시작합니다. 매장에서 먹기와 포장 중 원하는 장소를 고릅니다.",
-        task: "주문을 시작하고 매장에서 먹기를 선택하세요.",
-      },
-      {
-        id: 2,
-        title: "메뉴 찾기",
-        description: "카테고리에서 원하는 버거를 찾아요.",
-        start: "menu",
-        end: "options",
-        checks: ["product"],
-        concept:
-          "메뉴는 햄버거·사이드·음료로 나뉩니다. 햄버거 탭에서 상품의 그림과 이름을 확인하세요.",
-        task: "햄버거 카테고리에서 불고기 버거를 찾으세요.",
-      },
-      {
-        id: 3,
-        title: "세트와 옵션 선택",
-        description: "사이드와 음료를 골라 담아요.",
-        start: "options",
-        end: "cart",
-        checks: ["set"],
-        concept:
-          "단품은 버거만, 세트는 버거·사이드·음료입니다. 옵션을 확인한 뒤 장바구니에 담습니다.",
-        task: "불고기 버거 세트에 감자튀김과 콜라를 골라 담으세요.",
-      },
-      {
-        id: 4,
-        title: "장바구니 확인",
-        description: "수량과 합계를 살펴봐요.",
-        start: "cart",
-        end: "payment",
-        checks: ["cart"],
-        concept:
-          "장바구니는 결제 전 주문을 모아 보는 곳입니다. 수량을 바꾸거나 삭제할 수 있습니다.",
-        task: "불고기 버거 세트 1개인지 확인하고 결제 화면으로 이동하세요.",
-      },
-      {
-        id: 5,
-        title: "결제 방법 배우기",
-        description: "모의 카드 결제를 연습해요.",
-        start: "payment",
-        end: "receipt",
-        checks: ["payment"],
-        concept:
-          "결제 수단을 선택한 뒤 안내를 따릅니다. 이 연습에서는 실제 카드나 돈이 필요하지 않습니다.",
-        task: "카드 결제를 선택하고 모의 결제를 완료하세요.",
-      },
-      {
-        id: 6,
-        title: "혼자서 주문하기",
-        description: "처음부터 끝까지 직접 해봐요.",
-        start: "start",
-        end: "receipt",
-        checks: ["dining", "set", "cart", "payment"],
-        concept:
-          "배운 순서대로 주문해 보세요. 화면 강조 없이 진행합니다. 실패해도 다시 연습할 수 있어요.",
-        task: "매장에서 먹기 · 불고기 버거 세트 1개 · 감자튀김 · 콜라 · 카드 결제",
-      },
-    ],
-    guides: {
-      start: "주문 시작하기를 눌러 주세요.",
-      dining: "매장에서 먹기를 선택해 보세요.",
-      menu: "햄버거 탭에서 불고기 버거를 찾아 주세요.",
-      options: "세트, 감자튀김, 콜라를 확인한 뒤 장바구니에 담으세요.",
-      cart: "세트 1개와 합계를 확인하고 주문 확인을 누르세요.",
-      review: "주문 내역과 식사 장소를 확인하고 결제 수단 선택을 누르세요.",
-      payment: "카드 결제를 선택하세요.",
-      card: "모의 카드로 결제하기를 누르세요. 실제 카드는 필요 없어요.",
-      receipt: "주문번호를 확인하세요.",
+    {
+      "id": "shrimp",
+      "name": "리아새우",
+      "category": "burger",
+      "price": 5200,
+      "image": "lotte/shrimp.png"
     },
-  };
-  root.SRContent = content;
-  if (typeof module !== "undefined") module.exports = content;
-})(typeof globalThis !== "undefined" ? globalThis : this);
+    {
+      "id": "chicken",
+      "name": "치킨 버거",
+      "category": "burger",
+      "price": 5500,
+      "image": "lotte/chicken.png"
+    },
+    {
+      "id": "fries",
+      "name": "감자튀김",
+      "category": "side",
+      "price": 2200,
+      "image": "lotte/fries.png"
+    },
+    {
+      "id": "cola",
+      "name": "콜라",
+      "category": "drink",
+      "price": 1800,
+      "image": "lotte/cola.png"
+    }
+  ],
+  "categories": [
+    [
+      "recommend",
+      "추천메뉴"
+    ],
+    [
+      "burger",
+      "버거"
+    ],
+    [
+      "side",
+      "디저트/치킨"
+    ],
+    [
+      "drink",
+      "음료/커피"
+    ]
+  ],
+  "sides": [
+    {
+      "id": "fries",
+      "name": "감자튀김",
+      "extra": 0
+    },
+    {
+      "id": "cheese",
+      "name": "치즈스틱",
+      "extra": 500
+    }
+  ],
+  "drinks": [
+    {
+      "id": "cola",
+      "name": "콜라",
+      "extra": 0
+    },
+    {
+      "id": "cider",
+      "name": "사이다",
+      "extra": 0
+    },
+    {
+      "id": "water",
+      "name": "생수",
+      "extra": 0
+    }
+  ],
+  "goal": {
+    "dining": "here",
+    "productId": "bulgogi",
+    "kind": "set",
+    "side": "fries",
+    "drink": "cola",
+    "quantity": 1,
+    "payment": "card"
+  },
+  "levels": [
+    {
+      "id": 1,
+      "title": "매장식사·포장주문 선택",
+      "start": "dining",
+      "end": "menu",
+      "checks": [
+        "dining"
+      ],
+      "concept": "먹을 장소에 맞춰 매장식사 또는 포장주문을 선택합니다.",
+      "task": "매장식사를 선택하세요.",
+      "description": "매장식사를 선택하세요."
+    },
+    {
+      "id": 2,
+      "title": "버거 메뉴 찾기",
+      "start": "menu",
+      "end": "options",
+      "checks": [
+        "product"
+      ],
+      "concept": "왼쪽 버거 카테고리를 누르고 리아불고기를 선택합니다.",
+      "task": "버거 → 리아불고기를 선택하세요.",
+      "description": "버거 → 리아불고기를 선택하세요."
+    },
+    {
+      "id": 3,
+      "title": "옵션 선택과 주문담기",
+      "start": "options",
+      "end": "cart",
+      "checks": [
+        "set"
+      ],
+      "concept": "빵 업그레이드 변경안함 → 세트 → 포테이토 → 콜라를 선택하고 주문담기를 누릅니다.",
+      "task": "빵 변경안함, 세트, 포테이토, 콜라를 골라 주문담기를 누르세요.",
+      "description": "빵 변경안함, 세트, 포테이토, 콜라를 골라 주문담기를 누르세요."
+    },
+    {
+      "id": 4,
+      "title": "결제부터 영수증까지",
+      "start": "cart",
+      "end": "receipt",
+      "checks": [
+        "cart",
+        "payment"
+      ],
+      "concept": "결제 → 주문내역 확인 → 신용카드 → 카드삽입 → 포인트 적립 확인 → 영수증 출력 순서로 진행합니다.",
+      "task": "신용카드로 모의 결제하고 포인트 적립 안함을 선택한 뒤 영수증을 출력하세요.",
+      "description": "신용카드로 모의 결제하고 포인트 적립 안함을 선택한 뒤 영수증을 출력하세요."
+    },
+    {
+      "id": 5,
+      "title": "혼자서 주문하기",
+      "start": "dining",
+      "end": "receipt",
+      "checks": [
+        "dining",
+        "set",
+        "cart",
+        "payment"
+      ],
+      "concept": "안내 강조 없이 처음부터 영수증 출력까지 혼자 주문합니다.",
+      "task": "매장식사 · 리아불고기 세트 1개 · 빵 변경안함 · 포테이토 · 콜라 · 신용카드 · 영수증 출력",
+      "description": "매장식사 · 리아불고기 세트 1개 · 빵 변경안함 · 포테이토 · 콜라 · 신용카드 · 영수증 출력"
+    }
+  ],
+  "guides": {
+    "dining": "매장식사를 선택하세요.",
+    "menu": "왼쪽 버거를 누른 뒤 리아불고기를 선택하세요.",
+    "options": "빵 변경안함, 세트, 포테이토, 콜라를 골라 주문담기를 누르세요.",
+    "cart": "주문을 확인하고 결제를 누르세요.",
+    "review": "주문내역을 확인하고 신용카드 결제를 선택하세요.",
+    "card": "화면의 카드를 눌러 카드 삽입을 연습하세요.",
+    "points": "포인트 적립 여부를 선택하세요. 이 연습에서는 적립 안함을 누릅니다.",
+    "printing": "영수증 출력을 누르세요.",
+    "receipt": "주문번호와 영수증을 확인하세요."
+  },
+  "courseVersion": 4,
+  "breads": [
+    {
+      "id": "none",
+      "name": "변경안함",
+      "extra": 0
+    },
+    {
+      "id": "mozza",
+      "name": "모짜번",
+      "extra": 1000
+    },
+    {
+      "id": "butter",
+      "name": "버터번",
+      "extra": 500
+    }
+  ]
+};root.SRContent=content;if(typeof module!=="undefined")module.exports=content;})(globalThis);

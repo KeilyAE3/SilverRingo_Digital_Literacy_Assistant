@@ -29,7 +29,7 @@ class IntegratedAppTest {
         val previous = prefs.getString("latest_result", null)
         compose.onAllNodesWithText("IT 기능 배우기")[0].performClick()
         compose.onNodeWithText("키오스크 배우기").performClick()
-        compose.onNodeWithText("키오스크 시작하기", substring = true).performClick()
+        compose.onNodeWithText("매장식사·포장주문 선택", substring = true).performClick()
         val ready = AtomicBoolean(false)
         compose.waitUntil(20_000) {
             compose.activityRule.scenario.onActivity { activity ->
@@ -42,22 +42,21 @@ class IntegratedAppTest {
         compose.activityRule.scenario.onActivity { activity ->
             findWebView(activity.window.decorView)!!.evaluateJavascript("""
                 document.querySelector('[data-action=launch]').click();
-                document.querySelector('[data-action=start]').click();
                 document.querySelector('[data-action=dining][data-value=here]').click();
             """.trimIndent(), null)
         }
         compose.waitUntil(10_000) {
-            prefs.getString("latest_result", null) != previous && prefs.getBoolean("done_1", false)
+            prefs.getString("latest_result", null) != previous && prefs.getBoolean("kiosk4_done_1", false)
         }
         compose.activityRule.scenario.onActivity { activity ->
             findWebView(activity.window.decorView)!!.evaluateJavascript(
                 "document.querySelector('[data-action=home]').click()", null
             )
         }
-        compose.onNodeWithText("✓  키오스크 시작하기").assertExists()
+        compose.onNodeWithText("✓  매장식사·포장주문 선택").assertExists()
         compose.activityRule.scenario.recreate()
-        compose.onNodeWithText("✓  키오스크 시작하기").assertExists()
-        assertTrue(prefs.getBoolean("done_1", false))
+        compose.onNodeWithText("✓  매장식사·포장주문 선택").assertExists()
+        assertTrue(prefs.getBoolean("kiosk4_done_1", false))
     }
 
     private fun findWebView(view: View): WebView? {

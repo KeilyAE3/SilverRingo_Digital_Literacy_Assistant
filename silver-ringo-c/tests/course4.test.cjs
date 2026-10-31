@@ -1,0 +1,6 @@
+const {test}=require('node:test'),a=require('node:assert/strict'),E=require('../web/engine.js'),C=require('../web/content.js');
+const flow=[['dining','here'],['category','burger'],['product','bulgogi'],['bread','none'],['kind','set'],['side','fries'],['drink','cola'],['add'],['review'],['checkout'],['pay'],['points','skip'],['print']];
+for(let level=1;level<=5;level++)test('level '+level+' completes its designated part',()=>{let s=E.create(level);let start=[0,1,3,8,0][level-1];for(const [type,value]of flow.slice(start)){let t=E.transition(s,{type,value});a.ok(t.accepted,type);s=t.state;if(E.reached(s))break;}a.ok(E.reached(s));a.ok(E.evaluate(s).passed);});
+test('options require explicit choices',()=>{let s=E.create(3);a.equal(E.transition(s,{type:'add'}).accepted,false);a.equal(E.transition(s,{type:'kind',value:'set'}).accepted,false);});
+test('payment does not skip points and receipt',()=>{let s=E.create(4);for(const [type,value]of flow.slice(8,11))s=E.transition(s,{type,value}).state;a.equal(s.screen,'points');a.equal(E.evaluate(s).passed,false);a.equal(E.transition(s,{type:'print'}).accepted,false);});
+test('five levels and final unguided',()=>{a.equal(C.levels.length,5);a.equal(E.create(5).mode,'test');});

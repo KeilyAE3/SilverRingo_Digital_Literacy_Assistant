@@ -2,6 +2,7 @@ package kr.silverringo.learning
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.sp
@@ -21,5 +22,17 @@ internal fun LearningTheme(content: @Composable () -> Unit) {
         typography = Typography(bodyLarge = TextStyle(fontSize = 20.sp, lineHeight = 29.sp),
             bodyMedium = TextStyle(fontSize = 18.sp, lineHeight = 27.sp),
             labelLarge = TextStyle(fontSize = 20.sp, lineHeight = 26.sp)),
-    ) { Surface(color = MaterialTheme.colorScheme.background, content = content) }
+    ) {
+        // Replaces (rather than merges) a host LocalTextStyle that may fix black text.
+        CompositionLocalProvider(LocalTextStyle provides MaterialTheme.typography.bodyLarge) {
+            Surface(color = MaterialTheme.colorScheme.background, content = content)
+        }
+    }
 }
+
+
+@Composable
+internal fun learningButtonColors() = ButtonDefaults.buttonColors(
+    containerColor = Color(0xFF211C50), contentColor = Color.White,
+    disabledContainerColor = Color(0xFFE8ECF3), disabledContentColor = Color(0xFF3C465B)
+)
