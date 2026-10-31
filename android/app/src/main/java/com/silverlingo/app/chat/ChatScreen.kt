@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,12 +21,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
-fun ChatScreen(onExit: () -> Unit, initialMessage: String = "", serverUrl: String = BuildConfig.CHAT_BASE_URL) {
+fun ChatScreen(onExit: () -> Unit, initialMessage: String = "", serverUrl: String = BuildConfig.CHAT_BASE_URL,
+               onAction: (ChatAction) -> Unit = {}) {
     val serviceReady = serverUrl.isNotBlank()
     var input by rememberSaveable { mutableStateOf(initialMessage) }
-    var messages by rememberSaveable { mutableStateOf(listOf<String>()) }
-    var sources by rememberSaveable { mutableStateOf(listOf<String>()) }
-    var suggestions by rememberSaveable { mutableStateOf(listOf<String>()) }
+    var messages by rememberSaveable { mutableStateOf(listOf<ChatMessage>()) }
     var error by rememberSaveable { mutableStateOf<String?>(null) }
     var sending by remember { mutableStateOf(false) }
     var initialHandled by rememberSaveable { mutableStateOf(false) }
@@ -42,25 +42,20 @@ fun ChatScreen(onExit: () -> Unit, initialMessage: String = "", serverUrl: Strin
             error = "질문은 1~1,000자로 적어 주세요."
             return
         }
-        val history = messages.mapIndexed { index, text ->
-            ChatTurn(if (index % 2 == 0) "user" else "assistant", text.take(1000))
+        val history = messages.map { message ->
+            ChatTurn(message.role, message.content.take(1000))
         }.takeLast(6)
         sending = true
         error = null
         scope.launch {
             try {
                 val response = withContext(Dispatchers.IO) { client.send(serverUrl, question, history) }
-                messages = (messages + listOf(question, response.reply)).takeLast(12)
-                sources = response.sources.map { source ->
-                    val category = when (source.category) { "learning" -> "학습 자료"; "assistant" -> "생활 가이드"; "app" -> "앱 안내"; else -> "도움말 자료" }
-                    val status = when (source.status) { "implemented" -> "구현 자료"; "prototype" -> "시험 구현"; "placeholder" -> "준비 중"; "idea" -> "구상 단계"; else -> "참고 자료" }
-                    "$category · $status"
-                }.distinct()
-                // D actions are currently disabled. Never treat server text as navigation authority.
-                suggestions = response.actions.map { it.label }
+                messages = (messages + listOf(ChatMessage("user", question), ChatMessage("assistant", response.reply, response))).takeLast(12)
                 input = ""
             } catch (cancelled: CancellationException) { throw cancelled
-            } catch (_: ChatFailure) { error = "지금은 답변을 받기 어려워요. 잠시 후 다시 시도해 주세요."
+            } catch (failure: ChatFailure) {
+                error = if (failure.statusCode == 429 || failure.statusCode == 503) failure.message
+                    else "지금은 답변을 받기 어려워요. 잠시 후 다시 시도해 주세요."
             } finally { sending = false }
         }
     }
@@ -79,16 +74,27 @@ fun ChatScreen(onExit: () -> Unit, initialMessage: String = "", serverUrl: Strin
             Text("AI 도우미", style = MaterialTheme.typography.headlineMedium)
             Text("앱 사용법과 학습 내용을 물어보세요.", fontSize = 18.sp)
             if (!serviceReady) Text("챗봇 서비스 준비 중", fontSize = 22.sp)
-            messages.forEachIndexed { index, text ->
-                Card(colors = CardDefaults.cardColors(containerColor = if (index % 2 == 0) MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface)) {
+            messages.forEachIndexed { index, message ->
+                Card(modifier = Modifier.testTag("chat-message-$index"), colors = CardDefaults.cardColors(containerColor = if (message.role == "user") MaterialTheme.colorScheme.surfaceVariant else MaterialTheme.colorScheme.surface)) {
                     Column(Modifier.fillMaxWidth().padding(16.dp)) {
-                        Text(if (index % 2 == 0) "내 질문" else "도우미 답변", style = MaterialTheme.typography.titleMedium)
-                        Text(text, fontSize = 20.sp)
+                        Text(if (message.role == "user") "내 질문" else "도우미 답변", style = MaterialTheme.typography.titleMedium)
+                        Text(message.content, fontSize = 20.sp)
+                        message.response?.let { reply ->
+                            if (reply.sources.isNotEmpty()) Text("참고 자료: " + reply.sources.map { source ->
+                                val category = when (source.category) { "learning" -> "학습 자료"; "assistant" -> "생활 가이드"; else -> "앱 안내" }
+                                val status = when (source.status) { "implemented" -> "구현 자료"; "prototype" -> "시험 구현"; "placeholder" -> "준비 중"; "idea" -> "구상 단계"; else -> "참고 자료" }
+                                "$category · $status"
+                            }.distinct().joinToString(", "), fontSize = 16.sp)
+                            ChatActions.allowed(reply).forEach { action ->
+                                Button(onClick = { onAction(action) }, enabled = !sending,
+                                    modifier = Modifier.fillMaxWidth().heightIn(min = 64.dp)) {
+                                    Text(action.label, fontSize = 20.sp)
+                                }
+                            }
+                        }
                     }
                 }
             }
-            if (sources.isNotEmpty()) Text("참고: " + sources.joinToString(", "), fontSize = 16.sp)
-            suggestions.forEach { Text("추천 안내: $it", fontSize = 18.sp) }
             if (sending) {
                 LinearProgressIndicator(Modifier.fillMaxWidth())
                 Text("답변을 기다리고 있어요.", fontSize = 18.sp)

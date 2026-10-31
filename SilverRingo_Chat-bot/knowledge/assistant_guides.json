@@ -23,7 +23,7 @@
       ],
       "alias_origin": "curated_by_d",
       "status": "prototype",
-      "integration_status": "B 브랜치 구현 존재. A 앱과 통합 및 기기 검증 상태 별도 확인 필요.",
+      "integration_status": "통합 Android 가이드 화면 진입 가능. 권한·외부 앱/웹 선택과 실제 접수는 사용자가 수행.",
       "package_name": "com.bbros.sayup",
       "web_fallback_url": "https://www.ddocdoc.com/",
       "requirements": [
@@ -37,7 +37,7 @@
         "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
       },
       "related_action_ids": [
-        "start_ddocdoc_companion"
+        "open_guide_home"
       ],
       "native_steps": [
         {
@@ -57,7 +57,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:2",
@@ -74,7 +77,10 @@
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
           },
-          "target_rule": "FOCUS_INPUT + isEditable; target_keywords는 설명용 D 편집값"
+          "target_rule": "FOCUS_INPUT + isEditable; target_keywords는 설명용 D 편집값",
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:3",
@@ -93,7 +99,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:4",
@@ -110,7 +119,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:5",
@@ -130,7 +142,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:6",
@@ -149,7 +164,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:native:7",
@@ -167,7 +185,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/SilverAccessibilityService.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         }
       ],
       "web_steps": [
@@ -182,7 +203,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:web:2",
@@ -195,7 +219,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:web:3",
@@ -208,7 +235,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         },
         {
           "id": "guide:ddocdoc:web:4",
@@ -221,7 +251,10 @@
             "path": "android/app/src/main/java/com/silverlingo/app/service/OverlayScriptProvider.kt",
             "kind": "code",
             "commit": "0025219bc56c20a9a59d98e5cc2cfc81d348df18"
-          }
+          },
+          "related_action_ids": [
+            "open_guide_home"
+          ]
         }
       ]
     }

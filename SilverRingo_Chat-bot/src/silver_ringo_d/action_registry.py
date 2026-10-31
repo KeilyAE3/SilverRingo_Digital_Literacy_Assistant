@@ -39,6 +39,7 @@ class Action:
 
 
 _ROUTE = re.compile(r'^[a-z][a-z0-9]*(?:\.[a-z][a-z0-9]*)+$')
+INTEGRATED_ROUTES = {'open_kiosk_course': 'learning.kiosk', 'open_guide_home': 'guides.home'}
 
 
 class ActionRegistry:
@@ -82,8 +83,9 @@ class ActionRegistry:
 
     @staticmethod
     def _executable(action):
-        return (action.enabled and action.status != 'unintegrated'
-                and action.kind == 'navigate' and bool(_ROUTE.fullmatch(action.target)))
+        return (action.enabled and action.status == 'integrated'
+                and action.kind == 'navigate' and bool(_ROUTE.fullmatch(action.target))
+                and INTEGRATED_ROUTES.get(action.id) == action.target)
 
     def get(self, action_id):
         """Return only an action currently safe to expose to the client."""
@@ -102,9 +104,14 @@ class ActionRegistry:
             raise TypeError('hits must be a list')
         suggestions = []
         seen = set()
-        for hit in hits:
+        if any(not isinstance(hit, KnowledgeHit) for hit in hits):
+            raise TypeError('hits must contain KnowledgeHit records')
+        ordered = sorted(hits, key=lambda hit: (-hit.score, hit.document.id))
+        for hit in ordered:
             if not isinstance(hit, KnowledgeHit):
                 raise TypeError('hits must contain KnowledgeHit records')
+            if hit.document.status not in ('implemented', 'prototype') or hit.score < max(4.0, ordered[0].score * 0.75):
+                continue
             for action_id in hit.document.related_action_ids:
                 if action_id in seen:
                     continue
@@ -113,4 +120,6 @@ class ActionRegistry:
                     continue
                 seen.add(action_id)
                 suggestions.append(ActionSuggestion(action.id, action.kind, action.target, action.label))
+                if len(suggestions) == 2:
+                    return suggestions
         return suggestions

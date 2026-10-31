@@ -1,5 +1,10 @@
 # SilverRingo D
 
+현재 로컬 확장판은 자료 없는 일반 디지털 질문도 기존 GeminiAdapter로 전달한다.
+앱 기능의 지원 여부는 검색 근거로만 설명하며, 검증된 학습·가이드 화면 진입만
+suggested_actions로 반환한다. [답변 정책·Android 연결·배포 차이](../docs/CHATBOT_EXPANSION.md)를 따른다.
+아래 초기 MVP 설명은 기존 개발 맥락이며, 확장판을 VM에 배포했다는 의미가 아니다.
+
 D파트는 로컬 JSON 지식, 결정적 키워드/유의어 검색, LLM 경계, 액션 허용목록,
 ChatService, FastAPI HTTP 경계를 담당한다. 현재는 프로토타입이며 실제 A/B/C 앱
 통합 완료를 의미하지 않는다.

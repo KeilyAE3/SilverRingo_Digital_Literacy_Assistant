@@ -10,3 +10,6 @@
 *.py[cod]
 Tester/.team-sync/
 *.apk
+.venv/
+.env
+.env.*

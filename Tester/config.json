@@ -97,6 +97,28 @@
       "workflow": {
         "enabled": true
       }
+    },
+    {
+      "name": "D: General chat, context, Gemini boundary and shortcuts",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/chat_service.py",
+      "test": "tests/test_d_chat_expansion.py",
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true
+      }
+    },
+    {
+      "name": "D: DHub IP/global rate limits",
+      "module": "SilverRingo_Chat-bot/src/silver_ringo_d/api.py",
+      "test": "tests/test_d_rate_limit.py",
+      "local": {
+        "enabled": true
+      },
+      "workflow": {
+        "enabled": true
+      }
     }
   ]
 }

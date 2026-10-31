@@ -7,6 +7,7 @@ import re
 import subprocess
 from threading import RLock
 from .models import KnowledgeDocument, SourceRef, STATUSES, identifier, text
+from .action_registry import INTEGRATED_ROUTES
 
 CURRENT_STATUSES = frozenset({'implemented', 'prototype', 'placeholder'})
 FILES = ('app_info.json', 'learning_courses.json', 'assistant_guides.json', 'action_catalog.json')
@@ -137,7 +138,11 @@ class KnowledgeStore:
             require(action['id'] not in ids, 'duplicate action ID')
             ids.add(action['id'])
             action_ids.add(action['id'])
-            require(action.get('enabled') is False and action['status'] == 'unintegrated', 'M01 action must be disabled/unintegrated')
+            require(type(action.get('enabled')) is bool, 'action.enabled')
+            require((action['enabled'] and action['status'] == 'integrated') or
+                    (not action['enabled'] and action['status'] == 'unintegrated'), 'action integration status')
+            if action['enabled']:
+                require(action['kind'] == 'navigate' and INTEGRATED_ROUTES.get(action['id']) == action['target'], 'unverified route')
             strings(action.get('requires'), 'action.requires')
             source_ref(action.get('source'))
             sources.append(action['source'])

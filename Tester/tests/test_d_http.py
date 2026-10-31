@@ -25,7 +25,12 @@ class ChatHttpTests(unittest.TestCase):
             self.assertEqual(set(payload), {'reply', 'sources', 'suggested_actions', 'request_id'})
             self.assertTrue(payload['reply'])
             self.assertTrue(any(s['id'] == 'course:kiosk:level:5' for s in payload['sources']))
-            self.assertEqual(payload['suggested_actions'], [])
+            self.assertEqual(payload['suggested_actions'][0]['id'], 'open_kiosk_course')
+            general = client.post('/v1/chat', json={'message': '카카오톡 사진 보내는 방법', 'history': []})
+            self.assertEqual(general.status_code, 200)
+            self.assertEqual(set(general.json()), set(payload))
+            self.assertEqual(general.json()['sources'], [])
+            self.assertEqual(general.json()['suggested_actions'], [])
             for body in ({'message': ' '}, {'message': 'a' * 1001},
                          {'message': '질문', 'history': [{'role': 'system', 'content': 'x'}]},
                          {'message': '질문', 'extra': 'not allowed'}):

@@ -1,10 +1,11 @@
-## 2차 통합 기준 버전 — 1.1.1 (2026-10-30)
+## 팀 공용 통합 앱 — 1.1.1
 
-Android 개발 진입점은 `android/` 하나다. 최신 Juno 가이드 수정, 기존 키오스크 학습, 홈 UI, FastAPI 챗봇 연결을 포함한다. 일반 사용자용 서버 주소 설정은 없으며 개발자는 빌드 설정으로 주소를 지정한다. 운영 주소가 비어 있으면 '챗봇 서비스 준비 중'으로 표시한다.
+Android 개발 진입점은 `android/` 하나다. 최신 Juno 가이드 수정, 기존 키오스크 학습, 홈 UI, FastAPI 챗봇 연결을 포함한다. 일반 사용자용 서버 주소 설정은 없으며 개발자는 빌드 설정으로 주소를 지정한다. 현재 Debug/Release는 DHub HTTPS 서버를 사용한다. 일반 디지털 질문·RAG 안내·후속 문맥과 답변별 학습/가이드 버튼을 지원한다. 운영 주소를 비우면 준비 중 안내로 전환된다.
 
 - [2차 통합 구조](docs/ANDROID_INTEGRATION_V2.md)
 - [이번 main 반영·담당자 확인사항](docs/RELEASE_1_1_1.md)
-- [챗봇 서버 배포 기준](docs/CHATBOT_DEPLOYMENT.md): DHub 승인 대기 중이며 VM 배포·실제 Gemini 연결은 별도 작업이다.
+- [최신 main 반영·테스트·서버 동기화](docs/MAIN_CHAT_UPDATE.md)
+- [챗봇 서버 배포 기준](docs/CHATBOT_DEPLOYMENT.md), [DHub 실제 배포 결과](docs/DHUB_DEPLOYMENT_RESULT.md)
 
 # Silver Ringo 통합 Android 앱
 

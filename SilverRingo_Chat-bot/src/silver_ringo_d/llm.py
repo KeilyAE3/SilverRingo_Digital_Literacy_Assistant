@@ -11,10 +11,8 @@ from .models import ChatRequest, HistoryMessage, KnowledgeHit, KnowledgeDocument
 MAX_CONTEXT_CHARS = 16000
 MAX_REPLY_CHARS = 2000
 MAX_RAW_CHARS = 16000
-NO_EVIDENCE = '확인할 수 있는 기능 자료가 없어요. 어떤 화면이나 기능이 궁금한지 조금 더 알려주세요.'
 PRIVATE_INPUT = '비밀번호나 인증번호 등 개인정보는 보내지 말아 주세요. 개인정보 없이 궁금한 기능을 다시 말씀해 주세요.'
-SENSITIVE = re.compile(r'AIza[0-9A-Za-z_-]{20,}|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|(?<!\d)\d{6}[- ]?[1-4]\d{6}(?!\d)|(?<!\d)01[016789][- ]?\d{3,4}[- ]?\d{4}(?!\d)|(?:계좌|인증번호|비밀번호|password|api[_ -]?key)\s*[:=]?\s*[A-Za-z0-9_-]{4,}', re.I)
-PRIVATE_QUESTION = re.compile(r'비밀번호|인증번호|주민등록번호|계좌번호|password|api[_ -]?key', re.I)
+SENSITIVE = re.compile(r'AIza[0-9A-Za-z_-]{20,}|[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}|(?<!\d)\d{6}[- ]?[1-4]\d{6}(?!\d)|(?<!\d)01[016789][- ]?\d{3,4}[- ]?\d{4}(?!\d)|(?:계좌(?:번호)?|인증번호|비밀번호|password|api[_ -]?key)\s*(?:[:=]\s*[^\s,]{4,}|(?:은|는|이|가)?\s*[A-Za-z0-9_-]*\d[A-Za-z0-9_-]{3,})', re.I)
 
 
 class LLMError(RuntimeError):
@@ -100,11 +98,8 @@ def prepare_request(question: str, context: str, history: list[HistoryMessage], 
     records = parse_context(context)
     texts = [question, context, *[turn.content for turn in turns]]
     private = any(SENSITIVE.search(value) or (secret and secret in value) for value in texts)
-    private = private or bool(PRIVATE_QUESTION.search(question))
     if private:
         return PreparedRequest([], records, encode_reply(PRIVATE_INPUT))
-    if not records:
-        return PreparedRequest([], records, encode_reply(NO_EVIDENCE))
     # JSON escaping prevents delimiter text in evidence from creating new roles.
     contents = [{'role': 'user' if turn.role == 'user' else 'model',
                  'parts': [{'text': turn.content}]} for turn in turns]
@@ -144,6 +139,8 @@ class FakeLLM:
         request = prepare_request(question, context, history)
         if request.fallback:
             return request.fallback
+        if not request.records:
+            return encode_reply('[모의 응답] 일반 디지털 사용법을 안내할 수 있어요. 어떤 앱이나 기기를 사용하시나요?')
         first = request.records[0]
         messages = {
             'implemented': '관련 자료를 찾았어요. 실제 이용 가능 여부는 앱 화면에서 확인해 주세요.',

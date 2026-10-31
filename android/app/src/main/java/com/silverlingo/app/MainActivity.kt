@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import com.silverlingo.app.chat.ChatActions
 import com.silverringo.app.HomeScreen
 import com.silverlingo.app.chat.ChatScreen
 import kr.silverringo.learning.LearningEntry
@@ -52,9 +54,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun SilverRingoApp() {
+fun SilverRingoApp(chatServerUrl: String = BuildConfig.CHAT_BASE_URL) {
     var destination by rememberSaveable { mutableStateOf("home") }
     var chatQuestion by rememberSaveable { mutableStateOf("") }
+    var returnToChat by rememberSaveable { mutableStateOf(false) }
+    val chatState = rememberSaveableStateHolder()
     val context = androidx.compose.ui.platform.LocalContext.current
     SideEffect {
         (context as? android.app.Activity)?.window?.let { window ->
@@ -64,18 +68,33 @@ fun SilverRingoApp() {
     val home = {
         context.stopService(Intent(context, FloatingCompanionService::class.java))
         destination = "home"
+        returnToChat = false
     }
-    BackHandler(enabled = destination == "guide", onBack = home)
+    val exitFeature = {
+        context.stopService(Intent(context, FloatingCompanionService::class.java))
+        destination = if (returnToChat) "chat" else "home"
+        returnToChat = false
+    }
+    BackHandler(enabled = destination == "guide", onBack = exitFeature)
     when (destination) {
-        "chat" -> ChatScreen(onExit = home, initialMessage = chatQuestion)
+        "chat" -> chatState.SaveableStateProvider("chat") {
+            ChatScreen(onExit = home, initialMessage = chatQuestion, serverUrl = chatServerUrl, onAction = { action ->
+                ChatActions.destination(action)?.let { target ->
+                    returnToChat = true
+                    destination = target
+                }
+            })
+        }
         "learning" -> Column(Modifier.fillMaxSize().safeDrawingPadding()) {
-            LearningEntry(onExit = home, onResult = { result ->
+            LearningEntry(onExit = exitFeature, onResult = { result ->
                 context.getSharedPreferences("sr_learning", android.content.Context.MODE_PRIVATE)
                     .edit().putString("latest_result", result).apply()
             })
         }
         "guide" -> Column(Modifier.fillMaxSize().safeDrawingPadding()) {
-            TextButton(onClick = home, modifier = Modifier.fillMaxWidth()) { Text("홈으로 돌아가기") }
+            TextButton(onClick = exitFeature, modifier = Modifier.fillMaxWidth()) {
+                Text(if (returnToChat) "채팅으로 돌아가기" else "홈으로 돌아가기")
+            }
             MainDashboardScreen()
         }
         else -> HomeScreen(
@@ -84,6 +103,8 @@ fun SilverRingoApp() {
             onChatClick = { question ->
                 context.stopService(Intent(context, FloatingCompanionService::class.java))
                 chatQuestion = question
+                chatState.removeState("chat")
+                returnToChat = false
                 destination = "chat"
             }
         )

@@ -10,10 +10,11 @@ import java.net.URI
 import java.net.URL
 
 data class ChatTurn(val role: String, val content: String)
-data class ChatSource(val id: String, val category: String, val status: String)
-data class ChatAction(val id: String, val type: String, val target: String, val label: String)
-data class ChatReply(val reply: String, val sources: List<ChatSource>, val actions: List<ChatAction>, val requestId: String)
-class ChatFailure(message: String) : IOException(message)
+data class ChatSource(val id: String, val category: String, val status: String) : java.io.Serializable
+data class ChatAction(val id: String, val type: String, val target: String, val label: String) : java.io.Serializable
+data class ChatReply(val reply: String, val sources: List<ChatSource>, val actions: List<ChatAction>, val requestId: String) : java.io.Serializable
+data class ChatMessage(val role: String, val content: String, val response: ChatReply? = null) : java.io.Serializable
+class ChatFailure(message: String, val statusCode: Int? = null) : IOException(message)
 
 /** Calls the existing D API; keys and LLM execution belong to the server. */
 class ChatClient(private val allowHttp: Boolean = false, private val readTimeoutMs: Int = 50_000) {
@@ -42,6 +43,8 @@ class ChatClient(private val allowHttp: Boolean = false, private val readTimeout
             }
             connection.outputStream.use { it.write(request) }
             val status = connection.responseCode
+            if (status == 429) throw ChatFailure("질문이 잠시 몰렸어요. 조금 기다린 후 다시 시도해 주세요.", status)
+            if (status == 503) throw ChatFailure("도우미가 잠시 쉬고 있어요. 잠시 후 다시 시도해 주세요.", status)
             val stream = if (status == 200) connection.inputStream else connection.errorStream
             val bytes = stream?.use { input ->
                 val output = ByteArrayOutputStream()

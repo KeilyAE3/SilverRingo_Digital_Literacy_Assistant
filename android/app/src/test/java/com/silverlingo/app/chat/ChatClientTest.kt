@@ -49,6 +49,19 @@ class ChatClientTest {
         assertTrue(error.message.orEmpty().contains("서버에 연결할 수 없어요"))
     }
 
+    @Test fun rateLimitAndUnavailableStatusesHaveSafeNoticesEvenWithoutJson() {
+        for (status in listOf(429, 503)) {
+            LocalServer(status, "<html>private proxy diagnostics</html>").use { server ->
+                val failure = assertThrows(ChatFailure::class.java) {
+                    ChatClient(true).send(server.url, "질문", emptyList())
+                }
+                assertEquals(status, failure.statusCode)
+                assertTrue(failure.message.orEmpty().contains("다시 시도"))
+                assertFalse(failure.message.orEmpty().contains("private"))
+            }
+        }
+    }
+
     @Test fun refusesCredentialsAndReleaseCleartextBeforeConnecting() {
         for (url in listOf("http://localhost:8000", "https://user:password@example.com", "file:///secret", "https://example.com?token=secret")) {
             assertThrows(ChatFailure::class.java) { ChatClient().send(url, "질문", emptyList()) }

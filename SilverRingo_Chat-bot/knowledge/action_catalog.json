@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "notes": "MVP 시작 상태. A/B/C의 코드 참조는 실제 통합 완료가 아니므로 전부 disabled. target은 D 제안 ID이며 A 합의 전 확정 계약이 아님.",
+  "notes": "Android 확인된 학습 목록·생활 가이드 화면만 활성화. 서비스 시작·접수·결제는 실행하지 않음.",
   "actions": [
     {
       "id": "open_learning_home",
@@ -22,16 +22,18 @@
       "id": "open_guide_home",
       "kind": "navigate",
       "target": "guides.home",
-      "label": "생활 가이드",
-      "enabled": false,
-      "status": "unintegrated",
+      "label": "병원 접수 도우미 열기",
+      "enabled": true,
+      "status": "integrated",
       "owner": "A",
-      "requires": [],
+      "requires": [
+        "기능 화면만 열기; 권한·학습 잠금은 기존 화면에서 판정"
+      ],
       "source": {
-        "branch": "hjh",
-        "path": "silverRingo/app/src/main/java/com/silverringo/app/HomeScreen.kt",
+        "branch": "main",
+        "path": "android/app/src/main/java/com/silverlingo/app/MainActivity.kt",
         "kind": "code",
-        "commit": "28772a853240c2a4794233547c9a44ca5f587492"
+        "commit": "e5fe417c5e3a8209879d97f760f7e79d2a18a3ca"
       }
     },
     {
@@ -39,18 +41,17 @@
       "kind": "navigate",
       "target": "learning.kiosk",
       "label": "키오스크 배우기 열기",
-      "enabled": false,
-      "status": "unintegrated",
+      "enabled": true,
+      "status": "integrated",
       "owner": "A+C",
       "requires": [
-        "C 학습 코스 진입점 통합",
-        "레벨 잠금은 C가 판정"
+        "기능 화면만 열기; 권한·학습 잠금은 기존 화면에서 판정"
       ],
       "source": {
-        "branch": "jib",
-        "path": "silver-ringo-c/android/app/src/main/java/kr/silverringo/learning/LearningEntry.kt",
+        "branch": "main",
+        "path": "android/app/src/main/java/com/silverlingo/app/MainActivity.kt",
         "kind": "code",
-        "commit": "f011f17f8c422f104ed8ba72ed8480713958b7e7"
+        "commit": "e5fe417c5e3a8209879d97f760f7e79d2a18a3ca"
       }
     },
     {

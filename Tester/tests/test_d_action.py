@@ -13,7 +13,8 @@ class DActionTests(unittest.TestCase):
         """D-QA-04: 미등록·비활성 액션은 바로가기 실행 후보가 될 수 없다."""
         registry = ActionRegistry(ROOT / 'SilverRingo_Chat-bot' / 'knowledge' / 'action_catalog.json')
         self.assertFalse(registry.validate('unknown_action'))
-        self.assertFalse(registry.validate('open_kiosk_course'))
+        self.assertTrue(registry.validate('open_kiosk_course'))
+        self.assertFalse(registry.validate('start_ddocdoc_companion'))
         self.assertFalse(registry.validate('open_kiosk_course', {'level': 5}))
 
 

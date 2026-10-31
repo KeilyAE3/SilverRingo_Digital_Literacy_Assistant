@@ -32,12 +32,13 @@ class DKnowledgeTests(unittest.TestCase):
         self.assertNotIn('example:course:payment',
                          {document.id for document in self.store.documents()})
 
-    def test_all_catalog_actions_remain_disabled(self):
-        """D-QA-06: 현재 미연동 액션은 런타임 허용목록에서 실행 가능하지 않다."""
+    def test_only_verified_screen_entries_are_enabled(self):
+        """D-QA-06: 통합된 두 화면만 열며 서비스 자동 시작과 중복 학습 진입은 비활성이다."""
         registry = ActionRegistry(self.knowledge_dir / 'action_catalog.json')
-        self.assertTrue(all(registry.get(action_id) is None
-                            for action_id in ('open_learning_home', 'open_guide_home',
-                                              'open_kiosk_course', 'start_ddocdoc_companion')))
+        self.assertIsNotNone(registry.get('open_kiosk_course'))
+        self.assertIsNotNone(registry.get('open_guide_home'))
+        self.assertIsNone(registry.get('open_learning_home'))
+        self.assertIsNone(registry.get('start_ddocdoc_companion'))
 
 
 if __name__ == '__main__':

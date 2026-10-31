@@ -43,7 +43,7 @@ class DChatServiceTests(unittest.TestCase):
 
     def test_unsupported_request_has_no_action(self):
         """D-QA-04: 정부24 요청에 현재 지원하지 않는 기능임을 안전하게 안내한다."""
-        response = service(FakeLLM()).handle(ChatRequest('정부24로 등본을 발급해 줘'))
+        response = service(FakeLLM()).handle(ChatRequest('실버링고에서 정부24로 등본을 발급할 수 있어?'))
         self.assertEqual(response.suggested_actions, [])
         self.assertFalse(any(source.id.startswith('guide:retired')
                              for source in response.sources))
