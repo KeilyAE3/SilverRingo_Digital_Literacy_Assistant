@@ -36,27 +36,28 @@ private val Yellow = Color(0xFFFFCE32)
 fun HomeScreen(
     onLearnClick: () -> Unit,
     onGuideClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onChatClick: (String) -> Unit = {}
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var message by rememberSaveable { mutableStateOf("") }
     var notice by rememberSaveable { mutableStateOf<String?>(null) }
-    val showChatNotice = { if (message.isNotBlank()) notice = "AI 대화는 준비 중이에요. 아래에서 원하는 기능을 선택해 주세요." }
+    val openChat = { if (message.isNotBlank()) onChatClick(message) }
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet(Modifier.widthIn(max = 340.dp)) {
                 Text("Silver Ringo", Modifier.padding(24.dp), fontSize = 26.sp, fontWeight = FontWeight.Bold)
                 HorizontalDivider()
-                listOf("홈", "IT 기능 배우기", "생활 가이드").forEachIndexed { index, label ->
+                listOf("홈", "IT 기능 배우기", "생활 가이드", "AI 도우미").forEachIndexed { index, label ->
                     NavigationDrawerItem(
                         label = { Text(label, fontSize = 20.sp) },
                         selected = index == 0,
                         onClick = {
                             scope.launch {
                                 drawerState.close()
-                                when (index) { 1 -> onLearnClick(); 2 -> onGuideClick() }
+                                when (index) { 1 -> onLearnClick(); 2 -> onGuideClick(); 3 -> onChatClick("") }
                             }
                         },
                         modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
@@ -99,7 +100,7 @@ fun HomeScreen(
                             OutlinedTextField(
                                 value = message, onValueChange = { message = it },
                                 modifier = Modifier.weight(1f),
-                                label = { Text("궁금한 점을 적어 주세요") },
+                                label = { Text("궁금한 점 입력", fontSize = 18.sp) },
                                 textStyle = LocalTextStyle.current.copy(fontSize = 18.sp),
                                 shape = RoundedCornerShape(16.dp),
                                 maxLines = 4,
@@ -109,12 +110,13 @@ fun HomeScreen(
                                     focusedLabelColor = Yellow, unfocusedLabelColor = Color(0xFF4F6078)
                                 ),
                                 trailingIcon = {
-                                    IconButton(onClick = { showChatNotice() }, enabled = message.isNotBlank()) {
+                                    IconButton(onClick = { openChat() }, enabled = message.isNotBlank() && message.length <= 1000) {
                                         LineIcon("send", "메시지 보내기", MaterialTheme.colorScheme.secondary)
                                     }
                                 },
                                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Send),
-                                keyboardActions = KeyboardActions(onSend = { showChatNotice() })
+                                keyboardActions = KeyboardActions(onSend = { if (message.length <= 1000) openChat() }),
+                                supportingText = { if (message.length > 1000) Text("1,000자 이내로 적어 주세요.", color = Yellow) }
                             )
                             FilledIconButton(
                                 onClick = { notice = "음성 입력은 준비 중이에요. 지금은 글로 입력해 주세요." },
@@ -125,6 +127,9 @@ fun HomeScreen(
                         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                             SuggestionChip(onClick = onLearnClick, label = { Text("IT 기능 배우기", color = Color.White, fontSize = 16.sp) })
                             SuggestionChip(onClick = onGuideClick, label = { Text("생활 가이드", color = Color.White, fontSize = 16.sp) })
+                        }
+                        OutlinedButton(onClick = { onChatClick("") }, modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp)) {
+                            Text("AI 도우미와 대화하기", color = Color.White, fontSize = 20.sp)
                         }
                     }
                 }

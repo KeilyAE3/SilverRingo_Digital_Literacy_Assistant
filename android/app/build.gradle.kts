@@ -1,7 +1,23 @@
+import java.net.URI
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+}
+
+// Only developer-owned base URLs enter the APK; LLM credentials stay on Python.
+fun configuredChatUrl(propertyName: String, allowHttp: Boolean): String {
+    val value = providers.gradleProperty(propertyName).orElse("").get().trim()
+    if (value.isNotEmpty()) {
+        val uri = URI(value)
+        require(!uri.host.isNullOrBlank() && uri.rawUserInfo == null && uri.rawQuery == null &&
+            uri.rawFragment == null && (uri.port == -1 || uri.port in 1..65535) &&
+            (uri.scheme == "https" || (allowHttp && uri.scheme == "http"))) {
+            "$propertyName must be a base URL without credentials; release requires HTTPS"
+        }
+    }
+    return "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
 }
 
 android {
@@ -12,14 +28,18 @@ android {
         applicationId = "com.silverlingo.app"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0.0"
+        versionCode = 3
+        versionName = "1.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "CHAT_BASE_URL", configuredChatUrl("CHAT_DEV_BASE_URL", true))
+        }
         release {
+            buildConfigField("String", "CHAT_BASE_URL", configuredChatUrl("CHAT_PROD_BASE_URL", false))
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -36,6 +56,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     sourceSets["main"].assets.srcDir(layout.buildDirectory.dir("generated/learningAssets"))
 }
@@ -63,8 +84,9 @@ dependencies {
     testImplementation("org.json:json:20240303")
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.3.0")
+    androidTestImplementation("androidx.test:runner:1.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     debugImplementation(libs.androidx.ui.tooling)
